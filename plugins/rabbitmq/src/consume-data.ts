@@ -1,10 +1,11 @@
 import { core } from "@tago-io/tcore-sdk";
-import { ConsumeMessage } from "amqplib";
-import { consumer } from "./connection";
+import type { ConsumeMessage } from "amqplib";
+import { consumer } from "./connection.ts";
 
 function consumeData(msg: ConsumeMessage | null): void {
   if (msg === null) {
-    return console.error("Consumer cancelled by server");
+    console.error("Consumer cancelled by server");
+    return;
   }
 
   const data = JSON.parse(msg.content.toString());
@@ -16,7 +17,9 @@ function consumeData(msg: ConsumeMessage | null): void {
       consumer.ack(msg);
     })
     .catch((e) => {
-      console.error(`ERROR: ${JSON.stringify({ deviceID, data, error: e?.message | e })}`);
+      console.error(
+        `ERROR: ${JSON.stringify({ deviceID, data, error: e?.message | e })}`,
+      );
 
       return consumer.reject(msg, false);
     });

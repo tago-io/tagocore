@@ -1,8 +1,8 @@
-import { QueueModule } from "@tago-io/tcore-sdk";
-import { IDatabaseDeviceDataCreate } from "@tago-io/tcore-sdk/build/Types";
-import amqplib, { Channel } from "amqplib";
-import { consumeData } from "./consume-data";
-import { Config } from "./types";
+import type { QueueModule } from "@tago-io/tcore-sdk";
+import type { IDatabaseDeviceDataCreate } from "@tago-io/tcore-sdk/Types";
+import amqplib, { type Channel } from "amqplib";
+import { consumeData } from "./consume-data.ts";
+import type { Config } from "./types.ts";
 
 let consumer: Channel;
 let sender: Channel;
@@ -21,7 +21,7 @@ async function createConnection(this: QueueModule, config: Config) {
 
   queue = config.queue;
 
-  if (config.msg_ttl != undefined) {
+  if (config.msg_ttl !== undefined) {
     ttl = config.msg_ttl;
   }
 
@@ -61,4 +61,11 @@ async function addToQueue(deviceID: string, data: IDatabaseDeviceDataCreate[]) {
   });
 }
 
-export { consumer, sender, info, createConnection, closeConnection, addToQueue };
+export {
+  consumer,
+  sender,
+  info,
+  createConnection,
+  closeConnection,
+  addToQueue,
+};

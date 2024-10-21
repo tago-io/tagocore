@@ -8,4 +8,4 @@ type Config = {
   msg_ttl?: number;
 };
 
-export { Config };
+export type { Config };

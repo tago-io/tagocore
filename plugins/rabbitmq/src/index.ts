@@ -1,6 +1,6 @@
 import { QueueModule } from "@tago-io/tcore-sdk";
-import { configs } from "./configurations";
-import { addToQueue, closeConnection, createConnection } from "./connection";
+import { configs } from "./configurations.ts";
+import { addToQueue, closeConnection, createConnection } from "./connection.ts";
 
 const rabbitMQ = new QueueModule({
   id: "rabbit-mq",

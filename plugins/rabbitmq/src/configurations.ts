@@ -1,9 +1,30 @@
-import { IPluginConfigField } from "@tago-io/tcore-sdk/build/Types";
+import type { IPluginConfigField } from "@tago-io/tcore-sdk/Types";
 
 const configs: IPluginConfigField[] = [
-  { type: "string", name: "Host", field: "host", defaultValue: "localhost", icon: "hdd", required: true },
-  { type: "number", name: "Port", field: "port", defaultValue: 5672, icon: "network-wired", required: true },
-  { type: "string", name: "Queue name", field: "queue", defaultValue: "tcore-data", icon: "envelope", required: true },
+  {
+    type: "string",
+    name: "Host",
+    field: "host",
+    defaultValue: "localhost",
+    icon: "hdd",
+    required: true,
+  },
+  {
+    type: "number",
+    name: "Port",
+    field: "port",
+    defaultValue: 5672,
+    icon: "network-wired",
+    required: true,
+  },
+  {
+    type: "string",
+    name: "Queue name",
+    field: "queue",
+    defaultValue: "tcore-data",
+    icon: "envelope",
+    required: true,
+  },
   {
     type: "string",
     name: "User",
@@ -11,7 +32,7 @@ const configs: IPluginConfigField[] = [
     placeholder: "root",
     tooltip: "User name to use for the connection",
     icon: "user-alt",
-    field: `user`,
+    field: "user",
     required: true,
   },
   {
@@ -20,14 +41,14 @@ const configs: IPluginConfigField[] = [
     placeholder: "root",
     tooltip: "Optional password for the account used",
     icon: "key",
-    field: `password`,
+    field: "password",
   },
   {
     type: "number",
     name: "Batch size (per node)",
     icon: "bucket",
     tooltip: "Max processing messages per node (cluster mode)",
-    field: `prefetch`,
+    field: "prefetch",
     min: 0,
     max: 65535,
   },
@@ -36,7 +57,7 @@ const configs: IPluginConfigField[] = [
     name: "Message time to live (ms)",
     icon: "clock",
     tooltip: "Lifetime of message in ms",
-    field: `msg_ttl`,
+    field: "msg_ttl",
     min: 0,
   },
 ];

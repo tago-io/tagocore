@@ -1,0 +1,20 @@
+{
+  "name": "@tago-io/tcore-plugin-filesystem-s3",
+  "version": "0.7.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "AWS S3 Filesystem",
+    "icon": "./assets/icon.png",
+    "short_description": "Use an AWS S3 Bucket as a filesystem",
+    "full_description": "./README.md",
+    "cluster": true,
+    "types": ["filesystem"],
+    "permissions": []
+  },
+  "dependencies": {
+    "aws-sdk": "2.1691.0"
+  },
+  "devDependencies": {}
+}
