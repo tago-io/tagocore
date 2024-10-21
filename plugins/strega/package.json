@@ -1,0 +1,20 @@
+{
+  "name": "tcore-plugin-strega",
+  "version": "0.7.0",
+  "description": "",
+  "main": "./src/index.js",
+  "type": "module",
+  "tcore": {
+    "name": "Strega",
+    "short_description": "Adds support for LoRaWAN Strega sensor encoders",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "cluster": true,
+    "types": ["encoder"],
+    "permissions": ["device-data"]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {}
+}

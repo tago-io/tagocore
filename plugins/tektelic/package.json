@@ -1,0 +1,19 @@
+{
+  "name": "tcore-plugin-tektelic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.js",
+  "type": "module",
+  "tcore": {
+    "name": "Tektelic",
+    "short_description": "Adds support for LoRaWAN Tektelic sensor encoders",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "types": ["encoder"],
+    "permissions": ["device-data"]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {}
+}
