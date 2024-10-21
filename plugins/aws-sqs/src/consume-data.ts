@@ -1,4 +1,4 @@
-import { Message } from "@aws-sdk/client-sqs";
+import type { Message } from "@aws-sdk/client-sqs";
 import { core } from "@tago-io/tcore-sdk";
 
 async function consumeData(messages: Message[]): Promise<void> {
