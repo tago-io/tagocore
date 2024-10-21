@@ -1,0 +1,20 @@
+{
+  "name": "@tago-io/tcore-plugin-network-actility",
+  "version": "0.7.0",
+  "private": false,
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "Actility LoRaWAN",
+    "short_description": "Adds support for Actility LoRaWAN",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "cluster": true,
+    "types": ["service", "encoder", "action-type"],
+    "permissions": ["device", "action", "device-data"]
+  },
+  "dependencies": {
+    "lora-packet": "0.9.2"
+  },
+  "devDependencies": {}
+}

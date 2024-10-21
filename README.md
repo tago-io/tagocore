@@ -1,8 +1,15 @@
-# TagoCore - Open Source ("TCore - OSS")
+<br/>
+<p align="center">
+  <img src="https://assets.tago.io/tagoio/tagoio.png" width="200px" alt="TagoIO"></img>
+</p>
+
+# TagoCore
+
+> TagoCore is a free, fast, and open-source IoT platform for edge computing
 
 ## The Repository
 
-This repository ("`TCore - OSS`") is where we (TagoIO) develop the [TagoCore](https://tagocore.com) product together with the community. Not only do we work on code and issues here. This source code is available to everyone under the standard [MIT license](https://github.com/tago-io/tcore/blob/main/LICENSE).
+This repository is where we (TagoIO Inc.) develop the [TagoCore](https://tagocore.com) product together with the community. Here, we work on code, address issues, and develop features collaboratively. The source code is available to everyone under the [Apache License 2.0](https://github.com/tago-io/tcore/blob/main/LICENSE).
 
 ## TagoCore
 
@@ -10,17 +17,20 @@ This repository ("`TCore - OSS`") is where we (TagoIO) develop the [TagoCore](ht
   <img alt="TagoCore in action" src="./.github/main-screenshot.png">
 </p>
 
-[TagoCore](https://tagocore.com) is a distribution of the `TCore - OSS` repository with TagoIO-specific customizations released under a copyright license of [TagoIO](https://tago.io).
+[TagoCore](https://tagocore.com) is a free, fast, and open-source IoT platform for edge computing, allowing you to parse, analyze, and manage data from your devices.
 
-[TagoCore](https://tagocore.com) is a free, fast, and open-source IoT platform for edge computing that you can use to parse, and analyze the data from your devices!
+TagoCore is distributed as a Docker image, which you can access on [Docker Hub](https://hub.docker.com/r/tagoio/tagocore).
 
-TagoCore is updated monthly with new features and bug fixes. You can download it for Windows, macOS, and Linux on [TagoCore's website](https://tagocore.com/#download).
+## Related Projects
+
+* [TagoCore Website](https://github.com/tago-io/tagocore-website) - Official website for TagoCore.
+* [TagoCore Documentation](https://github.com/tago-io/tagocore-docs) - Comprehensive documentation for TagoCore, including setup guides and API references.
 
 ## Contributing
 
-There are many ways in which you can participate in this project, for example:
+There are many ways to participate in this project, including:
 
-* [Submit bugs and feature requests](https://github.com/tago-io/tcore/issues), and help us verify as they are checked in
+* [Submit bugs and feature requests](https://github.com/tago-io/tcore/issues) and help us verify as they are checked in
 * Review [source code changes](https://github.com/tago-io/tcore/pulls)
 
 ## Feedback
@@ -31,6 +41,16 @@ There are many ways in which you can participate in this project, for example:
 
 ## License
 
-Copyright (c) Tago LLC. All rights reserved.
+This repository is licensed under the [Apache License 2.0](LICENSE).
 
-Licensed under the [MIT](LICENSE) license.
+### Copyright Notice
+
+TagoIO Inc. retains all rights to the TagoCore name, logo, and branding assets. These materials are not covered under the Apache License and may not be used without explicit permission from TagoIO Inc.
+
+### Third-Party Plugins and Open Source Images
+
+This repository may contain third-party plugins and open-source images that are subject to their own licenses. Please refer to individual files and documentation for specific licensing terms.
+
+---
+
+*This software is provided by TagoIO Inc. under the Apache License 2.0. For questions or additional permissions, please contact us.*

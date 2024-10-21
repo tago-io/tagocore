@@ -1,0 +1,25 @@
+{
+  "name": "@tago-io/tcore-plugin-mysql",
+  "version": "0.7.0",
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "MySQL",
+    "short_description": "Integrates the MySQL and MariaDB Database with TagoCore",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "cluster": true,
+    "types": ["database"],
+    "permissions": ["action", "analysis", "device-data", "device"]
+  },
+  "scripts": {
+    "migrate": "knex migrate:make --client=mysql --migrations-directory=src/Migrations"
+  },
+  "dependencies": {
+    "knex": "3.1.0",
+    "mysql2": "3.11.3"
+  },
+  "devDependencies": {
+    "@types/mysql": "2.15.26"
+  }
+}

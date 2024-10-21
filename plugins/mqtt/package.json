@@ -1,0 +1,20 @@
+{
+  "name": "@tago-io/tcore-plugin-mqtt",
+  "version": "0.7.2",
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "MQTT Broker",
+    "short_description": "Adds new Action triggers, types, and the MQTT broker for you to connect your devices and gateways",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "cluster": true,
+    "types": ["service", "action-type", "action-trigger"],
+    "permissions": ["device", "action", "device-data"]
+  },
+  "dependencies": {
+    "mqtt-connection": "4.1.0"
+  },
+  "devDependencies": {
+  }
+}

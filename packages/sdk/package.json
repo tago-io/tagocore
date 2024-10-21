@@ -1,0 +1,38 @@
+{
+  "name": "@tago-io/tcore-sdk",
+  "version": "0.7.0",
+  "private": false,
+  "type": "module",
+  "main": "./src/Lib/index.ts",
+  "description": "TCore SDK for creating plugins",
+  "author": "Tago LLC",
+  "homepage": "https://github.com/tago-io/tcore",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tago-io/tcore"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/Lib/index.ts"
+    },
+    "./types": {
+      "import": "./src/Types/index.ts"
+    }
+  },
+  "keywords": [
+    "iot",
+    "device",
+    "tcore",
+    "sdk",
+    "edge",
+    "computing",
+    "platform",
+    "tagoio"
+  ],
+  "dependencies": {
+    "cron-parser": "4.4.0"
+  },
+  "devDependencies": {
+    "memfs": "3.4.11"
+  }
+}

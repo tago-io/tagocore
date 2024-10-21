@@ -1,0 +1,24 @@
+{
+  "name": "@tago-io/tcore-plugin-freezer-simulator",
+  "version": "0.7.0",
+  "private": false,
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "Freezer Simulator",
+    "short_description": "Ice cream freezer that simulates internal temperature, door and compressor status",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "keywords": [
+      "Raspberry",
+      "action"
+    ],
+    "types": ["action-type", "action-trigger", "service"],
+    "permissions": ["device", "device-data"]
+  },
+  "dependencies": {
+    "csv-parser": "3.0.0"
+  },
+  "devDependencies": {
+  }
+}

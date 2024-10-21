@@ -1,0 +1,27 @@
+{
+  "name": "@tago-io/tcore-plugin-postgresql",
+  "version": "0.7.0",
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "PostgreSQL",
+    "short_description": "Integrates the PostgreSQL Database with TagoCore",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "cluster": true,
+    "types": ["database"],
+    "permissions": ["action", "analysis", "device-data", "device"]
+  },
+  "scripts": {
+    "migrate": "knex migrate:make --client=pg --migrations-directory=src/Migrations"
+  },
+  "dependencies": {
+    "knex": "3.1.0",
+    "pg": "8.13.0",
+    "pg-native": "3.2.0",
+    "pg-query-stream": "4.7.0"
+  },
+  "devDependencies": {
+    "@types/pg": "8.11.10"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@tago-io/tcore-plugin-sqlite",
+  "version": "0.7.0",
+  "main": "src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "SQLite",
+    "short_description": "Integrates the SQLite Database with TagoCore",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "types": [
+      "database",
+      "sqlite"
+    ],
+    "permissions": [
+      "action",
+      "analysis",
+      "device-data",
+      "device"
+    ],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
+  },
+  "scripts": {
+    "migrate": "knex migrate:make --client=sqlite3 --migrations-directory=src/Migrations"
+  },
+  "dependencies": {
+    "knex": "3.1.0",
+    "sqlite3": "5.1.7"
+  },
+  "devDependencies": {}
+}

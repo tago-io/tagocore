@@ -1,0 +1,18 @@
+{
+  "name": "@tago-io/tcore-plugin-filesystem-local",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "Local Disk Filesystem",
+    "types": ["filesystem"],
+    "icon": "./assets/icon.png",
+    "full_description": "./README.md",
+    "hidden": true,
+    "cluster": true,
+    "permissions": []
+  },
+  "dependencies": {
+  }
+}

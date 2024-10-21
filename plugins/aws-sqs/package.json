@@ -1,0 +1,24 @@
+{
+  "name": "@tago-io/tcore-plugin-amazon-sqs",
+  "version": "0.7.0",
+  "private": false,
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "Amazon SQS",
+    "short_description": "Integrates the Amazon SQS queue with TagoCore",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "types": ["queue"],
+    "permissions": ["device-data"],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
+  },
+  "dependencies": {
+    "@aws-sdk/client-sqs": "3.675.0",
+    "@rxfork/sqs-consumer": "^6.0.0"
+  },
+  "devDependencies": {}
+}

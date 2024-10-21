@@ -1,0 +1,77 @@
+import type {
+  IDatabaseGetDeviceDataQuery,
+  IDeviceData,
+} from "@tago-io/tcore-sdk/types";
+import type { Knex } from "knex";
+
+/**
+ */
+async function finishBucketDataQuery(
+  client: Knex,
+  knex: Knex.QueryBuilder<any, any>,
+  query: IDatabaseGetDeviceDataQuery,
+): Promise<IDeviceData[]> {
+  const { start_date, end_date, values, groups, ids } = query;
+  let { variables } = query;
+
+  const knexQuery = knex.select("*").from("data");
+
+  if (groups) {
+    knexQuery.whereIn("group", groups);
+  }
+  if (ids) {
+    knexQuery.whereIn("id", ids);
+  }
+  if (values) {
+    knexQuery.whereIn("value", values);
+  }
+  if (start_date) {
+    knexQuery.where("time", ">=", start_date);
+  }
+  if (end_date) {
+    knexQuery.where("time", "<=", end_date);
+  }
+
+  if (!variables || variables?.length === 0) {
+    variables = (await getVariables(client)).map((x) => x.variable);
+  }
+
+  const queries: any[] = [];
+
+  for (const variable of variables || []) {
+    const queryIn = knexQuery.clone();
+    queryIn.where("variable", variable);
+    queries.push(await queryIn);
+  }
+
+  const rows = queries.flat();
+
+  for (const item of rows) {
+    item.created_at = new Date(item.created_at);
+    item.time = new Date(item.time);
+
+    if (item.metadata) {
+      item.metadata = JSON.parse(item.metadata as string);
+    }
+    if (item.location) {
+      item.location = JSON.parse(item.location as unknown as string);
+    }
+
+    if (item.type === "number") {
+      item.value = Number(item.value);
+    } else if (item.type === "boolean") {
+      item.value = String(item.value) === "true" || String(item.value) === "1";
+    } else if (item.type === "string") {
+      item.value = String(item.value);
+    }
+  }
+
+  return rows;
+}
+
+async function getVariables(client: Knex) {
+  const query = client.select("variable").from("data").groupBy("variable");
+  return await query;
+}
+
+export default finishBucketDataQuery;

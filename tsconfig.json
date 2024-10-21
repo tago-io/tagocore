@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "lib": ["ES2023", "dom"],
+    "allowJs": true,
+    "sourceMap": false,
+    "outDir": "./build",
+    "strict": true,
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "declaration": true,
+    "allowImportingTsExtensions": true
+  },
+  "exclude": ["node_module", "jest.config.js", ".eslintrc.js"],
+  "include": ["packages/**/*"],
+  "ts-node": {
+    "transpileOnly": true
+  }
+}

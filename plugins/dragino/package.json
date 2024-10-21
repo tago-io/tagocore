@@ -1,0 +1,22 @@
+{
+  "name": "tcore-plugin-dragino",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "Dragino",
+    "short_description": "Adds support for LoRaWAN Dragino sensor encoders",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "types": ["encoder"],
+    "permissions": ["device-data"]
+  },
+  "jest": {
+    "preset": "ts-jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {}
+}

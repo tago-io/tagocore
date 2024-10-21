@@ -1,0 +1,49 @@
+{
+  "name": "tcore-plugin-tektelic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/index.js",
+  "engines": {
+    "tcore": ">= 0.4.0 < 0.5.0"
+  },
+  "files": [
+    "build/**/*",
+    "assets/**/*"
+  ],
+  "scripts": {
+    "pack": "tcore-plugin pack",
+    "watch": "node esbuild/build.js --watch",
+    "linter": "eslint .",
+    "test": "jest",
+    "build": "npm run linter; rm -rf ./build; node esbuild/build.js"
+  },
+  "tcore": {
+    "name": "Tektelic",
+    "short_description": "Adds support for LoRaWAN Tektelic sensor encoders",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "types": [
+      "encoder"
+    ],
+    "permissions": [
+      "device-data"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "esbuild": "^0.14.23",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsdoc": "^37.9.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1"
+  },
+  "dependencies": {
+    "@tago-io/tcore-sdk": "0.7.2",
+    "@types/jest": "^27.5.1",
+    "jest": "^28.1.0"
+  }
+}
