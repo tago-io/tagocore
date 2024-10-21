@@ -1,4 +1,4 @@
-import { IPluginConfigField } from "@tago-io/tcore-sdk/build/Types";
+import type { IPluginConfigField } from "@tago-io/tcore-sdk/Types";
 
 const configs: IPluginConfigField[] = [
   {
@@ -36,7 +36,9 @@ const configs: IPluginConfigField[] = [
         type: "password",
         icon: "key",
         required: true,
-        visibility_conditions: [{ condition: "=", field: "type", value: "config" }],
+        visibility_conditions: [
+          { condition: "=", field: "type", value: "config" },
+        ],
       },
       {
         name: "AWS Secret Access Key",
@@ -44,7 +46,9 @@ const configs: IPluginConfigField[] = [
         type: "password",
         icon: "key",
         required: true,
-        visibility_conditions: [{ condition: "=", field: "type", value: "config" }],
+        visibility_conditions: [
+          { condition: "=", field: "type", value: "config" },
+        ],
       },
     ],
   },

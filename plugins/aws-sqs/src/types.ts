@@ -11,4 +11,4 @@ type Config = {
     }
 );
 
-export { Config };
+export type { Config };

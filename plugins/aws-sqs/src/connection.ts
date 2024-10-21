@@ -1,9 +1,14 @@
-import { IDatabaseDeviceDataCreate } from "@tago-io/tcore-sdk/build/Types";
-import { SQSClient, SQSClientConfig, SendMessageCommand, GetQueueAttributesCommand } from "@aws-sdk/client-sqs";
+import {
+  GetQueueAttributesCommand,
+  SQSClient,
+  type SQSClientConfig,
+  SendMessageCommand,
+} from "@aws-sdk/client-sqs";
 import { Consumer } from "@rxfork/sqs-consumer";
-import { QueueModule } from "@tago-io/tcore-sdk";
-import { Config } from "./types";
-import { consumeData } from "./consume-data";
+import type { QueueModule } from "@tago-io/tcore-sdk";
+import type { IDatabaseDeviceDataCreate } from "@tago-io/tcore-sdk/Types";
+import { consumeData } from "./consume-data.ts";
+import type { Config } from "./types.ts";
 
 let client: SQSClient;
 
@@ -17,8 +22,12 @@ async function createConnection(this: QueueModule, config: Config) {
     credentials:
       config.type === "config"
         ? {
-            accessKeyId: config.aws_access_key_id || process.env?.AWS_ACCESS_KEY_ID!,
-            secretAccessKey: config.aws_secret_access_key || process.env?.AWS_SECRET_ACCESS_KEY!,
+            accessKeyId:
+              config.aws_access_key_id || process.env.AWS_ACCESS_KEY_ID || "",
+            secretAccessKey:
+              config.aws_secret_access_key ||
+              process.env.AWS_SECRET_ACCESS_KEY ||
+              "",
           }
         : undefined,
   };
@@ -57,7 +66,10 @@ async function createConnection(this: QueueModule, config: Config) {
     });
     const result = await client.send(attributesCommand);
 
-    this.showMessage("info", `Queue running! Messages on queue ≈ ${result?.Attributes?.ApproximateNumberOfMessages}`);
+    this.showMessage(
+      "info",
+      `Queue running! Messages on queue ≈ ${result?.Attributes?.ApproximateNumberOfMessages}`,
+    );
   }, 5000);
 }
 
