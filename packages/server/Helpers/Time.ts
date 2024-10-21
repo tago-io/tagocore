@@ -65,4 +65,4 @@ function parseRelativeDate(
   return time.toJSDate();
 }
 
-export { parseRelativeDate };
+export { parseRelativeDate, fixDurationMoment };
