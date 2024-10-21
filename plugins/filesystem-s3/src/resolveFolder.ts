@@ -1,7 +1,7 @@
-import { IPluginFilesystemItem } from "@tago-io/tcore-sdk/build/Types";
-import { S3 } from "aws-sdk";
-import { ObjectList } from "aws-sdk/clients/s3";
-import { values } from "./";
+import type { IPluginFilesystemItem } from "@tago-io/tcore-sdk/Types";
+import AWS from "aws-sdk";
+import type { ObjectList } from "aws-sdk/clients/s3";
+import { values } from "./index.ts";
 
 /**
  * Trims leading and trailing slashes.
@@ -75,7 +75,7 @@ function groupFiles(filter: string, objects: ObjectList) {
  * Resolves a folder structure.
  */
 async function resolveFolder(filter: string): Promise<IPluginFilesystemItem[]> {
-  const s3 = new S3({
+  const s3 = new AWS.S3({
     apiVersion: "2015-03-31",
     credentials: {
       accessKeyId: values.access_key,

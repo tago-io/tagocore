@@ -1,7 +1,7 @@
 import { FileSystemModule } from "@tago-io/tcore-sdk";
-import { S3 } from "aws-sdk";
-import { resolveFile } from "./resolveFile";
-import { resolveFolder } from "./resolveFolder";
+import AWS from "aws-sdk";
+import { resolveFile } from "./resolveFile.ts";
+import { resolveFolder } from "./resolveFolder.ts";
 
 /**
  * Config values.
@@ -31,7 +31,7 @@ let values: ISetupValues = {
  */
 async function validateCredentials(data: ISetupValues) {
   try {
-    const s3 = new S3({
+    const s3 = new AWS.S3({
       apiVersion: "2015-03-31",
       credentials: {
         accessKeyId: data.access_key,
@@ -50,8 +50,8 @@ async function validateCredentials(data: ISetupValues) {
  */
 async function onLoad(data: ISetupValues) {
   if (data.type === "env") {
-    data.access_key = process.env.AWS_ACCESS_KEY_ID || "";
-    data.secret_access_key = process.env.AWS_SECRET_ACCESS_KEY || "";
+      data.access_key = process.env.AWS_ACCESS_KEY_ID || "";
+      data.secret_access_key = process.env.AWS_SECRET_ACCESS_KEY || "";
   }
 
   if (!data.access_key) {
@@ -132,30 +132,25 @@ const filesystem = new FileSystemModule({
       required: true,
     },
     {
-      name: "Cache policy",
       type: "group",
-      icon: "save",
+      name: "Cache policy",
+      icon: "cog",
       field: "cache",
       configs: [
         {
-          type: "row",
-          configs: [
-            {
-              name: "Keep files in disk for",
-              field: "ttl",
-              icon: "clock",
-              type: "option",
-              tooltip:
-                "The amount of time in minutes that the files will be stored in the local disk before being fetched again from S3",
-              defaultValue: "1",
-              options: [
-                { label: "1 minute", value: "60" },
-                { label: "5 minutes", value: "300" },
-                { label: "10 minutes", value: "600" },
-                { label: "30 minutes", value: "1800" },
-                { label: "60 minutes", value: "3600" },
-              ],
-            },
+          name: "Keep files in disk for",
+          field: "ttl",
+          icon: "clock",
+          type: "option",
+          tooltip:
+            "The amount of time in minutes that the files will be stored in the local disk before being fetched again from S3",
+          defaultValue: "1",
+          options: [
+            { label: "1 minute", value: "60" },
+            { label: "5 minutes", value: "300" },
+            { label: "10 minutes", value: "600" },
+            { label: "30 minutes", value: "1800" },
+            { label: "60 minutes", value: "3600" },
           ],
         },
       ],

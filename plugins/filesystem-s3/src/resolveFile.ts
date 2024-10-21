@@ -1,15 +1,15 @@
-import fs from "fs";
-import path from "path";
-import os from "os";
-import { S3 } from "aws-sdk";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { pluginStorage } from "@tago-io/tcore-sdk";
-import { values } from "./";
+import AWS from "aws-sdk";
+import { values } from "./index.ts";
 
 /**
  * Downloads a file and stores it into a temporary folder.
  */
 async function downloadFile(filePath: string) {
-  const s3 = new S3({
+  const s3 = new AWS.S3({
     apiVersion: "2015-03-31",
     credentials: {
       accessKeyId: values.access_key,
@@ -53,7 +53,7 @@ async function resolveFile(filePath: string) {
   }
 
   const info = await pluginStorage.get(filePath);
-  if (info && info.filePath) {
+  if (info?.filePath) {
     const timeDiff = Date.now() - (info.time || 0);
     const maxTime = Number(values.ttl) * 1000; // max time to update it
     if (timeDiff < maxTime) {
