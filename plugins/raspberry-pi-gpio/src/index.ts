@@ -1,4 +1,9 @@
-import { ActionTypeModule, ActionTriggerModule, core, ServiceModule } from "@tago-io/tcore-sdk";
+import {
+  ActionTriggerModule,
+  ActionTypeModule,
+  ServiceModule,
+  core,
+} from "@tago-io/tcore-sdk";
 import rpio from "rpio";
 
 /**
@@ -67,7 +72,8 @@ const RaspberryActionTrigger = new ActionTriggerModule({
       },
       {
         name: "Pooling time",
-        tooltip: "Select how often this pin will be read, value in milliseconds",
+        tooltip:
+          "Select how often this pin will be read, value in milliseconds",
         placeholder: "Enter a value between 1 ms and 259200000 ms",
         field: "time_read",
         icon: "clock",
@@ -88,7 +94,8 @@ const RaspberryActionType = new ActionTypeModule({
       {
         name: "Send GPIO status to bucket",
         field: "send_bucket_state",
-        tooltip: "Select if you want to save the logic level in the Bucket when action is triggered",
+        tooltip:
+          "Select if you want to save the logic level in the Bucket when action is triggered",
         type: "boolean",
         icon: "bucket",
       },
@@ -160,7 +167,8 @@ const RaspberryService = new ServiceModule({
     {
       name: "Pin configuration",
       icon: "cog",
-      tooltip: "Define which pins will be opened. Only the pins that were opened can be used later on.",
+      tooltip:
+        "Define which pins will be opened. Only the pins that were opened can be used later on.",
       field: "topic",
       required: true,
       key: {
@@ -338,7 +346,7 @@ RaspberryActionTrigger.onTriggerChange = async (actionID, trigger) => {
 
   interval = setInterval(
     () => callback(actionID, trigger),
-    Math.max(Math.min(Number(trigger.time_read), 259200000), 1)
+    Math.max(Math.min(Number(trigger.time_read), 259200000), 1),
   );
 };
 
