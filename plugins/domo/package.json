@@ -1,0 +1,19 @@
+{
+  "name": "@tago-io/tcore-plugin-domo",
+  "version": "0.6.0",
+  "private": false,
+  "main": "./src/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "Domo",
+    "short_description": "Enables integration between Domo and TagoCore",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "types": ["action-type", "action-trigger", "service"],
+    "permissions": ["device", "device-data"]
+  },
+  "dependencies": {
+    "@fast-csv/parse": "5.0.0"
+  },
+  "devDependencies": {}
+}
