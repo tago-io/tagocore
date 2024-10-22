@@ -1,5 +1,6 @@
 import type { ZodError } from "zod";
 import { zSummary } from "./Summary.types.ts";
+import { describe, test, expect } from "vitest";
 
 describe("zSummary", () => {
   test("parses simple object", () => {
