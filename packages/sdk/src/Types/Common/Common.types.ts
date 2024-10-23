@@ -1,12 +1,12 @@
-import { z } from "zod";
-import { DateTime } from "luxon";
 import cronParser from "cron-parser";
-import preprocessNumber from "../Helpers/preprocessNumber.ts";
+import { DateTime } from "luxon";
+import { z } from "zod";
 import { generateResourceID } from "../../Shared/ResourceID.ts";
-import { zTag } from "../Tag/Tag.types.ts";
-import { parseSafe } from "../Helpers/parseSafe.ts";
 import createQueryOrderBy from "../Helpers/createQueryOrderBy.ts";
 import { parseRelativeDate } from "../Helpers/parseRelativeDate.ts";
+import { parseSafe } from "../Helpers/parseSafe.ts";
+import preprocessNumber from "../Helpers/preprocessNumber.ts";
+import { zTag } from "../Tag/Tag.types.ts";
 
 /**
  * Validation for relative date intervals, such as "1 minute", or "30 hours".
@@ -19,7 +19,10 @@ export const zInterval = z.string().refine((value) => {
     if (!time) {
       return false;
     }
-    const diff = DateTime.now().diff(DateTime.fromJSDate(new Date(time)), "minutes").minutes;
+    const diff = DateTime.now().diff(
+      DateTime.fromJSDate(new Date(time)),
+      "minutes",
+    ).minutes;
     if (diff < 1) {
       return false;
     }
@@ -61,7 +64,10 @@ export const zQuery = z.object({
   filter: z
     .any()
     .nullish()
-    .refine((x) => x === null || x === undefined || typeof x === "object", "Filter must be an object")
+    .refine(
+      (x) => x === null || x === undefined || typeof x === "object",
+      "Filter must be an object",
+    )
     .transform((x) => parseSafe(x, {}))
     .refine((x) => !Array.isArray(x), "Filter must be an object"),
   orderBy: createQueryOrderBy(z.string()),

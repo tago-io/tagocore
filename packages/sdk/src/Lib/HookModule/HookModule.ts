@@ -1,4 +1,8 @@
-import type { TGenericID, IModuleSetupWithoutType, IDeviceData } from "../../Types.ts";
+import type {
+  IDeviceData,
+  IModuleSetupWithoutType,
+  TGenericID,
+} from "../../Types/index.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
 /**
@@ -13,7 +17,10 @@ class HookModule extends TCoreModule {
   /**
    * Called after the data sent by a device is inserted into the bucket.
    */
-  public async onAfterInsertDeviceData(deviceID: TGenericID, data: IDeviceData[]): Promise<void> {
+  public async onAfterInsertDeviceData(
+    deviceID: TGenericID,
+    data: IDeviceData[],
+  ): Promise<void> {
     // not implemented
   }
 

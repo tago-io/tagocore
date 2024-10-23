@@ -34,7 +34,8 @@ export const zPluginType = z.enum([
   "service",
   "sidebar-button",
   "sidebar-footer-button",
-  "sqlite"
+  "system-override",
+  "sqlite",
 ]);
 
 /**
@@ -57,7 +58,14 @@ export const zPluginInstallOptions = z.object({
 /**
  * Types of permissions available.
  */
-export const zPluginPermission = z.enum(["device", "analysis", "action", "device-data", "cli"]);
+export const zPluginPermission = z.enum([
+  "device",
+  "analysis",
+  "action",
+  "device-data",
+  "cli",
+  "plugin",
+]);
 
 /**
  */
@@ -190,10 +198,12 @@ const zPluginConfigFieldPassword = zGenericConfigField.extend({
 /**
  * The configuration for a "boolean" field.
  */
-const zPluginConfigFieldBoolean = zGenericConfigField.omit({ placeholder: true, required: true }).extend({
-  type: z.literal("boolean"),
-  defaultValue: z.boolean().nullish(),
-});
+const zPluginConfigFieldBoolean = zGenericConfigField
+  .omit({ placeholder: true, required: true })
+  .extend({
+    type: z.literal("boolean"),
+    defaultValue: z.boolean().nullish(),
+  });
 
 /**
  * The configuration for a "divisor" field.
@@ -273,14 +283,28 @@ export type IShallowGroupField = {
   icon?: string | null;
   name?: string | null;
   field: string;
-  configs: (INonRecursiveFields | IShallowGroupField | IShallowRowField | IShallowRadioField)[];
-  visibility_conditions?: z.infer<typeof zPluginConfigVisibilityCondition>[] | null;
+  configs: (
+    | INonRecursiveFields
+    | IShallowGroupField
+    | IShallowRowField
+    | IShallowRadioField
+  )[];
+  visibility_conditions?:
+    | z.infer<typeof zPluginConfigVisibilityCondition>[]
+    | null;
 };
 
 export type IShallowRowField = {
   type: "row";
-  configs: (INonRecursiveFields | IShallowGroupField | IShallowRowField | IShallowRadioField)[];
-  visibility_conditions?: z.infer<typeof zPluginConfigVisibilityCondition>[] | null;
+  configs: (
+    | INonRecursiveFields
+    | IShallowGroupField
+    | IShallowRowField
+    | IShallowRadioField
+  )[];
+  visibility_conditions?:
+    | z.infer<typeof zPluginConfigVisibilityCondition>[]
+    | null;
 };
 
 export type IShallowRadioField = {
@@ -293,9 +317,16 @@ export type IShallowRadioField = {
     color?: string | null;
     icon?: string | null;
     description?: string | null;
-    configs: (INonRecursiveFields | IShallowGroupField | IShallowRowField | IShallowRadioField)[];
+    configs: (
+      | INonRecursiveFields
+      | IShallowGroupField
+      | IShallowRowField
+      | IShallowRadioField
+    )[];
   }>;
-  visibility_conditions?: z.infer<typeof zPluginConfigVisibilityCondition>[] | null;
+  visibility_conditions?:
+    | z.infer<typeof zPluginConfigVisibilityCondition>[]
+    | null;
 };
 
 /**
@@ -305,9 +336,12 @@ const zPluginConfigFieldRow: z.ZodType<IShallowRowField> = z.lazy(() =>
   zGenericConfigField.extend({
     type: z.literal("row"),
     configs: z.array(
-      zNonRecursiveFields.or(zPluginConfigFieldRow).or(zPluginConfigFieldGroup).or(zPluginConfigFieldRadio)
+      zNonRecursiveFields
+        .or(zPluginConfigFieldRow)
+        .or(zPluginConfigFieldGroup)
+        .or(zPluginConfigFieldRadio),
     ),
-  })
+  }),
 );
 
 /**
@@ -317,9 +351,12 @@ const zPluginConfigFieldGroup: z.ZodType<IShallowGroupField> = z.lazy(() =>
   zGenericConfigField.extend({
     type: z.literal("group"),
     configs: z.array(
-      zNonRecursiveFields.or(zPluginConfigFieldRow).or(zPluginConfigFieldGroup).or(zPluginConfigFieldRadio)
+      zNonRecursiveFields
+        .or(zPluginConfigFieldRow)
+        .or(zPluginConfigFieldGroup)
+        .or(zPluginConfigFieldRadio),
     ),
-  })
+  }),
 );
 
 /**
@@ -337,11 +374,14 @@ const zPluginConfigFieldRadio: z.ZodType<IShallowRadioField> = z.lazy(() =>
         icon: zIcon.nullish(),
         description: z.string().nullish(),
         configs: z.array(
-          zNonRecursiveFields.or(zPluginConfigFieldRow).or(zPluginConfigFieldGroup).or(zPluginConfigFieldRadio)
+          zNonRecursiveFields
+            .or(zPluginConfigFieldRow)
+            .or(zPluginConfigFieldGroup)
+            .or(zPluginConfigFieldRadio),
         ),
-      })
+      }),
     ),
-  })
+  }),
 );
 
 /**
@@ -372,7 +412,9 @@ const zPluginMessage = z.object({
   method: z.string(),
   params: z.any(),
   setupID: z.string().optional(),
-  type: z.enum(["pluginRequest", "pluginResponse", "apiRequest", "apiResponse"]).optional(),
+  type: z
+    .enum(["pluginRequest", "pluginResponse", "apiRequest", "apiResponse"])
+    .optional(),
 });
 
 /**
@@ -421,32 +463,47 @@ const zPluginStorageItem = z.object({
 /**
  * Configuration to set a plugin storage item.
  */
-export const zPluginStorageItemSet = zPluginStorageItem.omit({ created_at: true, type: true }).transform((x) => {
-  let type = "string";
-  if (x.value === null) {
-    type = "null";
-  } else if (typeof x.value === "boolean") {
-    type = "boolean";
-  } else if (typeof x.value === "string") {
-    type = "string";
-  } else if (typeof x.value === "number") {
-    type = "number";
-  } else if (typeof x.value === "object") {
-    type = "object";
-  }
-  return {
-    ...x,
-    type,
-  };
-});
+export const zPluginStorageItemSet = zPluginStorageItem
+  .omit({ created_at: true, type: true })
+  .transform((x) => {
+    let type = "string";
+    if (x.value === null) {
+      type = "null";
+    } else if (typeof x.value === "boolean") {
+      type = "boolean";
+    } else if (typeof x.value === "string") {
+      type = "string";
+    } else if (typeof x.value === "number") {
+      type = "number";
+    } else if (typeof x.value === "object") {
+      type = "object";
+    }
+    return {
+      ...x,
+      type,
+    };
+  });
 
 /**
  */
-export const zModuleState = z.enum(["idle", "stopping", "starting", "started", "stopped"]);
+export const zModuleState = z.enum([
+  "idle",
+  "stopping",
+  "starting",
+  "started",
+  "stopped",
+]);
 
 /**
  */
-export const zPluginState = z.enum(["idle", "disabled", "stopping", "starting", "started", "stopped"]);
+export const zPluginState = z.enum([
+  "idle",
+  "disabled",
+  "stopping",
+  "starting",
+  "started",
+  "stopped",
+]);
 
 /**
  */
@@ -520,7 +577,9 @@ const zPluginButtonModuleSetupOption = z.object({
 const zPluginListItem = z.object({
   publisher: zPluginPublisher.nullish(),
   buttons: z.object({
-    sidebar: z.array(zPluginButtonModuleSetupOption.extend({ position: z.number() })),
+    sidebar: z.array(
+      zPluginButtonModuleSetupOption.extend({ position: z.number() }),
+    ),
     navbar: z.array(zPluginButtonModuleSetupOption),
     sidebarFooter: z.array(zPluginButtonModuleSetupOption),
   }),
@@ -583,28 +642,42 @@ interface IPluginFilesystemItem {
 }
 
 export type { IPluginFilesystemItem };
-export type IActionTriggerModuleSetup = z.infer<typeof zActionTriggerModuleSetup>;
+export type IActionTriggerModuleSetup = z.infer<
+  typeof zActionTriggerModuleSetup
+>;
 export type IActionTypeModuleSetup = z.infer<typeof zActionTypeModuleSetup>;
 export type IModuleMessageOptions = z.infer<typeof zModuleMessageOptions>;
 export type IModuleSetup = z.infer<typeof zPluginSetup>;
 export type IModuleSetupWithoutType = Omit<IModuleSetup, "type">;
 export type IPlugin = z.infer<typeof zPlugin>;
-export type IPluginButtonModuleSetupAction = z.infer<typeof zPluginButtonModuleSetupAction>;
-export type IPluginButtonModuleSetupOption = z.infer<typeof zPluginButtonModuleSetupOption>;
+export type IPluginButtonModuleSetupAction = z.infer<
+  typeof zPluginButtonModuleSetupAction
+>;
+export type IPluginButtonModuleSetupOption = z.infer<
+  typeof zPluginButtonModuleSetupOption
+>;
 export type IPluginClassListItem = z.infer<typeof zPluginClassListItem>;
 export type IPluginConfigField = z.infer<typeof zPluginConfigField>;
-export type IPluginConfigFieldBoolean = z.infer<typeof zPluginConfigFieldBoolean>;
-export type IPluginConfigFieldDivisor = z.infer<typeof zPluginConfigFieldDivisor>;
+export type IPluginConfigFieldBoolean = z.infer<
+  typeof zPluginConfigFieldBoolean
+>;
+export type IPluginConfigFieldDivisor = z.infer<
+  typeof zPluginConfigFieldDivisor
+>;
 export type IPluginConfigFieldFile = z.infer<typeof zPluginConfigFieldFile>;
 export type IPluginConfigFieldFolder = z.infer<typeof zPluginConfigFieldFolder>;
 export type IPluginConfigFieldGroup = z.infer<typeof zPluginConfigFieldGroup>;
 export type IPluginConfigFieldNumber = z.infer<typeof zPluginConfigFieldNumber>;
 export type IPluginConfigFieldOption = z.infer<typeof zPluginConfigFieldOption>;
-export type IPluginConfigFieldPassword = z.infer<typeof zPluginConfigFieldPassword>;
+export type IPluginConfigFieldPassword = z.infer<
+  typeof zPluginConfigFieldPassword
+>;
 export type IPluginConfigFieldRadio = z.infer<typeof zPluginConfigFieldRadio>;
 export type IPluginConfigFieldRow = z.infer<typeof zPluginConfigFieldRow>;
 export type IPluginConfigFieldString = z.infer<typeof zPluginConfigFieldString>;
-export type IPluginConfigFieldStringList = z.infer<typeof zPluginConfigFieldStringList>;
+export type IPluginConfigFieldStringList = z.infer<
+  typeof zPluginConfigFieldStringList
+>;
 export type IPluginInstallOptions = z.infer<typeof zPluginInstallOptions>;
 export type IPluginList = z.infer<typeof zPluginList>;
 export type IPluginListItem = z.infer<typeof zPluginListItem>;
@@ -613,7 +686,7 @@ export type IPluginMessage = z.infer<typeof zPluginMessage>;
 export type IPluginModule = z.infer<typeof zPluginModule>;
 export type IPluginModuleList = z.infer<typeof zPluginModuleList>;
 export type IPluginModuleListItem = z.infer<typeof zPluginModuleListItem>;
-export type IPluginPayloadEncoderList = {};
+export type IPluginPayloadEncoderList = any;
 export type IPluginPublisher = z.infer<typeof zPluginPublisher>;
 export type IPluginSettings = z.infer<typeof zPluginSettings>;
 export type IPluginSettingsModule = z.infer<typeof zPluginSettingsModule>;

@@ -1,5 +1,5 @@
+import { describe, expect, test } from "vitest";
 import preprocessBoolean from "./preprocessBoolean.ts";
-import { test, expect, describe } from "vitest";
 
 describe("preprocessBoolean", () => {
   test("process standard boolean", () => {

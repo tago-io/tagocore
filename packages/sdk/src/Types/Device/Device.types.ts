@@ -1,13 +1,21 @@
-import { z } from "zod";
 import { v4 as uuid } from "uuid";
-import preprocessObject from "../Helpers/preprocessObject.ts";
-import preprocessBoolean from "../Helpers/preprocessBoolean.ts";
-import removeNullValues from "../Helpers/removeNullValues.ts";
+import { z } from "zod";
 import { generateResourceID } from "../../Shared/ResourceID.ts";
-import { zTags } from "../Tag/Tag.types.ts";
-import { zToken, type TGenericID, zName, zObjectID, zQuery, zActiveAutoGen, zTagsAutoGen } from "../Common/Common.types.ts";
+import {
+  type TGenericID,
+  zActiveAutoGen,
+  zName,
+  zObjectID,
+  zQuery,
+  zTagsAutoGen,
+  zToken,
+} from "../Common/Common.types.ts";
 import createQueryOrderBy from "../Helpers/createQueryOrderBy.ts";
+import preprocessBoolean from "../Helpers/preprocessBoolean.ts";
 import preprocessNumber from "../Helpers/preprocessNumber.ts";
+import preprocessObject from "../Helpers/preprocessObject.ts";
+import removeNullValues from "../Helpers/removeNullValues.ts";
+import { zTags } from "../Tag/Tag.types.ts";
 
 /**
  */
@@ -31,14 +39,19 @@ export const zDeviceParameterList = z.array(zDeviceParameter);
 /**
  * Configuration to create a new device param.
  */
-export const zDeviceParameterCreate = zDeviceParameter.omit({ id: true }).transform((x) => ({
-  ...x,
-  id: generateResourceID(),
-}));
+export const zDeviceParameterCreate = zDeviceParameter
+  .omit({ id: true })
+  .transform((x) => ({
+    ...x,
+    id: generateResourceID(),
+  }));
 
 export const zDeviceChunkPeriod = z.enum(["day", "week", "month", "quarter"]);
 
-export const zDeviceChunkRetention = z.preprocess(preprocessNumber, z.number().int().min(0).max(36));
+export const zDeviceChunkRetention = z.preprocess(
+  preprocessNumber,
+  z.number().int().min(0).max(36),
+);
 
 /**
  * Base configuration of a device.
@@ -89,7 +102,7 @@ export const zDeviceCreate = zDevice
       chunk_retention: x.type !== "immutable" ? undefined : x.chunk_retention,
       created_at: new Date(),
       id: generateResourceID(),
-    })
+    }),
   );
 
 /**
@@ -115,7 +128,7 @@ export const zDeviceList = z.array(
   zDevice.partial().extend({
     id: zObjectID,
     tags: zTags,
-  })
+  }),
 );
 
 /**
@@ -212,7 +225,7 @@ export const zDeviceListQuery = zQuery.extend({
       })
       .partial()
       .nullish()
-      .transform((x) => x ?? {})
+      .transform((x) => x ?? {}),
   ),
   fields: z
     .array(zDeviceListQueryField)
@@ -237,10 +250,26 @@ export const zDeviceApplyDataRetentionQuery = z.object({
  */
 export const zDeviceTokenListQuery = zQuery.extend({
   fields: z
-    .array(z.enum(["name", "permission", "serie_number", "last_authorization", "created_at", "expire_time"]))
+    .array(
+      z.enum([
+        "name",
+        "permission",
+        "serie_number",
+        "last_authorization",
+        "created_at",
+        "expire_time",
+      ]),
+    )
     .nullish()
     .transform((x) => {
-      const values: string[] = x || ["name", "permission", "token", "serie_number", "last_authorization", "created_at"];
+      const values: string[] = x || [
+        "name",
+        "permission",
+        "token",
+        "serie_number",
+        "last_authorization",
+        "created_at",
+      ];
       if (!values.includes("expire_time")) values.push("expire_time");
       return values;
     }),
@@ -256,9 +285,13 @@ export type IDeviceParameterCreate = z.input<typeof zDeviceParameterCreate>;
 export type IDeviceParameterList = z.infer<typeof zDeviceParameterList>;
 export type IDeviceToken = z.infer<typeof zDeviceToken>;
 export type IDeviceTokenCreate = z.input<typeof zDeviceTokenCreate>;
-export type IDeviceTokenCreateResponse = z.infer<typeof zDeviceTokenCreateResponse>;
+export type IDeviceTokenCreateResponse = z.infer<
+  typeof zDeviceTokenCreateResponse
+>;
 export type IDeviceTokenList = z.input<typeof zDeviceTokenList>;
 export type IDeviceTokenListQuery = z.input<typeof zDeviceTokenListQuery>;
 export type TDeviceType = z.input<typeof zDeviceType>;
-export type IDeviceApplyDataRetentionQuery = z.input<typeof zDeviceApplyDataRetentionQuery>;
+export type IDeviceApplyDataRetentionQuery = z.input<
+  typeof zDeviceApplyDataRetentionQuery
+>;
 export type IDeviceChunkPeriod = z.input<typeof zDeviceChunkPeriod>;

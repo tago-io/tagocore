@@ -1,5 +1,5 @@
+import { describe, expect, test } from "vitest";
 import { refineOrderBy } from "./refineOrderBy.ts";
-import { test, expect, describe } from "vitest";
 
 describe("refineOrderBy", () => {
   test("assure correct validation", () => {

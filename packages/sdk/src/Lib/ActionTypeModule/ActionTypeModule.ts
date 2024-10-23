@@ -12,7 +12,11 @@ class ActionTypeModule extends TCoreModule {
   /**
    * Called when this action type is executed.
    */
-  public async onCall(actionID: TGenericID, values: any, data: any): Promise<void> {
+  public async onCall(
+    actionID: TGenericID,
+    values: any,
+    data: any,
+  ): Promise<void> {
     return Promise.resolve();
   }
 }

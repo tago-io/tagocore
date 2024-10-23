@@ -1,8 +1,11 @@
-import { z } from "zod";
 import { DateTime } from "luxon";
+import { z } from "zod";
 import { generateResourceID } from "../../Shared/ResourceID.ts";
 import { zObjectID } from "../Common/Common.types.ts";
-import { parseRelativeDate, convertDateToISO } from "../Helpers/parseRelativeDate.ts";
+import {
+  convertDateToISO,
+  parseRelativeDate,
+} from "../Helpers/parseRelativeDate.ts";
 import removeNullValues from "../Helpers/removeNullValues.ts";
 
 /**
@@ -16,7 +19,11 @@ function isDate(date: any) {
  * Handles absolute/relative dates.
  * @returns {Date} a date object.
  */
-function handleDates(rawDate: Date | string, timezone: string, type: "start" | "end"): Date {
+function handleDates(
+  rawDate: Date | string,
+  timezone: string,
+  type: "start" | "end",
+): Date {
   let date: any = new Date(rawDate);
 
   if (!isDate(date)) {
@@ -58,7 +65,10 @@ const zDeviceDataLocationCoordinates = z.object({
     .string()
     .nullish()
     .transform((x) => x || "Point"),
-  coordinates: z.tuple([z.number().min(-180).max(180), z.number().min(-90).max(90)]),
+  coordinates: z.tuple([
+    z.number().min(-180).max(180),
+    z.number().min(-90).max(90),
+  ]),
 });
 
 /**
@@ -95,10 +105,11 @@ const zDeviceDataCreateLocation = zDeviceDataLocationCoordinates
   .transform((x: any): IDeviceDataLocationCoordinates | undefined => {
     if (!x) {
       return undefined;
-    }if (Array.isArray(x.coordinates)) {
+    }
+    if (Array.isArray(x.coordinates)) {
       return x;
     }
-      return { type: "Point", coordinates: [x.lng, x.lat] };
+    return { type: "Point", coordinates: [x.lng, x.lat] };
   });
 
 /**
@@ -108,7 +119,10 @@ export const zDeviceDataCreate = zDeviceData
   .omit({ created_at: true, id: true, device: true })
   .extend({
     location: zDeviceDataCreateLocation,
-    time: z.preprocess((x) => (x ? new Date(x as string) : undefined), z.date().nullish()),
+    time: z.preprocess(
+      (x) => (x ? new Date(x as string) : undefined),
+      z.date().nullish(),
+    ),
   })
   .transform((data) => {
     const now = new Date();
@@ -123,10 +137,15 @@ export const zDeviceDataCreate = zDeviceData
 /**
  * Configuration to update a device data.
  */
-export const zDeviceDataUpdate = zDeviceData.omit({ created_at: true, variable: true, device: true }).extend({
-  location: zDeviceDataCreateLocation,
-  time: z.preprocess((x) => (x ? new Date(x as string) : undefined), z.date().nullish()),
-});
+export const zDeviceDataUpdate = zDeviceData
+  .omit({ created_at: true, variable: true, device: true })
+  .extend({
+    location: zDeviceDataCreateLocation,
+    time: z.preprocess(
+      (x) => (x ? new Date(x as string) : undefined),
+      z.date().nullish(),
+    ),
+  });
 
 /**
  * Configuration to query the device data list.
@@ -205,7 +224,11 @@ export const zDeviceDataQuery = z.preprocess(
       .transform((x) => x || "defaultQ"),
     groups: z.array(z.string()).nullish(),
     start_date: z.date().nullish(),
-    values: z.array(z.string()).or(z.array(z.boolean())).or(z.array(z.number())).nullish(),
+    values: z
+      .array(z.string())
+      .or(z.array(z.boolean()))
+      .or(z.array(z.number()))
+      .nullish(),
     variables: z.array(z.string()).nullish(),
     skip: z
       .number()
@@ -222,7 +245,7 @@ export const zDeviceDataQuery = z.preprocess(
       .enum(["ASC", "DESC", "asc", "desc"])
       .nullish()
       .transform((x) => String(x || "DESC").toLowerCase()),
-  })
+  }),
 );
 
 const zDeviceAddDataOptions = z.object({
@@ -233,8 +256,14 @@ const zDeviceAddDataOptions = z.object({
 export type IDeviceAddDataOptions = z.infer<typeof zDeviceAddDataOptions>;
 export type IDeviceData = z.infer<typeof zDeviceData>;
 export type IDeviceDataCreate = z.input<typeof zDeviceDataCreate>;
-export type IDeviceDataCreateLocation = z.input<typeof zDeviceDataCreateLocation>;
-export type IDeviceDataLocationCoordinates = z.input<typeof zDeviceDataLocationCoordinates>;
-export type IDeviceDataLocationLatLng = z.input<typeof zDeviceDataLocationLatLng>;
+export type IDeviceDataCreateLocation = z.input<
+  typeof zDeviceDataCreateLocation
+>;
+export type IDeviceDataLocationCoordinates = z.input<
+  typeof zDeviceDataLocationCoordinates
+>;
+export type IDeviceDataLocationLatLng = z.input<
+  typeof zDeviceDataLocationLatLng
+>;
 export type IDeviceDataQuery = z.input<typeof zDeviceDataQuery>;
 export type IDeviceDataUpdate = z.input<typeof zDeviceDataUpdate>;

@@ -1,7 +1,10 @@
 import type { WriteFileOptions } from "node:fs";
 import { nanoid } from "nanoid";
+import {
+  generateResourceID,
+  validateResourceID,
+} from "../../Shared/ResourceID.ts";
 import type { IComputerUsage } from "../../Types.ts";
-import { generateResourceID, validateResourceID } from "../../Shared/ResourceID.ts";
 import APIBridge from "../APIBridge/APIBridge.ts";
 
 /**
@@ -33,7 +36,12 @@ class Helpers extends APIBridge {
   /**
    * Retrieves information about the OS.
    */
-  public async getOSInfo(): Promise<{ arch: string; name: string; platform: string; version: string }> {
+  public async getOSInfo(): Promise<{
+    arch: string;
+    name: string;
+    platform: string;
+    version: string;
+  }> {
     return await this.invokeApiMethod("getOSInfo");
   }
 
@@ -64,7 +72,11 @@ class Helpers extends APIBridge {
    * Writes data to the file, replacing the file if it already exists.
    * `data` can be a string or a buffer.
    */
-  public async writeFile(filename: string, data: string, options?: WriteFileOptions): Promise<void> {
+  public async writeFile(
+    filename: string,
+    data: string,
+    options?: WriteFileOptions,
+  ): Promise<void> {
     await this.invokeApiMethod("writeFile", filename, data, options);
   }
 

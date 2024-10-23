@@ -1,18 +1,24 @@
 import type {
+  IAccount,
+  IAccountList,
+  IAccountToken,
   IAction,
   IActionList,
   IAnalysis,
   IAnalysisList,
-  IDeviceData,
+  IDatabaseAccountCreateTokenData,
+  IDatabaseAccountListQuery,
   IDatabaseActionListQuery,
   IDatabaseAddAnalysisLogData,
   IDatabaseAddStatisticData,
   IDatabaseAnalysisListQuery,
-  IDatabaseDeviceDataCreate,
+  IDatabaseCreateAccountData,
   IDatabaseCreateActionData,
   IDatabaseCreateAnalysisData,
   IDatabaseCreateDeviceData,
   IDatabaseCreateDeviceTokenData,
+  IDatabaseDeviceDataCreate,
+  IDatabaseDeviceDataEdit,
   IDatabaseDeviceListQuery,
   IDatabaseEditActionData,
   IDatabaseEditAnalysisData,
@@ -22,26 +28,20 @@ import type {
   IDatabaseSetDeviceParamsData,
   IDatabaseSetPluginStorageData,
   IDevice,
+  IDeviceApplyDataRetentionQuery,
+  IDeviceData,
   IDeviceList,
   IDeviceParameter,
+  IDeviceToken,
   IDeviceTokenList,
   ILog,
   IModuleSetupWithoutType,
   IStatistic,
   ISummary,
   TDatabaseGetTagKeysType,
+  TDeviceType,
   TGenericID,
   TGenericToken,
-  TDeviceType,
-  IDatabaseDeviceDataEdit,
-  IAccountToken,
-  IAccount,
-  IAccountList,
-  IDatabaseCreateAccountData,
-  IDatabaseAccountListQuery,
-  IDatabaseAccountCreateTokenData,
-  IDeviceToken,
-  IDeviceApplyDataRetentionQuery,
 } from "../../Types.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
@@ -59,7 +59,7 @@ class DatabaseModule extends TCoreModule {
   public async addDeviceData(
     deviceID: TGenericID,
     type: TDeviceType,
-    data: IDatabaseDeviceDataCreate[]
+    data: IDatabaseDeviceDataCreate[],
   ): Promise<void> {
     throw new Error("Method not implemented");
   }
@@ -67,14 +67,22 @@ class DatabaseModule extends TCoreModule {
   /**
    * Edits a device data point.
    */
-  public async editDeviceData(deviceID: TGenericID, type: TDeviceType, data: IDatabaseDeviceDataEdit[]): Promise<void> {
+  public async editDeviceData(
+    deviceID: TGenericID,
+    type: TDeviceType,
+    data: IDatabaseDeviceDataEdit[],
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Deletes data from a device.
    */
-  public async deleteDeviceData(deviceID: TGenericID, type: TDeviceType, ids: string[]): Promise<void> {
+  public async deleteDeviceData(
+    deviceID: TGenericID,
+    type: TDeviceType,
+    ids: string[],
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -84,7 +92,7 @@ class DatabaseModule extends TCoreModule {
   public async applyDeviceDataRetention(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDeviceApplyDataRetentionQuery
+    query: IDeviceApplyDataRetentionQuery,
   ): Promise<void> {
     throw new Error("Method not implemented");
   }
@@ -95,7 +103,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataDefaultQ(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -106,7 +114,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataLastValue(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -117,7 +125,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataLastLocation(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -128,7 +136,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataLastItem(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -139,7 +147,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataLastInsert(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -150,7 +158,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataFirstValue(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -161,7 +169,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataFirstLocation(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -172,7 +180,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataFirstItem(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -183,7 +191,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataFirstInsert(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -194,7 +202,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataCount(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<number> {
     throw new Error("Method not implemented");
   }
@@ -205,7 +213,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataMax(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -216,7 +224,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataMin(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<IDeviceData[]> {
     throw new Error("Method not implemented");
   }
@@ -227,7 +235,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataAvg(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<number> {
     throw new Error("Method not implemented");
   }
@@ -238,7 +246,7 @@ class DatabaseModule extends TCoreModule {
   public async getDeviceDataSum(
     deviceID: TGenericID,
     type: TDeviceType,
-    query: IDatabaseGetDeviceDataQuery
+    query: IDatabaseGetDeviceDataQuery,
   ): Promise<number> {
     throw new Error("Method not implemented");
   }
@@ -247,7 +255,9 @@ class DatabaseModule extends TCoreModule {
    * Retrieves a list of devices.
    * Additional filters can be passed via the query argument.
    */
-  public async getDeviceList(query: IDatabaseDeviceListQuery): Promise<IDeviceList> {
+  public async getDeviceList(
+    query: IDatabaseDeviceListQuery,
+  ): Promise<IDeviceList> {
     throw new Error("Method not implemented");
   }
 
@@ -261,7 +271,10 @@ class DatabaseModule extends TCoreModule {
   /**
    * Edits the information of a single device.
    */
-  public async editDevice(deviceID: TGenericID, data: IDatabaseEditDeviceData): Promise<void> {
+  public async editDevice(
+    deviceID: TGenericID,
+    data: IDatabaseEditDeviceData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -289,7 +302,10 @@ class DatabaseModule extends TCoreModule {
   /**
    * Generates and retrieves a new device token.
    */
-  public async createDeviceToken(deviceID: TGenericID, data: IDatabaseCreateDeviceTokenData): Promise<void> {
+  public async createDeviceToken(
+    deviceID: TGenericID,
+    data: IDatabaseCreateDeviceTokenData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -299,7 +315,7 @@ class DatabaseModule extends TCoreModule {
    */
   public async getDeviceTokenList(
     deviceID: TGenericID,
-    query: IDatabaseGetDeviceTokenListQuery
+    query: IDatabaseGetDeviceTokenListQuery,
   ): Promise<IDeviceTokenList> {
     throw new Error("Method not implemented");
   }
@@ -314,7 +330,10 @@ class DatabaseModule extends TCoreModule {
   /**
    * Gets all the parameters of a device.
    */
-  public async getDeviceParamList(deviceID: TGenericID, sentStatus?: boolean): Promise<IDeviceParameter[]> {
+  public async getDeviceParamList(
+    deviceID: TGenericID,
+    sentStatus?: boolean,
+  ): Promise<IDeviceParameter[]> {
     throw new Error("Method not implemented");
   }
 
@@ -328,35 +347,48 @@ class DatabaseModule extends TCoreModule {
   /**
    * Overrides the device parameters.
    */
-  public async setDeviceParams(deviceID: TGenericID, data: IDatabaseSetDeviceParamsData[]): Promise<void> {
+  public async setDeviceParams(
+    deviceID: TGenericID,
+    data: IDatabaseSetDeviceParamsData[],
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Retrieves the amount of data in a device.
    */
-  public async getDeviceDataAmount(deviceID: TGenericID, type: TDeviceType): Promise<number> {
+  public async getDeviceDataAmount(
+    deviceID: TGenericID,
+    type: TDeviceType,
+  ): Promise<number> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Empties a device.
    */
-  public async emptyDevice(deviceID: TGenericID, type: TDeviceType): Promise<void> {
+  public async emptyDevice(
+    deviceID: TGenericID,
+    type: TDeviceType,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Retrieves the token info of a particular uuid.
    */
-  public async getDeviceToken(token: TGenericToken): Promise<IDeviceToken | null> {
+  public async getDeviceToken(
+    token: TGenericToken,
+  ): Promise<IDeviceToken | null> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Retrieves a list of actions.
    */
-  public async getActionList(query: IDatabaseActionListQuery): Promise<IActionList> {
+  public async getActionList(
+    query: IDatabaseActionListQuery,
+  ): Promise<IActionList> {
     throw new Error("Method not implemented");
   }
 
@@ -370,7 +402,10 @@ class DatabaseModule extends TCoreModule {
   /**
    * Edits the information of a single action.
    */
-  public async editAction(actionID: TGenericID, data: IDatabaseEditActionData): Promise<void> {
+  public async editAction(
+    actionID: TGenericID,
+    data: IDatabaseEditActionData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -391,21 +426,28 @@ class DatabaseModule extends TCoreModule {
   /**
    * Retrieves a list of analyses.
    */
-  public async getAnalysisList(query: IDatabaseAnalysisListQuery): Promise<IAnalysisList> {
+  public async getAnalysisList(
+    query: IDatabaseAnalysisListQuery,
+  ): Promise<IAnalysisList> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Retrieves all the information of an analysis.
    */
-  public async getAnalysisInfo(analysisID: TGenericID): Promise<IAnalysis | null> {
+  public async getAnalysisInfo(
+    analysisID: TGenericID,
+  ): Promise<IAnalysis | null> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Edits the information of a single analysis.
    */
-  public async editAnalysis(analysisID: TGenericID, data: IDatabaseEditAnalysisData): Promise<void> {
+  public async editAnalysis(
+    analysisID: TGenericID,
+    data: IDatabaseEditAnalysisData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -426,14 +468,19 @@ class DatabaseModule extends TCoreModule {
   /**
    * Creates a new analysis.
    */
-  public async createAnalysis(data: IDatabaseCreateAnalysisData): Promise<void> {
+  public async createAnalysis(
+    data: IDatabaseCreateAnalysisData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Creates/adds a new log for an analysis.
    */
-  public async addAnalysisLog(analysisID: TGenericID, data: IDatabaseAddAnalysisLogData): Promise<void> {
+  public async addAnalysisLog(
+    analysisID: TGenericID,
+    data: IDatabaseAddAnalysisLogData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -454,7 +501,10 @@ class DatabaseModule extends TCoreModule {
   /**
    * Retrieves a storage item of a plugin.
    */
-  public async getPluginStorageItem(pluginID: string, key: string): Promise<any | undefined> {
+  public async getPluginStorageItem(
+    pluginID: string,
+    key: string,
+  ): Promise<any | undefined> {
     throw new Error("Method not implemented");
   }
 
@@ -468,14 +518,20 @@ class DatabaseModule extends TCoreModule {
   /**
    * Creates/edits a storage item of a plugin.
    */
-  public async setPluginStorageItem(pluginID: string, data: IDatabaseSetPluginStorageData): Promise<void> {
+  public async setPluginStorageItem(
+    pluginID: string,
+    data: IDatabaseSetPluginStorageData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Deletes a storage item of a plugin.
    */
-  public async deletePluginStorageItem(pluginID: string, key: string): Promise<void> {
+  public async deletePluginStorageItem(
+    pluginID: string,
+    key: string,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -489,7 +545,10 @@ class DatabaseModule extends TCoreModule {
   /**
    * Adds a statistic.
    */
-  public async addStatistic(isoTime: string, data: IDatabaseAddStatisticData): Promise<void> {
+  public async addStatistic(
+    isoTime: string,
+    data: IDatabaseAddStatisticData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -503,7 +562,10 @@ class DatabaseModule extends TCoreModule {
   /**
    * Generates and retrieves a new account token.
    */
-  public async createAccountToken(accountID: TGenericID, data: IDatabaseAccountCreateTokenData): Promise<void> {
+  public async createAccountToken(
+    accountID: TGenericID,
+    data: IDatabaseAccountCreateTokenData,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
@@ -524,7 +586,9 @@ class DatabaseModule extends TCoreModule {
   /**
    * Retrieves all the information of a single account via its username.
    */
-  public async getAccountByUsername(username: string): Promise<IAccount | null> {
+  public async getAccountByUsername(
+    username: string,
+  ): Promise<IAccount | null> {
     throw new Error("Method not implemented");
   }
 
@@ -538,14 +602,18 @@ class DatabaseModule extends TCoreModule {
   /**
    * Retrieves a list of accounts.
    */
-  public async getAccountList(query: IDatabaseAccountListQuery): Promise<IAccountList> {
+  public async getAccountList(
+    query: IDatabaseAccountListQuery,
+  ): Promise<IAccountList> {
     throw new Error("Method not implemented");
   }
 
   /**
    * Retrieves the token info of a particular uuid.
    */
-  public async getAccountToken(token: TGenericToken): Promise<IAccountToken | null> {
+  public async getAccountToken(
+    token: TGenericToken,
+  ): Promise<IAccountToken | null> {
     throw new Error("Method not implemented");
   }
 

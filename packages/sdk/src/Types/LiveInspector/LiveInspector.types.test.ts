@@ -1,6 +1,10 @@
+import { describe, expect, test } from "vitest";
 import type { ZodError } from "zod";
-import { zLiveInspectorConnectionID, zLiveInspectorMessage, zLiveInspectorMessageCreate } from "./LiveInspector.types.ts";
-import { test, expect, describe } from "vitest";
+import {
+  zLiveInspectorConnectionID,
+  zLiveInspectorMessage,
+  zLiveInspectorMessageCreate,
+} from "./LiveInspector.types.ts";
 
 describe("zLiveInspectorConnectionID", () => {
   test("parses string", () => {
@@ -45,7 +49,9 @@ describe("zLiveInspectorMessage", () => {
       zLiveInspectorMessage.parse(data);
     } catch (error) {
       const e = (error as ZodError).flatten();
-      expect(e.fieldErrors.device_id[0]).toBe("Expected string, received number");
+      expect(e.fieldErrors.device_id[0]).toBe(
+        "Expected string, received number",
+      );
     }
   });
 
