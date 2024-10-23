@@ -8,6 +8,7 @@ import {
 } from "../index.ts";
 import { validateResourceID } from "../../Shared/ResourceID.ts";
 import { zActionCreate } from "./Action.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zActionCreate", () => {
   test("parses simple object", () => {

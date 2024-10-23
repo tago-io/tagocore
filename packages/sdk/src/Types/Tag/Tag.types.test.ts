@@ -1,5 +1,6 @@
 import type { ZodError } from "zod";
 import { zTag, zTags } from "./Tag.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zTag", () => {
   test("parses simple object", () => {

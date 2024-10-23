@@ -1,5 +1,6 @@
 import type { ZodError } from "zod";
 import { zStatistic, zStatisticCreate } from "./Statistic.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zStatistic", () => {
   test("parses simple object", () => {

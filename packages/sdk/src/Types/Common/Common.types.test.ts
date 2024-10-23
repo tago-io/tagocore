@@ -1,5 +1,6 @@
 import { validateResourceID } from "../index.ts";
 import { type IQuery, zActiveAutoGen, zDateAutoGen, zObjectIDAutoGen, zQuery, zTagsAutoGen } from "./Common.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zTagsAutoGen", () => {
   test("parses null", () => {

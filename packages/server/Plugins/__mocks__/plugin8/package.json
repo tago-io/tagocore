@@ -2,6 +2,7 @@
   "name": "@tago-io/mock-plugin-8",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "tcore": {
     "name": "Plugin 8",
     "full_description": "./README.md",

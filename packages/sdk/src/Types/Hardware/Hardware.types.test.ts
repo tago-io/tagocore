@@ -1,5 +1,6 @@
 import type { ZodError } from "zod";
 import { zOSInfo, zNetworkInfo, zComputerUsage } from "./Hardware.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zOSInfo", () => {
   test("parses simple object", () => {

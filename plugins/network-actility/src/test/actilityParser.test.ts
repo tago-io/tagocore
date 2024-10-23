@@ -1,5 +1,6 @@
 import actilityParser from "../Services/parser.ts";
 import type { IDeviceDataLatLng } from "../lib/toTagoFormat.ts";
+import { test, expect, describe } from "vitest";
 
 describe("Decoder unit test", () => {
   test("Actility Result", async () => {
