@@ -1,4 +1,5 @@
 import axios from "axios";
+import { it, expect, describe } from "vitest";
 
 describe("Create device", () => {
   it("should create immutable device", async () => {

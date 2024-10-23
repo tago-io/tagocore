@@ -201,7 +201,6 @@ class Plugin {
       state: this.state,
       error: this.error || undefined,
     });
-
     this.emitSidebarSocketUpdate();
   }
 

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "main": "./index.js",
+  "type": "module",
   "tcore": {
     "name": "Plugin 11",
     "permissions": [],

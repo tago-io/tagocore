@@ -1,5 +1,6 @@
 import type { ZodError } from "zod";
 import { zLiveInspectorConnectionID, zLiveInspectorMessage, zLiveInspectorMessageCreate } from "./LiveInspector.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zLiveInspectorConnectionID", () => {
   test("parses string", () => {

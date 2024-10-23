@@ -1,4 +1,5 @@
 import preprocessObject from "./preprocessObject.ts";
+import { test, expect, describe } from "vitest";
 
 describe("preprocessObject", () => {
   test("process simple object", () => {

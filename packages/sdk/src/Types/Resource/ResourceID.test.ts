@@ -1,4 +1,5 @@
 import { generateResourceID, validateResourceID } from "./ResourceID.ts";
+import { test, expect, describe } from "vitest";
 
 describe("Test generateResourceID", () => {
   test("Generate resource id", () => {

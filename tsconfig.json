@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "NodeNext",
-    "lib": ["ES2023", "dom"],
+    "lib": [
+      "ES2023",
+      "dom"
+    ],
     "allowJs": true,
     "sourceMap": false,
     "outDir": "./build",
@@ -17,8 +20,13 @@
     "declaration": true,
     "allowImportingTsExtensions": true
   },
-  "exclude": ["node_module", "jest.config.js", ".eslintrc.js"],
-  "include": ["packages/**/*"],
+  "exclude": [
+    "node_module",
+    ".eslintrc.js"
+  ],
+  "include": [
+    "packages/**/*"
+  ],
   "ts-node": {
     "transpileOnly": true
   }

@@ -1,5 +1,6 @@
 import type { ZodError } from "zod";
 import { zSettings, zSettingsEdit, zSettingsMetadata } from "./Settings.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zSettings", () => {
   test("parses simple object", () => {

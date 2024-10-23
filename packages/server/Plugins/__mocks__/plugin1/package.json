@@ -2,6 +2,7 @@
   "name": "@tago-io/mock-plugin-1",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "tago": {
     "name": "Plugin 1",
     "permissions": [],

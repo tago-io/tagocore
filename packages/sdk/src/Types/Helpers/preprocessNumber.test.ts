@@ -1,4 +1,5 @@
 import preprocessNumber from "./preprocessNumber.ts";
+import { test, expect, describe } from "vitest";
 
 describe("preprocessNumber", () => {
   test("process string param", () => {

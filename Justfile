@@ -11,6 +11,9 @@ server *node_args="":
 linter:
   @npx @biomejs/biome check
 
+test *args="":
+  @npx vitest {{args}}
+
 build-console:
   just _pre-build
   @rm -rf build/console

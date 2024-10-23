@@ -7,6 +7,7 @@ import {
   zDeviceDataQuery,
 } from "../index.ts";
 import { type IDeviceData, zDeviceData, zDeviceDataCreate } from "./DeviceData.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zDeviceData", () => {
   const data: IDeviceData = {
