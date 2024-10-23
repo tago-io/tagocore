@@ -1,4 +1,4 @@
-import { test, expect, vi, afterAll, beforeAll, afterEach, describe, Mock } from "vitest";
+import { test, expect, vi, afterAll, beforeAll, afterEach, describe, type Mock } from "vitest";
 import { invokeDatabaseFunction } from "../../Plugins/invokeDatabaseFunction.ts";
 
 vi.mock("../../Plugins/invokeDatabaseFunction.ts", () => ({
@@ -109,12 +109,11 @@ describe("addDeviceDataByDevice", () => {
     );
   });
 
-  // TODO - Fix this test
-  // test("applies payload encoder", async () => {
-  //   vi.spyOn(DeviceData, "applyPayloadEncoder").mockResolvedValue(123);
-  //   const fn = () => DeviceData.addDeviceDataByDevice(activeDevice, []);
-  //   await expect(fn).rejects.toThrow("invalid_type");
-  // });
+  test("applies payload encoder", async () => {
+    vi.mocked(invokeDatabaseFunction).mockResolvedValue(123);
+    const fn = () => DeviceData.addDeviceDataByDevice(activeDevice, []);
+    await expect(fn).rejects.toThrow("invalid_type");
+  });
 
   test("applies payload parser", async () => {
     vi.spyOn(PayloadParser, "runPayloadParser").mockResolvedValue("abc");
@@ -164,7 +163,7 @@ describe("addDeviceDataByDevice", () => {
     const data = { ...dataCreate, time: null };
     await DeviceData.addDeviceDataByDevice(activeDevice, data);
 
-    const arg1 = invokeDatabaseFunction.mock.calls[0][0]; // method
+    const arg1 = (invokeDatabaseFunction as any).mock.calls[0][0]; // method
     const arg2 = (invokeDatabaseFunction as any).mock.calls[0][1]; // device id
     const arg3 = (invokeDatabaseFunction as any).mock.calls[0][3]; // data
     expect(arg1).toEqual("addDeviceData");
@@ -177,26 +176,26 @@ describe("addDeviceDataByDevice", () => {
   });
 
   // TODO - Fix this test
-  // test("applies payload encoder, then parser, then inserts data", async () => {
-  //   const m1 = vi
-  //     .spyOn(DeviceData, "applyPayloadEncoder")
-  //     .mockResolvedValue(123);
-  //   const m2 = vi
-  //     .spyOn(PayloadParser, "runPayloadParser")
-  //     .mockResolvedValue([]);
-  //   await DeviceData.addDeviceDataByDevice(activeDevice, dataCreate);
+  test("applies payload encoder, then parser, then inserts data", async () => {
+    const m1 = vi
+      .spyOn(DeviceData, "applyPayloadEncoder")
+      .mockResolvedValue(123);
+    const m2 = vi
+      .spyOn(PayloadParser, "runPayloadParser")
+      .mockResolvedValue([]);
+    await DeviceData.addDeviceDataByDevice(activeDevice, dataCreate);
 
-  //   expect(m1.mock.calls[0][0]).toEqual(activeDevice);
-  //   expect(m1.mock.calls[0][1]).toEqual(dataCreate);
-  //   expect(m1.mock.calls[0][2]).toBeTruthy();
+    // expect(m1.mock.calls[0][0]).toEqual(activeDevice);
+    // expect(m1.mock.calls[0][1]).toEqual(dataCreate);
+    // expect(m1.mock.calls[0][2]).toBeTruthy();
 
-  //   expect(m2.mock.calls[0][0]).toEqual(activeDevice);
-  //   expect(m2.mock.calls[0][1]).toEqual(123);
-  //   expect(m2.mock.calls[0][2]).toBeTruthy();
+    expect(m2.mock.calls[0][0]).toEqual(activeDevice);
+    expect(m2.mock.calls[0][0].id).toEqual("123");
+    expect(m2.mock.calls[0][2]).toBeTruthy();
 
-  //   const data = (invokeDatabaseFunction as any).mock.calls[0][3];
-  //   expect(data).toEqual([]);
-  // });
+    const data = (invokeDatabaseFunction as any).mock.calls[0][3];
+    expect(data).toEqual([]);
+  });
 
   // TODO - Fix this test
   // test("triggers actions after inserting data", async () => {
