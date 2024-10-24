@@ -10,7 +10,7 @@ import pkg from "../../package.json" with { type: "json" };
 import { cache } from "./Global.ts";
 import { getMachineID } from "./Helpers.ts";
 import { createTCore, listTCoresByMachineID, updateTCore } from "./Request.ts";
-import { closeSocket, initSocket } from "./Socket.ts";
+import { closeRealtimeConnection, startRealtimeCommunication } from "./RealtimeConnection.ts";
 
 let server: http.Server | null = null;
 
@@ -28,11 +28,6 @@ function initServer() {
 
   app.get("/tcore", routeGetTCore);
   app.put("/tcore", (req, res) => {
-    if (req.body.active) {
-      cache.socket?.connect();
-    } else {
-      cache.socket?.disconnect();
-    }
     if (cache.tcore) {
       cache.tcore.active = !!req.body.active;
     }
@@ -43,12 +38,12 @@ function initServer() {
   server = http.createServer(app);
   server.listen("8999");
 
-  cache.serverIO = new Server(server);
-  cache.serverIO.on("connection", () => {
-    if (cache.socket) {
-      cache.serverIO?.emit("status", cache.socket.connected);
-    }
-  });
+  // cache.serverIO = new Server(server);
+  // cache.serverIO.on("connection", () => {
+  //   if (cache.socket) {
+  //     cache.serverIO?.emit("status", cache.socket.connected);
+  //   }
+  // });
 }
 
 /**
@@ -74,7 +69,7 @@ function routeGetTCore(req: Request, res: Response) {
  */
 async function routeSignOut(req: Request, res: Response) {
   await pluginStorage.delete("token");
-  closeSocket();
+  closeRealtimeConnection();
   cache.tcore = null;
   res.sendStatus(200);
 }
@@ -93,7 +88,7 @@ async function routeStartTCore(req: Request, res: Response) {
   if (item?.token) {
     await updateTCore(profileToken, item.id, { name: req.body.name });
     await pluginStorage.set("token", item?.token);
-    await initSocket(item?.token);
+    await startRealtimeCommunication(item?.token);
     res.sendStatus(200);
     return;
   }
@@ -112,7 +107,7 @@ async function routeStartTCore(req: Request, res: Response) {
 
   if (data) {
     await pluginStorage.set("token", data?.token);
-    await initSocket(data?.token);
+    await startRealtimeCommunication(data?.token);
     res.sendStatus(200);
   }
 }

@@ -20,7 +20,7 @@ async function listTCoresByMachineID(token: string) {
  */
 async function updateTCore(token: string, tcoreID: string, data: any) {
   const account = new Account({ token, region: "env" });
-  const response = await account.tagocores.edit(tcoreID, data);
+  const response = await account.tagocore.edit(tcoreID, data);
   return response;
 }
 

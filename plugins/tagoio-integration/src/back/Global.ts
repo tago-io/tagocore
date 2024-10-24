@@ -1,7 +1,6 @@
-
 import type { SystemModule } from "@tago-io/tcore-sdk";
-import type { Server } from "socket.io";
-import type { Socket } from "socket.io-client";
+import type EventSource from "eventsource";
+
 
 interface ICommandQueueItem {
   type:
@@ -33,8 +32,7 @@ interface IStateQueueItem {
 
 interface IObjects {
   tcore: any;
-  socket: Socket<any> | null;
-  serverIO: Server | null;
+  realtimeConnection: EventSource | null;
   commandsQueue: ICommandQueueItem[];
   stateQueue: IStateQueueItem[];
   systemModule: SystemModule | null;
@@ -43,8 +41,7 @@ interface IObjects {
 
 const cache: IObjects = {
   tcore: null,
-  socket: null,
-  serverIO: null,
+  realtimeConnection: null,
   commandsQueue: [],
   stateQueue: [],
   systemModule: null,
