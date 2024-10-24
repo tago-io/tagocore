@@ -52,7 +52,7 @@ export const Options = styled.div<{ position: string }>`
 
 /**
  */
-export const IconContainer = styled.div<{ clickable?: boolean }>`
+export const IconContainer = styled.div<{ $clickable?: boolean }>`
   position: absolute;
   right: 10px;
   z-index: 4;
@@ -64,7 +64,7 @@ export const IconContainer = styled.div<{ clickable?: boolean }>`
   align-items: center;
 
   ${(props) =>
-    props.clickable &&
+    props.$clickable &&
     css`
       cursor: pointer;
 

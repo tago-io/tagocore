@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { observer } from "mobx-react";
 import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
 import store from "../../System/Store.ts";
@@ -17,7 +17,7 @@ function Setup() {
   const [step, setStep] = useState(0);
   const [pluginID, setPluginID] = useState<any>(null);
   const [readyToRender, setReadyToRender] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   /**
    */
@@ -49,12 +49,12 @@ function Setup() {
         setPluginID(param as string);
         setStep(step + 1);
       } else if (step === steps.length - 1) {
-        history.push("/console/login");
+        navigate("/console/login");
       } else {
         setStep(step + 1);
       }
     },
-    [history, steps.length, SetupComponent, step]
+    [navigate, steps.length, SetupComponent, step],
   );
 
   /**
@@ -68,7 +68,7 @@ function Setup() {
    */
   useEffect(() => {
     if (steps.length === 1) {
-      history.push("/console");
+      navigate("/console");
     } else if (steps.length === 2 && steps[1] === StepSignUp) {
       setReadyToRender(true);
       setStep(1);
@@ -83,7 +83,7 @@ function Setup() {
    */
   useEffect(() => {
     if (!SetupComponent) {
-      history.push("/console");
+      navigate("/console");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [SetupComponent]);

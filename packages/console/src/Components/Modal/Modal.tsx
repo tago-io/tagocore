@@ -1,6 +1,11 @@
-import { type MouseEvent, useCallback, useEffect, useState } from "react";
+import {
+  type MouseEvent,
+  useCallback,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
-import type { ReactNode } from "react-markdown/lib/react-markdown";
 import Button from "../Button/Button.tsx";
 import { EButton } from "../Button/Button.types";
 import Footer from "../Footer/Footer.tsx";
@@ -112,7 +117,7 @@ function Modal(props: IModalProps) {
         }
       }
     },
-    [onConfirm]
+    [onConfirm],
   );
 
   /**
@@ -177,7 +182,8 @@ function Modal(props: IModalProps) {
    * Renders the footer.
    */
   const renderFooter = () => {
-    const shouldRender = showCancelButton !== false || showConfirmButton !== false;
+    const shouldRender =
+      showCancelButton !== false || showConfirmButton !== false;
     if (!shouldRender) {
       return null;
     }
@@ -186,7 +192,10 @@ function Modal(props: IModalProps) {
       <Footer>
         <div>
           {showCancelButton !== false && (
-            <Button disabled={buttonsDisabled || isCancelButtonDisabled} onClick={cancel}>
+            <Button
+              disabled={buttonsDisabled || isCancelButtonDisabled}
+              onClick={cancel}
+            >
               {cancelButtonText || "Cancel"}
             </Button>
           )}
@@ -223,7 +232,7 @@ function Modal(props: IModalProps) {
         {renderFooter()}
       </Style.Card>
     </Style.Container>,
-    document.body
+    document.body,
   );
 }
 

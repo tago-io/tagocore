@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils.ts";
+import { render, screen } from "../../../utils/test-utils";
 import Link from "./Link.tsx";
 
 test("renders without crashing", () => {
@@ -10,7 +10,7 @@ test("respects `href` prop", async () => {
   render(<Link href="/console/test" />);
   const link = screen.getByRole("link");
   expect(link).not.toBeDisabled();
-  expect(link).toHaveProperty("href", "http://localhost/console/test");
+  expect(link).toHaveProperty("href", "http://localhost:3000/console/test");
 });
 
 test("respects `target` prop", async () => {

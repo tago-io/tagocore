@@ -5,11 +5,11 @@ import * as IconStyle from "../Icon/Icon.style";
 /**
  * Main style, holds everything together.
  */
-export const Container = styled.div<{ renderBorder?: boolean }>`
+export const Container = styled.div<{ $renderBorder?: boolean }>`
   margin-bottom: 1rem;
 
   ${(props) =>
-    props.renderBorder &&
+    props.$renderBorder &&
     css`
       padding-top: 1rem;
       border-top: 1px solid ${props.theme.fieldsetBorder};

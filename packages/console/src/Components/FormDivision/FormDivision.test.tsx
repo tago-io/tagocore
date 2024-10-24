@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils.ts";
+import { render, screen } from "../../../utils/test-utils";
 import { EIcon } from "../Icon/Icon.types";
 import FormDivision from "./FormDivision.tsx";
 
@@ -22,9 +22,9 @@ test("renders description as string", () => {
   expect(screen.getByText("Adjust the settings")).toBeInTheDocument();
 });
 
-test("renders icon", () => {
+test("renders icon", async () => {
   render(<FormDivision icon={EIcon.cog} />);
-  expect(screen.getByText("cog-icon-mock")).toBeInTheDocument();
+  expect(await screen.findByTestId("svg-cog")).toBeInTheDocument();
 });
 
 test("renders description as node", () => {

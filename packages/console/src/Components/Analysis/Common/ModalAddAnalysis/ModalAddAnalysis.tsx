@@ -1,6 +1,6 @@
 import { zName } from "@tago-io/tcore-sdk/types";
 import { type MouseEvent, useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { useTheme } from "styled-components";
 import createAnalysis from "../../../../Requests/createAnalysis.ts";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
@@ -22,7 +22,7 @@ function ModalAddAnalysis(props: IModalAddAnalysis) {
   const [name, setName] = useState("");
   const [newID, setNewID] = useState("");
   const [errors, setErrors] = useState<any>({});
-  const history = useHistory();
+  const navigate = useNavigate();
   const { onClose } = props;
 
   /**
@@ -68,7 +68,7 @@ function ModalAddAnalysis(props: IModalAddAnalysis) {
       }
       e?.preventDefault();
     },
-    [doRequest, validate]
+    [doRequest, validate],
   );
 
   /**
@@ -76,9 +76,9 @@ function ModalAddAnalysis(props: IModalAddAnalysis) {
    */
   useEffect(() => {
     if (newID) {
-      history.push(`/console/analysis/${newID}`);
+      navigate(`/console/analysis/${newID}`);
     }
-  }, [history, newID]);
+  }, [navigate, newID]);
 
   return (
     <Modal

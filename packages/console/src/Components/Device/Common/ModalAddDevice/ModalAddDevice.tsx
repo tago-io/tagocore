@@ -1,5 +1,5 @@
 import { type MouseEvent, useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { useTheme } from "styled-components";
 import { type IDevice, zDeviceCreate } from "@tago-io/tcore-sdk/types";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
@@ -30,7 +30,7 @@ function ModalAddDevice(props: IModalAddDeviceProps) {
   });
   const [newID, setNewID] = useState("");
   const [errors, setErrors] = useState<any>({});
-  const history = useHistory();
+  const navigate = useNavigate();
   const theme = useTheme();
 
   const { onClose } = props;
@@ -41,7 +41,7 @@ function ModalAddDevice(props: IModalAddDeviceProps) {
     (field: keyof IDevice, value: IDevice[keyof IDevice]) => {
       setData({ ...data, [field]: value });
     },
-    [data]
+    [data],
   );
 
   /**
@@ -102,7 +102,7 @@ function ModalAddDevice(props: IModalAddDeviceProps) {
       }
       e?.preventDefault();
     },
-    [doRequest, validate]
+    [doRequest, validate],
   );
 
   /**
@@ -110,9 +110,9 @@ function ModalAddDevice(props: IModalAddDeviceProps) {
    */
   useEffect(() => {
     if (newID) {
-      history.push(`/console/devices/${newID}`);
+      navigate(`/console/devices/${newID}`);
     }
-  }, [history, newID]);
+  }, [navigate, newID]);
 
   return (
     <Modal

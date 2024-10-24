@@ -1,7 +1,7 @@
 import type { IAnalysis, ILog } from "@tago-io/tcore-sdk/types";
 import cloneDeep from "lodash.clonedeep";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouteMatch } from "react-router";
+import { useMatch } from "react-router";
 import { useTheme } from "styled-components";
 import { observer } from "mobx-react";
 import normalizeTags from "../../../Helpers/normalizeTags.ts";
@@ -24,8 +24,8 @@ import MoreTab from "./MoreTab/MoreTab.tsx";
  * The analysis' edit page.
  */
 function AnalysisEdit() {
-  const match = useRouteMatch<{ id: string }>();
-  const { id } = match.params;
+  const match = useMatch("/console/analysis/:id");
+  const id = match?.params?.id;
 
   const theme = useTheme();
   const [data, setData] = useState<IAnalysis>({} as IAnalysis);
@@ -153,7 +153,7 @@ function AnalysisEdit() {
     (field: keyof IAnalysis, value) => {
       setData({ ...data, [field]: value });
     },
-    [data]
+    [data],
   );
 
   /**
@@ -221,7 +221,13 @@ function AnalysisEdit() {
   const renderFooter = useCallback(() => {
     const dataChanged = checkIfDataChanged();
     const onlyRun = !dataChanged;
-    return <SaveAndRun disabled={saveAndRunDisabled} onlyRun={onlyRun} onClick={saveAndRun} />;
+    return (
+      <SaveAndRun
+        disabled={saveAndRunDisabled}
+        onlyRun={onlyRun}
+        onClick={saveAndRun}
+      />
+    );
   }, [saveAndRunDisabled, checkIfDataChanged, saveAndRun]);
 
   /**
@@ -251,6 +257,7 @@ function AnalysisEdit() {
 
   return (
     <EditPage<IAnalysis>
+      resourceId={id}
       color={theme.analysis}
       documentTitle="Analysis"
       icon={EIcon.code}

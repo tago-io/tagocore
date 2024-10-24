@@ -26,4 +26,8 @@ export default defineConfig({
     sourcemap: false,
     outDir: `${buildPath}/console`,
   },
+  test: {
+    environment: "jsdom",
+    globals: true,
+  },
 });

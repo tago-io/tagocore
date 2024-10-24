@@ -9,7 +9,7 @@ import {
 } from "@tago-io/tcore-sdk/types";
 import cloneDeep from "lodash.clonedeep";
 import { useEffect, useCallback, useState, useRef } from "react";
-import { useRouteMatch } from "react-router";
+import { useMatch } from "react-router";
 import { useTheme } from "styled-components";
 import { z } from "zod";
 import { observer } from "mobx-react";
@@ -41,8 +41,8 @@ import MoreTab from "./MoreTab/MoreTab.tsx";
  * The device's edit page.
  */
 function DeviceEdit() {
-  const match = useRouteMatch<{ id: string }>();
-  const { id } = match.params;
+  const match = useMatch("/console/devices/:id");
+  const id = match?.params?.id;
 
   const theme = useTheme();
   const [data, setData] = useState<IDevice>({} as IDevice);
@@ -55,13 +55,15 @@ function DeviceEdit() {
     limit: 25,
     logs: {},
   });
-  const { data: encoderModules } = useApiRequest<IPluginClassListItem[]>("/module?type=encoder");
-  const { data: apiTokens, mutate: mutateApiTokens } = useApiRequest<IDeviceToken[]>(
-    `/device/token/${id}`
+  const { data: encoderModules } = useApiRequest<IPluginClassListItem[]>(
+    "/module?type=encoder",
   );
-  const { data: apiParams, mutate: mutateApiParams } = useApiRequest<IDeviceParameter[]>(
-    `/device/${id}/params`
-  );
+  const { data: apiTokens, mutate: mutateApiTokens } = useApiRequest<
+    IDeviceToken[]
+  >(`/device/token/${id}`);
+  const { data: apiParams, mutate: mutateApiParams } = useApiRequest<
+    IDeviceParameter[]
+  >(`/device/${id}/params`);
   const initialData = useRef<IDevice>({} as IDevice);
   const intervalInspectorAttach = useRef<any>(null);
 
@@ -178,16 +180,18 @@ function DeviceEdit() {
     (msg: ILiveInspectorMessage | ILiveInspectorMessage[]) => {
       if (Array.isArray(msg)) {
         for (const item of msg) {
-          inspectorData.logs[item.connection_id] = inspectorData.logs[item.connection_id] || [];
+          inspectorData.logs[item.connection_id] =
+            inspectorData.logs[item.connection_id] || [];
           inspectorData.logs[item.connection_id].push(item);
         }
       } else {
-        inspectorData.logs[msg.connection_id] = inspectorData.logs[msg.connection_id] || [];
+        inspectorData.logs[msg.connection_id] =
+          inspectorData.logs[msg.connection_id] || [];
         inspectorData.logs[msg.connection_id].push(msg);
       }
       setInspectorData({ ...inspectorData, logs: { ...inspectorData.logs } });
     },
-    [inspectorData]
+    [inspectorData],
   );
 
   /**
@@ -198,7 +202,7 @@ function DeviceEdit() {
     (field: keyof IDevice, value: IDevice[keyof IDevice]) => {
       setData({ ...data, [field]: value });
     },
-    [data]
+    [data],
   );
 
   /**
@@ -227,7 +231,9 @@ function DeviceEdit() {
         enabled={inspectorData.enabled}
         limit={inspectorData.limit}
         logs={inspectorData.logs}
-        onChangeEnabled={(enabled) => setInspectorData({ ...inspectorData, enabled })}
+        onChangeEnabled={(enabled) =>
+          setInspectorData({ ...inspectorData, enabled })
+        }
         onChangeLimit={(limit) => setInspectorData({ ...inspectorData, limit })}
         onClear={clearInspector}
       />
@@ -256,7 +262,13 @@ function DeviceEdit() {
    * Renders the `Configuration Parameters` tab's content.
    */
   const renderConfigParamsTab = () => {
-    return <ConfigParametersTab errors={errors} params={params} onChangeParams={setParams} />;
+    return (
+      <ConfigParametersTab
+        errors={errors}
+        params={params}
+        onChangeParams={setParams}
+      />
+    );
   };
 
   /**
@@ -338,7 +350,8 @@ function DeviceEdit() {
     const currentParameters = normalizeConfigParameters(params);
 
     return (
-      JSON.stringify(initialDataNormalized) !== JSON.stringify(currentDataNormalized) ||
+      JSON.stringify(initialDataNormalized) !==
+        JSON.stringify(currentDataNormalized) ||
       JSON.stringify(initialParameters) !== JSON.stringify(currentParameters)
     );
   }, [data, apiParams, params]);
@@ -386,6 +399,7 @@ function DeviceEdit() {
 
   return (
     <EditPage<IDevice>
+      resourceId={id}
       color={theme.device}
       description={renderDescription()}
       documentTitle="Device"

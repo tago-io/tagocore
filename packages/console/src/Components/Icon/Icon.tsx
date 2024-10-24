@@ -38,7 +38,12 @@ function Icon(props: IIcon) {
 
   return (
     <Suspense fallback={<Style.IconFallback size={size} />}>
-      <Style.Container isRotating={rotate} size={size} color={props.color}>
+      <Style.Container
+        isRotating={rotate}
+        size={size}
+        color={props.color}
+        data-testid={`svg-${props.icon}`}
+      >
         <Component width={size} height={size} />
       </Style.Container>
     </Suspense>

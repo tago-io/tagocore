@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { ModalUninstallPlugin } from "../../index.ts";
 import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
 import uninstallPlugin from "../../Requests/uninstallPlugin.ts";
@@ -18,7 +18,7 @@ interface IPageIFrameProps {
 function PageIFrame(props: IPageIFrameProps) {
   const { title } = props;
   const ref = useRef<HTMLIFrameElement>(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [modalInstall, setModalInstall] = useState(""); // src of plugin
   const [modalUninstall, setModalUninstall] = useState(""); // id of plugin
@@ -47,7 +47,7 @@ function PageIFrame(props: IPageIFrameProps) {
 
         const newURL = split.join("/");
         if (newURL !== pageURL) {
-          history.push(`/console/${newURL}`);
+          navigate(`/console/${newURL}`);
         }
       }
     }
@@ -56,7 +56,7 @@ function PageIFrame(props: IPageIFrameProps) {
 
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [pageURL, history, title]);
+  }, [pageURL, navigate, title]);
 
   return (
     <>
@@ -68,7 +68,10 @@ function PageIFrame(props: IPageIFrameProps) {
       />
 
       {modalInstall && (
-        <ModalInstallPlugin source={modalInstall} onClose={() => window.location.reload()} />
+        <ModalInstallPlugin
+          source={modalInstall}
+          onClose={() => window.location.reload()}
+        />
       )}
 
       {modalUninstall && (

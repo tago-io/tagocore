@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import type { IPlugin } from "@tago-io/tcore-sdk/types";
 import { observer } from "mobx-react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import SetupBackground from "../SetupBackground/SetupBackground.tsx";
 import setDocumentTitle from "../../../Helpers/setDocumentTitle.ts";
 import SetupForm from "../SetupForm/SetupForm.tsx";
@@ -25,7 +25,7 @@ function StepDatabaseError() {
   const [showingConfigs, setShowingConfigs] = useState(false);
   const [modalReset, setModalReset] = useState(false);
   const [plugin, setPlugin] = useState<IPlugin | null>(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   /**
    */
@@ -157,7 +157,7 @@ function StepDatabaseError() {
    */
   useEffect(() => {
     if (!store.databaseError) {
-      history.push("/console");
+      navigate("/console");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.databaseError]);
@@ -211,7 +211,9 @@ function StepDatabaseError() {
 
       {modalReset && <ModalFactoryReset onClose={() => setModalReset(false)} />}
 
-      {action && !store.masterPassword && <ModalMasterPassword onClose={() => setAction("")} />}
+      {action && !store.masterPassword && (
+        <ModalMasterPassword onClose={() => setAction("")} />
+      )}
     </>
   );
 }

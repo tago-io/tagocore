@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useCallback, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
 import { setLocalStorage } from "../../Helpers/localStorage.ts";
 import getAccountByToken from "../../Requests/getAccountByToken.ts";
@@ -17,7 +17,7 @@ function Login() {
   const [data, setData] = useState<any>({});
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   /**
    * Validates credentials for signing in.
@@ -60,7 +60,7 @@ function Login() {
         getAccountByToken(r.data.result).then((account) => {
           setLoading(false);
           store.account = account;
-          history.push("/console");
+          navigate("/console");
         });
       })
       .catch((err) => {
@@ -68,7 +68,7 @@ function Login() {
         setError({ message: errorMessage, username: true, password: true });
         setLoading(false);
       });
-  }, [validateSignIn, history, data]);
+  }, [validateSignIn, navigate, data]);
 
   /**
    * Sets the document title.

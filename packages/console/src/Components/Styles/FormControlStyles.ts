@@ -11,7 +11,9 @@ export default css<{ disabled?: boolean; error?: boolean; readOnly?: boolean }>`
   border-width: 1px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.1);
-  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  transition:
+    border-color 0.15s ease-in-out 0s,
+    box-shadow 0.15s ease-in-out 0s;
   border-radius: 3px;
   color: ${(props) => props.theme.formControlFont};
   background-color: ${(props) => (props.theme as any).formControlBackground};
@@ -21,7 +23,8 @@ export default css<{ disabled?: boolean; error?: boolean; readOnly?: boolean }>`
     /* applied when the element is focused */
     z-index: 1;
     position: relative;
-    border-color: ${(props) => !props.error && (props.theme as any).formControlFocus};
+    border-color: ${(props) =>
+      !props.error && (props.theme as any).formControlFocus};
   }
 
   ::-moz-focus-inner {

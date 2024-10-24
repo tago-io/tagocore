@@ -31,12 +31,21 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * It will render whatever you pass as children inside of the component.
  */
 function Button(props: IButtonProps, ref: any) {
-  const { addIconMargin, className, type, color, disabled, style, testId, onClick } = props;
+  const {
+    addIconMargin,
+    className,
+    type,
+    color,
+    disabled,
+    style,
+    testId,
+    onClick,
+  } = props;
 
   return (
     <Style.Container
       addIconMargin={addIconMargin}
-      buttonType={type || EButton.default}
+      $buttonType={type || EButton.default}
       className={className}
       color={color}
       data-testid={testId}

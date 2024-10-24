@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils.ts";
+import { render, screen } from "../../../utils/test-utils";
 import Select from "./Select.tsx";
 
 describe("Select", () => {
@@ -14,7 +14,7 @@ describe("Select", () => {
           { label: "Type", value: "type" },
           { label: "Name", value: "name" },
         ]}
-      />
+      />,
     );
     const options = await screen.findAllByRole("option");
     expect(options).toHaveLength(2);

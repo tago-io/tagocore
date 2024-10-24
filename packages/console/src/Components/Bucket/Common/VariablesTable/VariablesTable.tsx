@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { useRouteMatch } from "react-router";
 import type { IDeviceData, IDevice } from "@tago-io/tcore-sdk/types";
 import RelativeDate from "../../../RelativeDate/RelativeDate.tsx";
 import CopyButton from "../../../CopyButton/CopyButton.tsx";
@@ -50,8 +49,14 @@ interface IVariablesTableProps {
  * The variables table of the bucket page.
  */
 function VariablesTable(props: IVariablesTableProps) {
-  const { dataAmount, onReloadDataAmount, onReloadTable, onChangeSelected, refetchID, data } =
-    props;
+  const {
+    dataAmount,
+    onReloadDataAmount,
+    onReloadTable,
+    onChangeSelected,
+    refetchID,
+    data,
+  } = props;
 
   const [dateFormat, setDateFormat] = useState(() => {
     const dd = getLocalStorageAsJSON(`${data.id}::data::settings`);
@@ -69,7 +74,9 @@ function VariablesTable(props: IVariablesTableProps) {
    * making the requests never return data more recent than the pinned date until a page reload
    * or the `refreshData` function is used.
    */
-  const [currentEndDate, setCurrentEndDate] = useState<string>(() => new Date().toISOString());
+  const [currentEndDate, setCurrentEndDate] = useState<string>(() =>
+    new Date().toISOString(),
+  );
 
   const [edit, setEdit] = useState<any>(null);
   const [modalListConfiguration, setModalListConfiguration] = useState(false);
@@ -78,14 +85,18 @@ function VariablesTable(props: IVariablesTableProps) {
   const [hasLocation, setHasLocation] = useState(false);
   const [hasMetadata, setHasMetadata] = useState(false);
   const [page, setPage] = useState(1);
-  const match = useRouteMatch<{ id: string }>();
-  const { id } = match.params;
 
   /**
    * Called by the table to retrieve data for a page.
    */
   const onGetData = async (_page: number, amount: number, filter: IFilter) => {
-    const result = await getDeviceData(id, page - 1, amount, filter, currentEndDate);
+    const result = await getDeviceData(
+      data.id,
+      page - 1,
+      amount,
+      filter,
+      currentEndDate,
+    );
     setAmountOfRecords(result.length);
     setHasLocation(result.some((x) => x.location));
     setHasMetadata(result.some((x) => x.metadata));
@@ -132,7 +143,11 @@ function VariablesTable(props: IVariablesTableProps) {
    */
   const renderLocation = (item: IDeviceData) => {
     if (!item.location || !item.location.coordinates) {
-      return <Style.LocationContainer>{renderPencil(item, "location")}</Style.LocationContainer>;
+      return (
+        <Style.LocationContainer>
+          {renderPencil(item, "location")}
+        </Style.LocationContainer>
+      );
     }
 
     const lat = item.location.coordinates[1];
@@ -178,7 +193,9 @@ function VariablesTable(props: IVariablesTableProps) {
               delete selectedVariables[item.id];
             }
             setSelectedVariables(selectedVariables);
-            onChangeSelected(Object.keys(selectedVariables).map((x) => selectedVariables[x]));
+            onChangeSelected(
+              Object.keys(selectedVariables).map((x) => selectedVariables[x]),
+            );
           }}
         />
       </Style.Checkbox>
@@ -192,7 +209,10 @@ function VariablesTable(props: IVariablesTableProps) {
       return null;
     }
     return (
-      <Style.Pencil className="table-hover-edit pencil" onClick={() => setEdit({ item, type })}>
+      <Style.Pencil
+        className="table-hover-edit pencil"
+        onClick={() => setEdit({ item, type })}
+      >
         <Icon icon={EIcon["pencil-alt"]} size="11px" />
       </Style.Pencil>
     );
@@ -204,7 +224,9 @@ function VariablesTable(props: IVariablesTableProps) {
     const type = typeof item.value;
     return (
       <Style.ValueContainer>
-        <div className="value">{type === "boolean" ? String(item.value) : item.value}</div>
+        <div className="value">
+          {type === "boolean" ? String(item.value) : item.value}
+        </div>
         <div className="type">({type})</div>
         {renderPencil(item, "value")}
       </Style.ValueContainer>
@@ -242,7 +264,7 @@ function VariablesTable(props: IVariablesTableProps) {
     if (!dateFormat || dateFormat === "relative") {
       return <RelativeDate value={item.time} />;
     }
-      return getDateTimeObject(item.time)?.toFormat(dateFormat);
+    return getDateTimeObject(item.time)?.toFormat(dateFormat);
   };
 
   /**
@@ -255,8 +277,10 @@ function VariablesTable(props: IVariablesTableProps) {
     }
   }, [dataAmount]);
 
-  const showLocationColumn = enabledColumns.location === true ? true : hasLocation;
-  const showMetadataColumn = enabledColumns.metadata === true ? true : hasMetadata;
+  const showLocationColumn =
+    enabledColumns.location === true ? true : hasLocation;
+  const showMetadataColumn =
+    enabledColumns.metadata === true ? true : hasMetadata;
 
   return (
     <Style.Container>
@@ -376,13 +400,29 @@ function VariablesTable(props: IVariablesTableProps) {
       />
 
       {edit?.type === "value" ? (
-        <ModalEditValue data={edit.item} device={data} onClose={() => setEdit(null)} />
+        <ModalEditValue
+          data={edit.item}
+          device={data}
+          onClose={() => setEdit(null)}
+        />
       ) : edit?.type === "group" ? (
-        <ModalEditGroup data={edit.item} device={data} onClose={() => setEdit(null)} />
+        <ModalEditGroup
+          data={edit.item}
+          device={data}
+          onClose={() => setEdit(null)}
+        />
       ) : edit?.type === "metadata" ? (
-        <ModalEditMetadata data={edit.item} device={data} onClose={() => setEdit(null)} />
+        <ModalEditMetadata
+          data={edit.item}
+          device={data}
+          onClose={() => setEdit(null)}
+        />
       ) : edit?.type === "location" ? (
-        <ModalEditLocation onClose={() => setEdit(null)} device={data} data={edit.item} />
+        <ModalEditLocation
+          onClose={() => setEdit(null)}
+          device={data}
+          data={edit.item}
+        />
       ) : null}
     </Style.Container>
   );

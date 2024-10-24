@@ -40,7 +40,7 @@ function RowManipulator<T>(props: IRowManipulatorProps<T>) {
   const renderButtons = (rowIndex: number) => {
     const last = rowIndex !== data.length - 1;
     return (
-      <Style.Buttons last={last} className="buttons">
+      <Style.Buttons $last={last} className="buttons">
         <Button disabled={disabled} onClick={() => onRemoveItem?.(rowIndex)}>
           <Icon size="15px" icon={EIcon.minus} />
         </Button>

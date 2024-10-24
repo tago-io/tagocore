@@ -1,9 +1,12 @@
 import { Fragment, useCallback } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { useTheme } from "styled-components";
 import { readableColor } from "polished";
 import { observer } from "mobx-react";
-import type { IPluginButtonModuleSetupOption, IPluginListItem } from "@tago-io/tcore-sdk/types";
+import type {
+  IPluginButtonModuleSetupOption,
+  IPluginListItem,
+} from "@tago-io/tcore-sdk/types";
 import Button from "../Button/Button.tsx";
 import Icon from "../Icon/Icon.tsx";
 import { EIcon } from "../Icon/Icon.types";
@@ -41,7 +44,7 @@ function Navbar(props: INavbarProps) {
   // const theme = useTheme();
   // const updateTheme = useContext(ThemeUpdateContext);
   const { logoWidth, onSidebarToggle } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
   const theme = useTheme();
 
   /**
@@ -51,15 +54,15 @@ function Navbar(props: INavbarProps) {
     store.account = undefined;
     store.token = "";
     setLocalStorage("token", "");
-    history.push("/console/login");
-  }, [history]);
+    navigate("/console/login");
+  }, [navigate]);
 
   /**
    * Renders the navbar buttons for a specific plugin.
    */
   const renderNavbarButtons = (
     plugin: IPluginListItem,
-    buttons: IPluginButtonModuleSetupOption[]
+    buttons: IPluginButtonModuleSetupOption[],
   ) => {
     return (
       <Fragment key={plugin.id}>
@@ -89,7 +92,10 @@ function Navbar(props: INavbarProps) {
     );
   };
 
-  const Logo = readableColor(theme.navBar, "black", "white") === "black" ? LogoBlack : LogoWhite;
+  const Logo =
+    readableColor(theme.navBar, "black", "white") === "black"
+      ? LogoBlack
+      : LogoWhite;
 
   return (
     <Style.Container logoWidth={logoWidth || 120} data-testid="navbar">

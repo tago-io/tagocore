@@ -52,7 +52,15 @@ interface IAccordion {
  * When this component is expanded its children will be rendered.
  */
 function Accordion(props: IAccordion) {
-  const { icon, isAlwaysOpen, subTitle, title, children, description, onRenderRightSide } = props;
+  const {
+    icon,
+    isAlwaysOpen,
+    subTitle,
+    title,
+    children,
+    description,
+    onRenderRightSide,
+  } = props;
   const open = props.open || isAlwaysOpen;
 
   /**
@@ -93,7 +101,11 @@ function Accordion(props: IAccordion) {
 
   return (
     <Style.Container onClick={onClick}>
-      <Style.TitleBar data-testid="title-bar" isAlwaysOpen={isAlwaysOpen} open={open}>
+      <Style.TitleBar
+        data-testid="title-bar"
+        $isAlwaysOpen={isAlwaysOpen}
+        open={open}
+      >
         <div className="left-side">
           {renderIcon()}
           {renderTitle()}
@@ -104,13 +116,20 @@ function Accordion(props: IAccordion) {
         ) : (
           <div className="right-side">
             {onRenderRightSide?.()}
-            <Icon icon={open ? EIcon["caret-up"] : EIcon["caret-down"]} size={"16px"} />
+            <Icon
+              icon={open ? EIcon["caret-up"] : EIcon["caret-down"]}
+              size={"16px"}
+            />
           </div>
         )}
       </Style.TitleBar>
 
       {open && (
-        <div className="content" onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}>
+        <div
+          className="content"
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
           {children}
         </div>
       )}

@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 export const Container = styled.div<{
   zIndex?: number;
   hoverable?: boolean;
-  vertical?: boolean;
+  $vertical?: boolean;
   error?: boolean;
   color?: string;
 }>`
@@ -18,12 +18,14 @@ export const Container = styled.div<{
   border: 1px solid rgba(0, 0, 0, 0.15);
   max-width: 350px;
   display: flex;
-  transition: opacity 0.2s, margin 0.3s;
+  transition:
+    opacity 0.2s,
+    margin 0.3s;
   transition-timing-function: cubic-bezier(0.17, 0.67, 0.2, 1.37);
   opacity: 0;
   margin-top: 10px;
   pointer-events: none;
-  flex-direction: ${(props) => (props.vertical ? "column" : "row")};
+  flex-direction: ${(props) => (props.$vertical ? "column" : "row")};
 
   &.invisible {
     opacity: 0;
@@ -71,7 +73,7 @@ export const Container = styled.div<{
 
   .content {
     position: relative;
-    padding: ${(props) => (props.vertical ? "8px 10px" : "8px")};
+    padding: ${(props) => (props.$vertical ? "8px 10px" : "8px")};
   }
 
   .hoverable-step {

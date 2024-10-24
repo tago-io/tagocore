@@ -1,11 +1,11 @@
 import ReactDOM from "react-dom";
 import { ThemeProvider } from "styled-components";
-import { Route, BrowserRouter, Switch } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { runInAction } from "mobx";
 import { useEffect, useState } from "react";
 import type { IPluginList } from "@tago-io/tcore-sdk/types";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { observer } from "mobx-react";
 import imgFavicon from "../assets/images/favicon.png";
 import { lightTheme } from "./theme.ts";
@@ -43,17 +43,19 @@ function App() {
 
   return (
     <>
-      <Helmet>
-        <link rel="shortcut icon" href={imgFavicon} />
-      </Helmet>
+      <HelmetProvider>
+        <Helmet>
+          <link rel="shortcut icon" href={imgFavicon} />
+        </Helmet>
 
-      <ThemeProvider theme={themeObject as any}>
-        <GlobalStyles />
+        <ThemeProvider theme={themeObject as any}>
+          <GlobalStyles />
 
-        <BrowserRouter>
-          <StoreWrapper />
-        </BrowserRouter>
-      </ThemeProvider>
+          <BrowserRouter>
+            <WrappedStoreRoutes />
+          </BrowserRouter>
+        </ThemeProvider>
+      </HelmetProvider>
     </>
   );
 }
@@ -61,15 +63,15 @@ function App() {
 /**
  * Wrapper that does all the authentication logic.
  */
-const StoreWrapper = observer(() => {
+const WrappedStoreRoutes = observer(() => {
   const { data: status } = useApiRequest<any>("/status");
-  const { data: plugins } = useApiRequest<IPluginList>("/plugin", { skip: !store.token });
+  const { data: plugins } = useApiRequest<IPluginList>("/plugin", {
+    skip: !store.token,
+  });
   const [readyToRender, setReadyToRender] = useState(false);
   const [token] = useState(() => getLocalStorage("token", ""));
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  /**
-   */
   const validateAuth = async () => {
     if (token) {
       // has token, but maybe it's expired
@@ -83,18 +85,16 @@ const StoreWrapper = observer(() => {
           store.token = "";
           setLocalStorage("token", "");
           setReadyToRender(true);
-          history.push("/console/login");
+          navigate("/console/login");
         });
     } else {
       // not logged in
       store.token = "";
       setReadyToRender(true);
-      history.push("/console/login");
+      navigate("/console/login");
     }
   };
 
-  /**
-   */
   useEffect(() => {
     if (plugins) {
       runInAction(() => {
@@ -103,18 +103,21 @@ const StoreWrapper = observer(() => {
     }
   }, [plugins]);
 
-  /**
-   */
   useEffect(() => {
     if (status) {
       if (status.database?.error) {
         // database has error
         setReadyToRender(true);
-        history.push("/console/database/error");
-      } else if (!status.account || !status.database?.configured || !status.master_password) {
+        navigate("/console/database/error");
+      } else if (
+        !status.account ||
+        !status.database?.configured ||
+        !status.master_password
+      ) {
         // not configured, go to setup
         setReadyToRender(true);
-        history.push("/console/setup");
+        console.log("navigatin");
+        navigate("/console/setup");
       } else {
         // configured, validate token
         validateAuth();
@@ -146,13 +149,12 @@ const StoreWrapper = observer(() => {
   }
 
   return (
-    <Switch>
-      <Route exact path="/console/database/error" component={StepDatabaseError} />
-      <Route exact path="/console/setup" component={Setup} />
-      <Route exact path="/console/login" component={Login} />
-      <Route path="/console" component={MainScreenWrapper} />
-      <Route component={() => null} />
-    </Switch>
+    <Routes>
+      <Route path="/console/database/error" element={<StepDatabaseError />} />
+      <Route path="/console/setup" element={<Setup />} />
+      <Route path="/console/login" element={<Login />} />
+      <Route path="/console/*" element={<MainScreenWrapper />} />
+    </Routes>
   );
 });
 
@@ -164,32 +166,30 @@ function MainScreenWrapper() {
 
   return (
     <MainScreen>
-      <Switch>
-        <Route exact path="/console/actions" component={ActionList} />
-        <Route exact path="/console/actions/:id" component={ActionEdit} />
-        <Route exact path="/console/analysis" component={AnalysisList} />
-        <Route exact path="/console/analysis/:id" component={AnalysisEdit} />
-        <Route exact path="/console/buckets" component={BucketList} />
-        <Route exact path="/console/buckets/:id" component={BucketEdit} />
-        <Route exact path="/console/devices" component={DeviceList} />
-        <Route exact path="/console/devices/:id" component={DeviceEdit} />
-        <Route exact path="/console/logs" component={Logs} />
-        <Route exact path="/console/plugin/:id" component={PluginEdit} />
-        <Route exact path="/console/settings" component={Settings} />
-        <Route exact path="/console/pluginstore" component={PluginStore} />
-        <Route exact path="/console/pluginstore/detail/:id" component={PluginDetails} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/actions" element={<ActionList />} />
+        <Route path="/actions/:id" element={<ActionEdit />} />
+        <Route path="/analysis" element={<AnalysisList />} />
+        <Route path="/analysis/:id" element={<AnalysisEdit />} />
+        <Route path="/buckets" element={<BucketList />} />
+        <Route path="/buckets/:id" element={<BucketEdit />} />
+        <Route path="/devices" element={<DeviceList />} />
+        <Route path="/devices/:id" element={<DeviceEdit />} />
+        <Route path="/logs" element={<Logs />} />
+        <Route path="/plugin/:id" element={<PluginEdit />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/pluginstore" element={<PluginStore />} />
+        <Route path="/pluginstore/detail/:id" element={<PluginDetails />} />
 
         {pageModules?.map((module) => (
           <Route
-            exact
             key={module.pluginID}
-            path={`/console${module.setup.route}`}
-            component={() => <PageIFrame title={module.name} />}
+            path={`/${module.setup.route}`}
+            element={<PageIFrame title={module.name} />}
           />
         ))}
-
-        <Route component={Home} />
-      </Switch>
+      </Routes>
     </MainScreen>
   );
 }

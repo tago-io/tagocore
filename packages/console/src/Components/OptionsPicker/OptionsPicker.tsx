@@ -1,5 +1,12 @@
 import type React from "react";
-import { type ReactNode, useState, useRef, useEffect, useCallback, memo } from "react"
+import {
+  type ReactNode,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  memo,
+} from "react";
 import { unstable_batchedUpdates } from "react-dom";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.tsx";
 import Icon from "../Icon/Icon.tsx";
@@ -21,7 +28,9 @@ interface IOptionsPicker<T> {
   doesRequest?: boolean;
   onGetOptions: (query: string, page: number) => Promise<T[]> | T[];
   onRenderOption: (option: T) => ReactNode;
-  onResolveOption?: (optionID: string | number) => Promise<T | null | undefined>;
+  onResolveOption?: (
+    optionID: string | number,
+  ) => Promise<T | null | undefined>;
   onChange: (option: T) => void;
   /**
    * Indicates if this component has invalid data.
@@ -112,7 +121,11 @@ function OptionsPicker<T = any>(props: IOptionsPicker<T>) {
    */
   const renderOption = (option: T) => {
     return (
-      <div key={(option as any).id} className="option" onClick={() => selectOption(option)}>
+      <div
+        key={(option as any).id}
+        className="option"
+        onClick={() => selectOption(option)}
+      >
         {onRenderOption(option)}
       </div>
     );
@@ -205,18 +218,19 @@ function OptionsPicker<T = any>(props: IOptionsPicker<T>) {
           <Icon rotate size="13px" icon={EIcon.spinner} />
         </Style.IconContainer>
       );
-    }if (value) {
+    }
+    if (value) {
       return (
-        <Style.IconContainer clickable onClick={clear}>
+        <Style.IconContainer $clickable onClick={clear}>
           <Icon size="13px" icon={EIcon.times} />
         </Style.IconContainer>
       );
     }
-      return (
-        <Style.IconContainer>
-          <Icon size="15px" icon={EIcon["caret-down"]} />
-        </Style.IconContainer>
-      );
+    return (
+      <Style.IconContainer>
+        <Icon size="15px" icon={EIcon["caret-down"]} />
+      </Style.IconContainer>
+    );
   };
 
   /**

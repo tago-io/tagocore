@@ -6,7 +6,7 @@ import {
   zName,
 } from "@tago-io/tcore-sdk/types";
 import { type MouseEvent, useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { useTheme } from "styled-components";
 import { useApiRequest } from "../../../../index.ts";
 import validateConfigFields from "../../../../Helpers/validateConfigFields.ts";
@@ -39,9 +39,11 @@ function ModalAddAction(props: IModalAddAction) {
   const [newID, setNewID] = useState("");
   const [action, setAction] = useState<any>({});
   const [errors, setErrors] = useState<any>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { onClose } = props;
-  const { data: typeModules } = useApiRequest<IPluginModuleList>("/module?type=action-type");
+  const { data: typeModules } = useApiRequest<IPluginModuleList>(
+    "/module?type=action-type",
+  );
 
   const validateType = useCallback(async () => {
     try {
@@ -55,12 +57,13 @@ function ModalAddAction(props: IModalAddAction) {
         await zFrontActionTagoIO.parseAsync(action);
       } else {
         const item = typeModules.find(
-          (x) => `${x.pluginID}:${x.setup.id}` === (action.type?.id || action?.type)
+          (x) =>
+            `${x.pluginID}:${x.setup.id}` === (action.type?.id || action?.type),
         );
         if (item) {
           const err = validateConfigFields(
             item.setup?.option?.configs as IPluginConfigField[],
-            action
+            action,
           );
           if (err) {
             return err;
@@ -131,7 +134,7 @@ function ModalAddAction(props: IModalAddAction) {
       }
       e?.preventDefault();
     },
-    [doRequest, validate]
+    [doRequest, validate],
   );
 
   /**
@@ -139,9 +142,9 @@ function ModalAddAction(props: IModalAddAction) {
    */
   useEffect(() => {
     if (newID) {
-      history.push(`/console/actions/${newID}`);
+      navigate(`/console/actions/${newID}`);
     }
-  }, [history, newID]);
+  }, [navigate, newID]);
 
   return (
     <Modal
