@@ -1,9 +1,9 @@
-import { fireEvent, render, screen } from "../../../utils/test-utils.ts";
+import { fireEvent, render, screen } from "../../../utils/test-utils";
 import Tags from "./Tags.tsx";
 
 test("renders without crashing", () => {
-  const fn = () => render(<Tags data={[]} onChange={jest.fn()} />);
-  expect(fn).not.toThrowError();
+  const fn = () => render(<Tags data={[]} onChange={vi.fn()} />);
+  expect(fn).not.toThrow();
 });
 
 test("renders inputs with correct properties", async () => {
@@ -13,8 +13,8 @@ test("renders inputs with correct properties", async () => {
         { key: "city", value: "Raleigh" },
         { key: "type", value: "internal" },
       ]}
-      onChange={jest.fn()}
-    />
+      onChange={vi.fn()}
+    />,
   );
   const inputs = (await screen.findAllByRole("textbox")) as HTMLInputElement[];
   expect(inputs).toHaveLength(4);
@@ -26,9 +26,11 @@ test("renders inputs with correct properties", async () => {
 });
 
 test("calls onChange when any input change happens", async () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
 
-  render(<Tags data={[{ key: "city", value: "Raleigh" }]} onChange={onChange} />);
+  render(
+    <Tags data={[{ key: "city", value: "Raleigh" }]} onChange={onChange} />,
+  );
 
   const inputs = (await screen.findAllByRole("textbox")) as HTMLInputElement[];
   fireEvent.change(inputs[0], { target: { value: "state" } });
@@ -38,7 +40,7 @@ test("calls onChange when any input change happens", async () => {
 });
 
 test("calls onChange when the add row button is pressed", async () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   const emptyObject = { key: "", value: "" };
 
   render(<Tags data={[emptyObject]} onChange={onChange} />);

@@ -88,7 +88,10 @@ function Statistics() {
         </div>
         <div className="content">
           {error ? (
-            <EmptyMessage icon={EIcon["exclamation-triangle"]} message={errorMessage} />
+            <EmptyMessage
+              icon={EIcon["exclamation-triangle"]}
+              message={errorMessage}
+            />
           ) : (
             <RequestChart statistics={statistics} id="post" type="input" />
           )}
@@ -104,7 +107,10 @@ function Statistics() {
         </div>
         <div className="content">
           {error ? (
-            <EmptyMessage icon={EIcon["exclamation-triangle"]} message={errorMessage} />
+            <EmptyMessage
+              icon={EIcon["exclamation-triangle"]}
+              message={errorMessage}
+            />
           ) : (
             <RequestChart statistics={statistics} id="get" type="output" />
           )}
@@ -114,4 +120,6 @@ function Statistics() {
   );
 }
 
-export default memo(observer(Statistics));
+const MemoizedStatistics = memo(observer(Statistics));
+
+export { MemoizedStatistics as Statistics };

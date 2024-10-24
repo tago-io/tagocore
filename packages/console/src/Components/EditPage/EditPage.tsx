@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useState, useRef } from "react";
-import { useHistory, useRouteMatch } from "react-router";
+import { useNavigate } from "react-router";
 import cloneDeep from "lodash.clonedeep";
 import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
 import useApiRequest from "../../Helpers/useApiRequest.ts";
@@ -17,6 +17,12 @@ import * as Style from "./EditPage.style";
  * Props.
  */
 interface IEditPageProps<T> {
+  /**
+   * ID of the resource if the edit page is for a resource.
+   *
+   * Leave it empty if it's a generic edit page.
+   */
+  resourceId?: string | undefined;
   /**
    * Color of the tabs and the inner navigation bar.
    */
@@ -101,13 +107,14 @@ interface IEditPageProps<T> {
  * This component controls the edit form of the resources in the application.
  */
 function EditPage<T>(props: IEditPageProps<T>) {
-  const match = useRouteMatch<{ id: string }>();
-  const { id } = match.params;
+  const id = props.resourceId;
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const uniqueID = useRef(Date.now());
   const { requestPath } = props;
-  const { data } = useApiRequest<T>(`/${requestPath}${id ? `/${id}` : ""}?t=${uniqueID.current}`);
+  const { data } = useApiRequest<T>(
+    `/${requestPath}${id ? `/${id}` : ""}?t=${uniqueID.current}`,
+  );
   const [saving, setSaving] = useState(false);
   const [internalLoading, setInternalLoading] = useState(false);
 
@@ -171,10 +178,14 @@ function EditPage<T>(props: IEditPageProps<T>) {
 
     return (
       <Footer>
-        <Button onClick={() => history.goBack()}>Back</Button>
+        <Button onClick={() => navigate(-1)}>Back</Button>
         <div>
           {onRenderFooter?.()}
-          <Button onClick={save} disabled={saveDisabled || saving} type={EButton.primary}>
+          <Button
+            onClick={save}
+            disabled={saveDisabled || saving}
+            type={EButton.primary}
+          >
             Save
           </Button>
         </div>

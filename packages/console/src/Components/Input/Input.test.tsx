@@ -1,5 +1,5 @@
 import { createRef } from "react";
-import { fireEvent, render, screen } from "../../../utils/test-utils.ts";
+import { fireEvent, render, screen } from "../../../utils/test-utils";
 import Input from "./Input.tsx";
 
 test("renders without crashing", async () => {
@@ -15,7 +15,7 @@ test("sets ref correctly", async () => {
 });
 
 test("calls onChange correctly", async () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   render(<Input onChange={onChange} />);
 
   const input = await screen.findByRole("textbox");

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "../../../utils/test-utils.ts";
+import { fireEvent, render, screen } from "../../../utils/test-utils";
 import Switch from "./Switch.tsx";
 
 test("renders without crashing", () => {
@@ -27,14 +27,14 @@ test("respects `unselectedText` prop", () => {
 });
 
 test("calls onChange", () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   const { container } = render(<Switch onChange={onChange} />);
   fireEvent.click(container.firstChild as HTMLElement);
   expect(onChange).toHaveBeenLastCalledWith(true);
 });
 
 test("doesn't call onChange if it's undefined", () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   const { container } = render(<Switch />);
   fireEvent.click(container.firstChild as HTMLElement);
   expect(onChange).not.toHaveBeenCalled();

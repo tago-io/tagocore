@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import type { IAction } from "@tago-io/tcore-sdk/types";
 import Button from "../../../Button/Button.tsx";
 import { EButton } from "../../../Button/Button.types";
@@ -31,7 +31,7 @@ interface IMoreTabProps {
  * The device edit page.
  */
 function MoreTab(props: IMoreTabProps) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { data, onDelete } = props;
   const [modalDelete, setModalDelete] = useState(false);
   const [deleted, setDeleted] = useState(false);
@@ -63,13 +63,16 @@ function MoreTab(props: IMoreTabProps) {
    */
   useEffect(() => {
     if (deleted) {
-      history.push("/console/actions");
+      navigate("/console/actions");
     }
-  }, [history, deleted]);
+  }, [navigate, deleted]);
 
   return (
     <div>
-      <FormDivision icon={EIcon["plus-circle"]} title="More about this Action" />
+      <FormDivision
+        icon={EIcon["plus-circle"]}
+        title="More about this Action"
+      />
 
       <Row>
         <Col size="6">
@@ -107,7 +110,11 @@ function MoreTab(props: IMoreTabProps) {
             icon={EIcon["exclamation-triangle"]}
             label="Once you delete an Action, there is no going back."
           >
-            <Button onClick={activateModalDelete} addIconMargin type={EButton.danger}>
+            <Button
+              onClick={activateModalDelete}
+              addIconMargin
+              type={EButton.danger}
+            >
               <Icon icon={EIcon["trash-alt"]} />
               <span>Delete Action</span>
             </Button>
@@ -123,7 +130,8 @@ function MoreTab(props: IMoreTabProps) {
           onConfirm={confirmDelete}
           title="Are you sure?"
         >
-          Do you really want to delete this Action? there is no going back after this!
+          Do you really want to delete this Action? there is no going back after
+          this!
         </Modal>
       )}
     </div>

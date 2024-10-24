@@ -2,7 +2,7 @@ import { type IDevice, zDeviceChunkRetention } from "@tago-io/tcore-sdk/types";
 import axios from "axios";
 import cloneDeep from "lodash.clonedeep";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouteMatch } from "react-router";
+import { useMatch } from "react-router";
 import { useTheme } from "styled-components";
 import { z } from "zod";
 import { formatDataAmount } from "../../../Helpers/formatDataAmount.ts";
@@ -23,15 +23,15 @@ import VariablesTab from "./VariablesTab/VariablesTab.tsx";
  * The bucket's edit page.
  */
 function BucketEdit() {
-  const match = useRouteMatch<{ id: string }>();
-  const { id } = match.params;
+  const match = useMatch("/console/buckets/:id");
+  const id = match?.params?.id;
 
   const theme = useTheme();
   const [data, setData] = useState<IDevice>({} as IDevice);
   const [tabIndex, setTabIndex] = useState(0);
   const [errors, setErrors] = useState<any>({});
   const { data: dataAmount, mutate: mutateDataAmount } = useApiRequest<number>(
-    `/device/${id}/data_amount`
+    `/device/${id}/data_amount`,
   );
   const initialData = useRef<IDevice>({} as IDevice);
 
@@ -52,7 +52,9 @@ function BucketEdit() {
    */
   const validate = useCallback(async () => {
     try {
-      await z.object({ chunk_retention: zDeviceChunkRetention }).parseAsync(data);
+      await z
+        .object({ chunk_retention: zDeviceChunkRetention })
+        .parseAsync(data);
       setErrors({});
       return true;
     } catch (ex: any) {
@@ -78,14 +80,18 @@ function BucketEdit() {
     (field: keyof IDevice, value: IDevice[keyof IDevice]) => {
       setData({ ...data, [field]: value });
     },
-    [data]
+    [data],
   );
 
   /**
    * Empties the bucket.
    */
   const emptyBucket = useCallback(async () => {
-    await axios.post(`/device/${id}/empty`, {}, { headers: { token: store.token } });
+    await axios.post(
+      `/device/${id}/empty`,
+      {},
+      { headers: { token: store.token } },
+    );
     window.location.reload();
     await new Promise(() => {
       /* to get stuck until reload */
@@ -100,7 +106,7 @@ function BucketEdit() {
       await deleteDeviceData(id, { ids });
       mutateDataAmount(Math.max(dataAmount - ids.length, 0));
     },
-    [mutateDataAmount, dataAmount, id]
+    [mutateDataAmount, dataAmount, id],
   );
 
   /**
@@ -121,7 +127,13 @@ function BucketEdit() {
    * Renders the `General Information` tab's content.
    */
   const renderGeneralInformationTab = () => {
-    return <GeneralInformationTab data={data} errors={errors} onChange={onChangeData} />;
+    return (
+      <GeneralInformationTab
+        data={data}
+        errors={errors}
+        onChange={onChangeData}
+      />
+    );
   };
 
   /**
@@ -149,7 +161,13 @@ function BucketEdit() {
    * Renders the `More` tab.
    */
   const renderMoreTab = useCallback(() => {
-    return <MoreTab onEmptyBucket={emptyBucket} dataAmount={dataAmount} data={data} />;
+    return (
+      <MoreTab
+        onEmptyBucket={emptyBucket}
+        dataAmount={dataAmount}
+        data={data}
+      />
+    );
   }, [emptyBucket, data, dataAmount]);
 
   /**
@@ -170,6 +188,7 @@ function BucketEdit() {
 
   return (
     <EditPage<IDevice>
+      resourceId={id}
       color={theme.bucket}
       description={renderDescription()}
       documentTitle="Bucket"
