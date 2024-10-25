@@ -4,6 +4,7 @@ import { cache } from "./Global.ts";
 import { logError } from "./Log.ts";
 import { closeServer, initServer } from "./Server.ts";
 import { startRealtimeCommunication } from "./RealtimeConnection.ts";
+import { sendDataToTagoio } from "./Request.ts";
 
 let started = false;
 
@@ -54,6 +55,7 @@ hookModule.onAfterInsertDeviceData = async (deviceID, data) => {
     // const event = "tcore::device::data::add";
     // cache.serverIO?.emit("event", "send", event, Date.now(), data);
     // cache.socket?.emit(event, deviceID, data);
+    sendDataToTagoio(await pluginStorage.get("token"), data, deviceID, "device-data").catch(logError);
   }
 };
 

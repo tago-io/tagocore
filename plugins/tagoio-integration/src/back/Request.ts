@@ -37,4 +37,20 @@ async function createTCore(token: string, data: any) {
   return response.data.result;
 }
 
-export { updateTCore, createTCore, listTCoresByMachineID };
+/**
+ * Send data to Tagoio.
+ */
+async function sendDataToTagoio(token: string, data: any, connId: string, operation: string) {
+  const response = await axios({
+    url: `${process.env.TAGOIO_API}/tcore/${connId}`,
+    method: "POST",
+    headers: { token },
+    data: {
+      operation,
+      data,
+    },
+  });
+  return response.data.result;
+}
+
+export { updateTCore, createTCore, listTCoresByMachineID, sendDataToTagoio };

@@ -37,13 +37,6 @@ function initServer() {
 
   server = http.createServer(app);
   server.listen("8999");
-
-  // cache.serverIO = new Server(server);
-  // cache.serverIO.on("connection", () => {
-  //   if (cache.socket) {
-  //     cache.serverIO?.emit("status", cache.socket.connected);
-  //   }
-  // });
 }
 
 /**
