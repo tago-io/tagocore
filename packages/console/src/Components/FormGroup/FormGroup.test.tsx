@@ -1,5 +1,5 @@
 import { within } from "@testing-library/react";
-import { fireEvent, render, screen } from "../../../utils/test-utils";
+import { render, renderWithEvents, screen } from "../../../utils/test-utils";
 import { EIcon } from "../Icon/Icon.types";
 import FormGroup from "./FormGroup.tsx";
 
@@ -29,9 +29,11 @@ test("respects `style` prop", () => {
   expect(style.backgroundColor).toEqual("rgb(255, 0, 0)");
 });
 
-test("hovering over label with `tooltip` opens tooltip", () => {
-  render(<FormGroup label="Hello" tooltip="world" />);
-  fireEvent.mouseEnter(screen.getByText("Hello"));
+test("hovering over label with `tooltip` opens tooltip", async () => {
+  const { user } = renderWithEvents(
+    <FormGroup label="Hello" tooltip="world" />,
+  );
+  await user.hover(screen.getByText("Hello"));
   const tooltip = screen.getByTestId("tooltip");
   expect(tooltip).toBeInTheDocument();
   expect(within(tooltip).getByText("world")).toBeInTheDocument();

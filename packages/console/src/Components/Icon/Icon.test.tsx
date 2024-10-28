@@ -23,8 +23,6 @@ test("respects `size` prop", () => {
 
 test("respects `color` prop", async () => {
   render(<Icon color="red" icon={EIcon.cog} />);
-  //  FIXME: style doesn't work in icon tests
-  // const svg = await screen.findByTestId("svg-cog");
-  // const style = window.getComputedStyle(svg);
-  // expect(style.fill).toEqual("red");
+  const svg = await screen.findByTestId("svg-cog");
+  expect(svg.firstChild).toHaveStyle({ fill: "red" });
 });

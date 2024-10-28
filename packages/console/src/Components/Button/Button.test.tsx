@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "../../../utils/test-utils";
+import { render, renderWithEvents, screen } from "../../../utils/test-utils";
 import Button from "./Button.tsx";
 
 test("renders without crashing", () => {
@@ -6,10 +6,10 @@ test("renders without crashing", () => {
   expect(fn).not.toThrowError();
 });
 
-test("calls onClick", () => {
+test("calls onClick", async () => {
   const fn = vi.fn();
-  render(<Button onClick={fn} />);
-  fireEvent.click(screen.getByRole("button"));
+  const { user } = renderWithEvents(<Button onClick={fn} />);
+  await user.click(screen.getByRole("button"));
   expect(fn).toHaveBeenCalled();
 });
 

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "../../../utils/test-utils";
+import { render, renderWithEvents, screen } from "../../../utils/test-utils";
 import { EIcon } from "../Icon/Icon.types";
 import Accordion from "./Accordion.tsx";
 
@@ -19,41 +19,42 @@ test("renders children if `open` = `true`", () => {
   expect(screen.queryByText("Hello world")).toBeInTheDocument();
 });
 
-test("calls onChangeOpen when clicking on the title bar", () => {
+test("calls onChangeOpen when clicking on the title bar", async () => {
   const onChangeOpen = vi.fn();
-  render(<Accordion onChangeOpen={onChangeOpen}>Hello world</Accordion>);
+  const { user } = renderWithEvents(
+    <Accordion onChangeOpen={onChangeOpen}>Hello world</Accordion>,
+  );
   expect(onChangeOpen).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByTestId("title-bar"));
+  await user.click(screen.getByTestId("title-bar"));
   expect(onChangeOpen).toHaveBeenCalled();
 });
 
-test("doesn't call onChangeOpen if it's undefined", () => {
-  render(<Accordion>Hello world</Accordion>);
-  const fn = () => fireEvent.click(screen.getByTestId("title-bar"));
-  expect(fn).not.toThrowError();
+test("doesn't call onChangeOpen if it's undefined", async () => {
+  const { user } = renderWithEvents(<Accordion>Hello world</Accordion>);
+  await user.click(screen.getByTestId("title-bar"));
 });
 
-test("doesn't call onChangeOpen if `isAlwaysOpen` = `true`", () => {
+test("doesn't call onChangeOpen if `isAlwaysOpen` = `true`", async () => {
   const onChangeOpen = vi.fn();
-  render(
+  const { user } = renderWithEvents(
     <Accordion isAlwaysOpen onChangeOpen={onChangeOpen}>
       Hello world
     </Accordion>,
   );
   expect(onChangeOpen).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByTestId("title-bar"));
+  await user.click(screen.getByTestId("title-bar"));
   expect(onChangeOpen).not.toHaveBeenCalled();
 });
 
-test("doesn't call onChangeOpen if clicking on the children", () => {
+test("doesn't call onChangeOpen if clicking on the children", async () => {
   const onChangeOpen = vi.fn();
-  render(
+  const { user } = renderWithEvents(
     <Accordion open onChangeOpen={onChangeOpen}>
       Hello world
     </Accordion>,
   );
   expect(onChangeOpen).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByText("Hello world"));
+  await user.click(screen.getByText("Hello world"));
   expect(onChangeOpen).not.toHaveBeenCalled();
 });
 

@@ -36,5 +36,5 @@ function renderWithEvents(
   };
 }
 
-export { fireEvent, act, waitFor, screen } from "@testing-library/react";
+export { act, waitFor, screen } from "@testing-library/react";
 export { customRender as render, renderWithEvents };
