@@ -38,7 +38,7 @@ function resolveOS() {
   } else if (platform === "win32") {
     return "pc-windows-msvc";
   } else if (platform === "linux") {
-    return isMusl() ? "unknown-linux-musl" : "unknown-linux-musleabihf";
+    return !isMusl() ? "unknown-linux-musl" : "unknown-linux-musleabihf";
   } else {
     throw new Error(`Unsupported OS: ${platform}`);
   }
