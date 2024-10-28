@@ -36,7 +36,6 @@ interface IObjects {
   commandsQueue: ICommandQueueItem[];
   stateQueue: IStateQueueItem[];
   systemModule: SystemModule | null;
-  attachedDevices: Array<string>;
 }
 
 const cache: IObjects = {
@@ -45,7 +44,6 @@ const cache: IObjects = {
   commandsQueue: [],
   stateQueue: [],
   systemModule: null,
-  attachedDevices: [],
 };
 
 export { cache };

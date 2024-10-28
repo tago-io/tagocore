@@ -35,59 +35,10 @@ function startRealtimeCommunication(token: string) {
         case "sse::instance":
           cache.tcore = event.data.tcore;
           break;
-        case "sse::action::schedule": {
-          const schedule = await core.triggerActionScheduleCheck();
-          const dataRetentions = await core.triggerDeviceDataRetentionCheck();
-          const response = await sendDataToTagoio(token, { schedule, dataRetentions }, event.data.connID, "");
-          console.info("Schedule sent", response);
-          break;
-        }
-        case "sse::device::data::added": {
-          const device = await core.getDeviceByToken(event.data.deviceToken);
-          let result: any = null;
-          if (device) {
-            result = await core.addDeviceData(device.id, event.data.deviceData).catch(() => null);
-          }
-          const response = await sendDataToTagoio(token, result, event.data.connID, "");
-          console.info("Data added", response);
-          break;
-        }
-        case "sse::device::list": {
-          event.data.query.fields = (event.data.query.fields || []).filter(
-            (x: string) => x !== "bucket",
-          );
-          const list = await core.getDeviceList(event.data.query);
-          const response = await sendDataToTagoio(token, list, event.data.connID, "");
-          console.info("Device list sent", response);
-          break;
-        }
-        case "sse::device::info": {
-          const info = await core.getDeviceInfo(event.data.deviceID);
-          const response = await sendDataToTagoio(token, info, event.data.connID, "");
-          console.info("Device info sent", response);
-          break;
-        }
-        case "sse::device::data": {
-          const data = await core.getDeviceData(event.data.deviceID, event.data.query);
-          const response = await sendDataToTagoio(token, data, event.data.connID, "");
-          console.info("Device data sent", response);
-          break;
-        }
         case "sse::summary": {
           const summary = await core.getSummary();
-          const response = await sendDataToTagoio(token, summary, event.data.connID, "");
+          const response = await sendDataToTagoio(token, summary, event.data.connID, "update-summary-tcore");
           console.info("Summary sent", response);
-          break;
-        }
-        case "sse::data::attach": {
-          cache.attachedDevices.push(event.data.deviceID);
-          break;
-        }
-        case "sse::data::unattach": {
-          const i = cache.attachedDevices.indexOf(event.data.deviceID);
-          if (i >= 0) {
-            cache.attachedDevices.splice(i, 1);
-          }
           break;
         }
         case "sse::summary-and-computer-usage": {
@@ -95,10 +46,13 @@ function startRealtimeCommunication(token: string) {
             core.getSummary(),
             helpers.getComputerUsage(),
           ]);
-          const response = await sendDataToTagoio(token, { summary: data[0], computer_usage: data[1] }, event.data.connID, "");
+          const response = await sendDataToTagoio(token, { summary: data[0], computer_usage: data[1] }, event.data.connID, "summary-computer-usage-tcore");
           console.info("Summary and Computer Usage sent", response);
           break;
         }
+        case "sse::disconnect":
+          events?.close();
+          break;
         default:
           console.error("Unknown event channel", event.data.channel);
       }

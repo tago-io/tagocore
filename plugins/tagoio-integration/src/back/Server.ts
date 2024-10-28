@@ -4,8 +4,6 @@ import { helpers, pluginStorage } from "@tago-io/tcore-sdk";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { type Request, type Response } from "express";
-import { Server } from "socket.io";
-// @ts-ignore
 import pkg from "../../package.json" with { type: "json" };
 import { cache } from "./Global.ts";
 import { getMachineID } from "./Helpers.ts";
