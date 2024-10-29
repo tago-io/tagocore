@@ -19,7 +19,7 @@ import { io } from "socket.io-client";
 import { useTheme } from "styled-components";
 import * as Style from "./Details.style";
 
-const imgDesert = require("../../../assets/desert.png");
+import imgDesert from "../../../assets/desert.png";
 
 /**
  * Props.
