@@ -1,6 +1,20 @@
-import { createRef } from "react";
-import { fireEvent, render, screen } from "../../../utils/test-utils.ts";
-import Input from "./Input.tsx";
+import { createRef, useState } from "react";
+import { render, renderWithEvents, screen } from "../../../utils/test-utils";
+import Input, { type IInput } from "./Input.tsx";
+
+function StatefulInput(props: IInput) {
+  const [state, setState] = useState("");
+
+  return (
+    <Input
+      value={state}
+      onChange={(e) => {
+        setState(e.target.value);
+        props.onChange?.(e.target.value);
+      }}
+    />
+  );
+}
 
 test("renders without crashing", async () => {
   const fn = () => render(<Input />);
@@ -15,14 +29,13 @@ test("sets ref correctly", async () => {
 });
 
 test("calls onChange correctly", async () => {
-  const onChange = jest.fn();
-  render(<Input onChange={onChange} />);
+  const onChange = vi.fn();
+  const { user } = renderWithEvents(<StatefulInput onChange={onChange} />);
 
   const input = await screen.findByRole("textbox");
-  fireEvent.change(input, { target: { value: "Hello world" } });
+  await user.type(input, "Hello world");
 
-  expect(onChange).toHaveBeenCalled();
-  expect(onChange.mock.calls[0][0].target.value).toEqual("Hello world");
+  expect(onChange).toHaveBeenLastCalledWith("Hello world");
 });
 
 test("passes value prop to inner DOM node", async () => {
@@ -40,5 +53,5 @@ test("passes readOnly prop to inner DOM node", async () => {
 test("passes disabled prop to inner DOM node", async () => {
   render(<Input disabled />);
   const input = (await screen.findByRole("textbox")) as HTMLInputElement;
-  expect(input.disabled).toBeTruthy();
+  expect(input).toBeDisabled();
 });

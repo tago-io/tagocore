@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils.ts";
+import { render, screen } from "../../../utils/test-utils";
 import Col from "./Col.tsx";
 
 describe("Just a test", () => {
@@ -6,7 +6,7 @@ describe("Just a test", () => {
     render(
       <Col>
         <span>Hello world</span>
-      </Col>
+      </Col>,
     );
     const item = await screen.findAllByText("Hello world");
     expect(item).toHaveLength(1);
@@ -16,7 +16,7 @@ describe("Just a test", () => {
     render(
       <Col>
         <span>Testing</span>
-      </Col>
+      </Col>,
     );
     const item = await screen.findAllByText("Testing");
     expect(item).toHaveLength(1);

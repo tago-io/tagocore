@@ -1,4 +1,4 @@
-import { render } from "../../../utils/test-utils.ts";
+import { render } from "../../../utils/test-utils";
 import FlexRow from "./FlexRow.tsx";
 
 test("renders without crashing", () => {

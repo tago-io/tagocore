@@ -21,7 +21,7 @@ export const Container = styled.div<{ error?: boolean }>`
 
 /**
  */
-export const TitleBar = styled.div<{ isAlwaysOpen?: boolean; open?: boolean }>`
+export const TitleBar = styled.div<{ $isAlwaysOpen?: boolean; open?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,7 +29,7 @@ export const TitleBar = styled.div<{ isAlwaysOpen?: boolean; open?: boolean }>`
   padding: 10px;
 
   ${(props) =>
-    !props.isAlwaysOpen &&
+    !props.$isAlwaysOpen &&
     css`
       cursor: pointer;
       :hover {

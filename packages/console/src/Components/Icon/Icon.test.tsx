@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils.ts";
+import { render, screen } from "../../../utils/test-utils";
 import Icon from "./Icon.tsx";
 import { EIcon } from "./Icon.types";
 
@@ -21,9 +21,8 @@ test("respects `size` prop", () => {
   expect(style.height).toEqual("20px");
 });
 
-test("respects `color` prop", () => {
+test("respects `color` prop", async () => {
   render(<Icon color="red" icon={EIcon.cog} />);
-  const svg = screen.getByText("cog-icon-mock");
-  const style = window.getComputedStyle(svg);
-  expect(style.fill).toEqual("red");
+  const svg = await screen.findByTestId("svg-cog");
+  expect(svg.firstChild).toHaveStyle({ fill: "red" });
 });

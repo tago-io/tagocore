@@ -1,5 +1,6 @@
 import type { ILog, IPluginLogChannel } from "@tago-io/tcore-sdk/types";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "styled-components";
 import qs from "qs";
 import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
@@ -18,6 +19,8 @@ import * as Style from "./Logs.style";
  * This page shows the logs of all channels in the application.
  */
 function Logs() {
+  const navigate = useNavigate();
+
   const [selectedChannel, setSelectedChannel] = useState<string>(() => {
     const query = qs.parse(window.location.search, { ignoreQueryPrefix: true });
     return String(query.channel || "") || "api";
@@ -29,7 +32,9 @@ function Logs() {
   });
 
   const { data: channels } = useApiRequest<IPluginLogChannel[]>("/logs");
-  const { data } = useApiRequest<ILog[]>(`/logs/${encodeURIComponent(selectedChannel)}`);
+  const { data } = useApiRequest<ILog[]>(
+    `/logs/${encodeURIComponent(selectedChannel)}`,
+  );
   const [logs, setLogs] = useState<ILog[]>([]);
   const theme = useTheme();
 
@@ -51,7 +56,11 @@ function Logs() {
   const renderHeader = () => {
     return (
       <Style.Header>
-        <FormGroup addMarginBottom={false} tooltip="Specify the log channel" label="Channel">
+        <FormGroup
+          addMarginBottom={false}
+          tooltip="Specify the log channel"
+          label="Channel"
+        >
           <Select
             className="channel"
             value={selectedChannel}
@@ -89,7 +98,8 @@ function Logs() {
     return (logs || []).filter((x) => {
       if (selectedType === "all") {
         return x;
-      } if (selectedType === "verbose") {
+      }
+      if (selectedType === "verbose") {
         return (x as any).type === "log";
       }
       return (x as any).type === "error";
@@ -160,7 +170,9 @@ function Logs() {
    * Sets the query string parameters.
    */
   useEffect(() => {
-    history.replaceState(null, "", `/console/logs?channel=${selectedChannel}&type=${selectedType}`);
+    navigate(`/console/logs?channel=${selectedChannel}&type=${selectedType}`, {
+      replace: true,
+    });
   }, [selectedChannel, selectedType]);
 
   return (

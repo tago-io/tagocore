@@ -28,33 +28,38 @@ interface IIconRadioProps {
 function IconRadio(props: IIconRadioProps) {
   const { value, onChange, options } = props;
 
-  /**
-   * Renders a single option in the list.
-   */
-  const renderOption = (option: IIconRadioOption) => {
-    const checked = value === option.value;
-    return (
-      <Style.Option
-        onClick={() => onChange(option.value)}
-        color={option.color}
-        disabled={option.disabled}
-        key={option.value}
-        data-testid={`option-${option.value}`}
-      >
-        <input value={props.value} checked={checked} readOnly type="radio" />
+  return (
+    <Style.Container>
+      {options.map((option) => {
+        const checked = value === option.value;
 
-        <div className="content">
-          <Icon icon={option.icon} size="30px" color={option.color} />
-          <div className="info">
-            <div className="title">{option.label}</div>
-            <div className="description">{option.description}</div>
-          </div>
-        </div>
-      </Style.Option>
-    );
-  };
+        return (
+          <Style.Option
+            onClick={() => onChange(option.value)}
+            color={option.color}
+            disabled={option.disabled}
+            key={option.value}
+            data-testid={`option-${option.value}`}
+          >
+            <input
+              value={props.value}
+              checked={checked}
+              readOnly
+              type="radio"
+            />
 
-  return <Style.Container>{options.map(renderOption)}</Style.Container>;
+            <div className="content">
+              <Icon icon={option.icon} size="30px" color={option.color} />
+              <div className="info">
+                <div className="title">{option.label}</div>
+                <div className="description">{option.description}</div>
+              </div>
+            </div>
+          </Style.Option>
+        );
+      })}
+    </Style.Container>
+  );
 }
 
 export default IconRadio;

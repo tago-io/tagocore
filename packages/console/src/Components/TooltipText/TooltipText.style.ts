@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 export const Container = styled.span<{
   color?: string;
   bold?: boolean;
-  usesTooltip: boolean;
+  $usesTooltip: boolean;
 }>`
   ${(props) =>
     props.color &&
@@ -22,7 +22,7 @@ export const Container = styled.span<{
     `};
 
   ${(props) =>
-    props.usesTooltip &&
+    props.$usesTooltip &&
     css`
       border-bottom: 1px dotted black;
       margin-bottom: -1px;

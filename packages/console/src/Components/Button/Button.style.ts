@@ -7,7 +7,7 @@ import { EButton } from "./Button.types";
  * Props for the container.
  */
 export interface IButtonContainerProps {
-  buttonType?: EButton;
+  $buttonType?: EButton;
   theme: DefaultTheme;
   color?: string;
   addIconMargin?: boolean;
@@ -66,26 +66,26 @@ function applyTypeCss(props: IButtonContainerProps) {
   let padding = "8px 20px";
   let width = "auto";
 
-  if (props.buttonType === EButton.primary) {
+  if (props.$buttonType === EButton.primary) {
     color = props.theme.buttonPrimaryFont;
     background = props.theme.buttonPrimary;
     // borderColor = "transparent";
-  } else if (props.buttonType === EButton.danger) {
+  } else if (props.$buttonType === EButton.danger) {
     color = props.theme.buttonDangerFont;
     background = props.theme.buttonDanger;
     // borderColor = "transparent";
-  } else if (props.buttonType === EButton.danger_outline) {
+  } else if (props.$buttonType === EButton.danger_outline) {
     color = props.theme.buttonDanger;
     background = "transparent";
     // borderColor = props.theme.buttonDanger;
     hoverBackground = darken(0.04, props.theme.buttonDanger);
     activeBackground = darken(0.08, props.theme.buttonDanger);
     hoverColor = "white";
-  } else if (props.buttonType === EButton.warning) {
+  } else if (props.$buttonType === EButton.warning) {
     color = props.theme.buttonWarningText;
     background = props.theme.buttonWarning;
     // borderColor = "transparent";
-  } else if (props.buttonType === EButton.icon) {
+  } else if (props.$buttonType === EButton.icon) {
     padding = "8px 15px";
     width = "45px";
   }
