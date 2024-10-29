@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getMachineID } from "./Helpers.ts";
-import TagoCores from "@tago-io/sdk/lib/modules/Resources/TagoCores.js";
+import Account from "@tago-io/sdk/out/modules/Account/Account.js";
+
 
 
 /**
@@ -8,8 +9,8 @@ import TagoCores from "@tago-io/sdk/lib/modules/Resources/TagoCores.js";
  */
 async function listTCoresByMachineID(token: string) {
   const machine_id = getMachineID();
-  const tcore = new TagoCores({ token, region: "env" });
-  const response = await tcore.list({
+  const account = new Account({ token, region: "env" });
+  const response = await account.tagocores.list({
     fields: ["id", "token"],
     filter: { machine_id } as any,
   });
@@ -20,8 +21,8 @@ async function listTCoresByMachineID(token: string) {
  * Creates a new instance with the given data.
  */
 async function updateTCore(token: string, tcoreID: string, data: any) {
-  const tcore = new TagoCores({ token, region: "env" });
-  const response = await tcore.edit(tcoreID, data);
+  const account = new Account({ token, region: "env" });
+  const response = await account.tagocores.edit(tcoreID, data);
   return response;
 }
 
