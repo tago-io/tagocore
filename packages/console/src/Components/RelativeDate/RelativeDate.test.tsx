@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "../../../utils/test-utils.ts";
+import { render, renderWithEvents, screen } from "../../../utils/test-utils";
 import RelativeDate from "./RelativeDate.tsx";
 
 test("renders without crashing", () => {
@@ -39,22 +39,24 @@ test("text shows same string with `useInputStyle` prop", () => {
   expect(screen.getByText("5 minutes ago")).toBeInTheDocument();
 });
 
-test("hovering over text opens tooltip", () => {
+test("hovering over text opens tooltip", async () => {
   const someTimeAgo = Date.now() - 5 * 1000 * 60;
-  render(<RelativeDate value={someTimeAgo} />);
-  fireEvent.mouseEnter(screen.getByText("5 minutes ago"));
+  const { user } = renderWithEvents(<RelativeDate value={someTimeAgo} />);
+  await user.hover(screen.getByText("5 minutes ago"));
   expect(screen.queryByTestId("tooltip")).toBeInTheDocument();
 });
 
-test("hovering over text with `useInputStyle` opens tooltip", () => {
-  render(<RelativeDate useInputStyle value={Date.now()} />);
-  fireEvent.mouseEnter(screen.getByText("a few seconds ago"));
+test("hovering over text with `useInputStyle` opens tooltip", async () => {
+  const { user } = renderWithEvents(
+    <RelativeDate useInputStyle value={Date.now()} />,
+  );
+  await user.hover(screen.getByText("a few seconds ago"));
   expect(screen.queryByTestId("tooltip")).toBeInTheDocument();
 });
 
-test("hovering over `Never` does nothing", () => {
-  render(<RelativeDate value={null} />);
+test("hovering over `Never` does nothing", async () => {
+  const { user } = renderWithEvents(<RelativeDate value={null} />);
   expect(screen.queryByTestId("tooltip")).not.toBeInTheDocument();
-  fireEvent.mouseEnter(screen.getByText("Never"));
+  await user.hover(screen.getByText("Never"));
   expect(screen.queryByTestId("tooltip")).not.toBeInTheDocument();
 });

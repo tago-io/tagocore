@@ -39,7 +39,10 @@ function RelativeDate(props: IRelativeDateProps) {
 
   if (!relative || !value || value === "never") {
     text = "Never";
-  } else if (relative.toLowerCase() === "0 seconds ago") {
+  } else if (
+    relative.toLowerCase() === "0 seconds ago" ||
+    relative.toLowerCase() === "in 0 seconds"
+  ) {
     text = "a few seconds ago";
   }
 
@@ -56,7 +59,7 @@ function RelativeDate(props: IRelativeDateProps) {
   if (props.useInputStyle) {
     return <Style.Box>{content}</Style.Box>;
   }
-    return content;
+  return content;
 }
 
 export default RelativeDate;

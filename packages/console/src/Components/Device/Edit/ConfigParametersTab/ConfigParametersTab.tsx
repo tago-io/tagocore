@@ -39,7 +39,7 @@ function ConfigParametersTab(props: IConfigParametersTabProps) {
   const onChangeField = (
     field: keyof IDeviceParameter,
     value: string | boolean,
-    rowIndex: number
+    rowIndex: number,
   ) => {
     if (!params[rowIndex]) {
       params[rowIndex] = { key: "", value: "", sent: false } as any; // create the item if it doesn't exist

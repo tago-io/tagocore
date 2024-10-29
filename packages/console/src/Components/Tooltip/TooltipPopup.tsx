@@ -74,7 +74,12 @@ class TooltipPopup extends Component<ITooltipPopup> {
   /**
    * Opens the tooltip popup with the anchor data.
    */
-  public open(anchorX: number, anchorY: number, anchorWidth: number, anchorHeight: number) {
+  public open(
+    anchorX: number,
+    anchorY: number,
+    anchorWidth: number,
+    anchorHeight: number,
+  ) {
     this.setState(
       {
         open: true,
@@ -120,7 +125,7 @@ class TooltipPopup extends Component<ITooltipPopup> {
         this.ref.style.top = `${y}px`;
         this.ref.classList.remove("invisible");
         this.ref.classList.add("visible");
-      }
+      },
     );
   }
 
@@ -147,7 +152,7 @@ class TooltipPopup extends Component<ITooltipPopup> {
     return createPortal(
       <Style.Container
         zIndex={zIndex}
-        vertical={!!header}
+        $vertical={!!header}
         hoverable={hoverable}
         color={color}
         ref={(e) => ((this as any).ref = e)}
@@ -164,7 +169,7 @@ class TooltipPopup extends Component<ITooltipPopup> {
 
         {hoverable && <div className="hoverable-step" />}
       </Style.Container>,
-      document.body
+      document.body,
     );
   }
 }

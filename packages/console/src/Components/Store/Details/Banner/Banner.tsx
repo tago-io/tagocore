@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import useApiRequest from "../../../../Helpers/useApiRequest.ts";
 import Publisher from "../../../Plugins/Common/Publisher/Publisher.tsx";
 import Button from "../../../Button/Button.tsx";
@@ -29,15 +29,19 @@ interface IBannerProps {
  */
 function Banner(props: IBannerProps) {
   const { data: status } = useApiRequest<any>("/status");
-  const { data: installedPlugins } = useApiRequest<Array<string>>("/plugins/installed");
+  const { data: installedPlugins } =
+    useApiRequest<Array<string>>("/plugins/installed");
   const { plugin } = props;
-  const { id, logo_url, name, publisher, short_description, compatibility } = plugin;
+  const { id, logo_url, name, publisher, short_description, compatibility } =
+    plugin;
 
-  const [isInstalled, setIsInstalled] = useState(installedPlugins?.includes(id));
+  const [isInstalled, setIsInstalled] = useState(
+    installedPlugins?.includes(id),
+  );
   useEffect(() => {
     setIsInstalled(installedPlugins?.includes(id));
   }, [installedPlugins, id]);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const runningInCluster = status?.cluster;
   const isClusterCompatible = !runningInCluster || compatibility?.cluster;
@@ -45,7 +49,10 @@ function Banner(props: IBannerProps) {
   const isIncompatible = !isClusterCompatible;
   const token = getLocalStorage("token", "") as string;
   const masterPassword = store.masterPassword;
-  const headers = useMemo(() => ({ token, masterPassword }), [token, masterPassword]);
+  const headers = useMemo(
+    () => ({ token, masterPassword }),
+    [token, masterPassword],
+  );
 
   /**
    * Called when the activate button is pressed.
@@ -60,8 +67,8 @@ function Banner(props: IBannerProps) {
    * Edits the configuration of the plugin.
    */
   const editConfiguration = useCallback(() => {
-    history.push(`/console/plugin/${id}`);
-  }, [id, history]);
+    navigate(`/console/plugin/${id}`);
+  }, [id, navigate]);
 
   /**
    * Called when the deactivate button is pressed.
@@ -84,11 +91,18 @@ function Banner(props: IBannerProps) {
 
         {publisher?.name && (
           <div className="publisher">
-            <Publisher clickable domain={publisher?.domain} name={publisher?.name} size="medium" />
+            <Publisher
+              clickable
+              domain={publisher?.domain}
+              name={publisher?.name}
+              size="medium"
+            />
           </div>
         )}
 
-        {short_description && <div className="description">{short_description}</div>}
+        {short_description && (
+          <div className="description">{short_description}</div>
+        )}
       </Style.Info>
     );
   };

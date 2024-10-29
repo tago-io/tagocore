@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import react from "@vitejs/plugin-react-swc";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,5 +27,10 @@ export default defineConfig({
     minify: true,
     sourcemap: false,
     outDir: `${buildPath}/console`,
+  },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: ["./utils/setup-tests.ts"],
   },
 });

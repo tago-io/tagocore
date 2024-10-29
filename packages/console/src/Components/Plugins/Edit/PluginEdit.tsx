@@ -1,6 +1,6 @@
 import type { IPlugin, IPluginModule } from "@tago-io/tcore-sdk/types";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useHistory, useRouteMatch } from "react-router";
+import { useNavigate, useMatch } from "react-router";
 import { useTheme } from "styled-components";
 import cloneDeep from "lodash.clonedeep";
 import { flattenConfigFields } from "@tago-io/tcore-shared";
@@ -23,9 +23,9 @@ import SettingsTab from "./SettingsTab/SettingsTab.tsx";
  * The plugin's edit page.
  */
 function PluginEdit() {
-  const match = useRouteMatch<{ id: string }>();
-  const history = useHistory();
-  const { id } = match.params;
+  const match = useMatch("/console/plugin/:id");
+  const id = match?.params?.id;
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const [data, setData] = useState<IPlugin>({} as IPlugin);
@@ -110,7 +110,7 @@ function PluginEdit() {
     async (module: IPluginModule) => {
       stopPluginModule(data.id, module.id);
     },
-    [data]
+    [data],
   );
 
   /**
@@ -119,7 +119,7 @@ function PluginEdit() {
     async (module: IPluginModule) => {
       startPluginModule(data.id, module.id);
     },
-    [data]
+    [data],
   );
 
   /**
@@ -150,7 +150,11 @@ function PluginEdit() {
       if (values[key]) {
         for (const field in values[key]) {
           if (values[key][field] !== undefined) {
-            editValues.push({ moduleID: key, field, value: values[key][field] });
+            editValues.push({
+              moduleID: key,
+              field,
+              value: values[key][field],
+            });
           }
         }
       }
@@ -170,7 +174,7 @@ function PluginEdit() {
     async (keepData: boolean) => {
       await uninstallPlugin(id, keepData);
     },
-    [id]
+    [id],
   );
 
   /**
@@ -199,7 +203,7 @@ function PluginEdit() {
     function onPluginStatus(params: any) {
       if (params?.id === id) {
         if (params.deleted) {
-          history.push("/console");
+          navigate("/console");
           return;
         }
         data.state = params.state;
@@ -235,10 +239,14 @@ function PluginEdit() {
 
   return (
     <EditPage<IPlugin>
+      resourceId={id}
       color={theme.extension}
       documentTitle={data.name ? `${data.name} - Plugin Configuration` : ""}
       onRenderInnerNavIcon={() => (
-        <PluginImage src={data.id ? `/images/${data.id}/icon` : null} width={30} />
+        <PluginImage
+          src={data.id ? `/images/${data.id}/icon` : null}
+          width={30}
+        />
       )}
       innerNavTitle={data.name ? `${data.name} - Plugin Configuration` : ""}
       loading={loading}

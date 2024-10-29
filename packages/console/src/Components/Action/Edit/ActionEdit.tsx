@@ -7,7 +7,7 @@ import {
 } from "@tago-io/tcore-sdk/types";
 import cloneDeep from "lodash.clonedeep";
 import { useCallback, useRef, useState } from "react";
-import { useRouteMatch } from "react-router";
+import { useMatch } from "react-router";
 import { useTheme } from "styled-components";
 import { observer } from "mobx-react";
 import { z } from "zod";
@@ -42,14 +42,18 @@ import { convertActionToAPI } from "./Logic/convertActionToAPI.ts";
  * The Action' edit page.
  */
 function ActionEdit() {
-  const match = useRouteMatch<{ id: string }>();
-  const { id } = match.params;
+  const match = useMatch("/console/actions/:id");
+  const id = match?.params?.id;
 
   const theme = useTheme();
   const [data, setData] = useState<IAction>({} as IAction);
   const [tabIndex, setTabIndex] = useState(0);
-  const { data: typeModules } = useApiRequest<IPluginModuleList>("/module?type=action-type");
-  const { data: triggerModules } = useApiRequest<IPluginModuleList>("/module?type=action-trigger");
+  const { data: typeModules } = useApiRequest<IPluginModuleList>(
+    "/module?type=action-type",
+  );
+  const { data: triggerModules } = useApiRequest<IPluginModuleList>(
+    "/module?type=action-trigger",
+  );
 
   /**
    * .action object of the data.
@@ -67,7 +71,9 @@ function ActionEdit() {
   const initialAction = useRef<any>({});
   const loading = !data.id || !typeModules || !triggerModules;
 
-  const customTrigger = triggerModules?.find((x) => `${x.pluginID}:${x.setup.id}` === data.type);
+  const customTrigger = triggerModules?.find(
+    (x) => `${x.pluginID}:${x.setup.id}` === data.type,
+  );
 
   /**
    * Returns a boolean to indicate if the trigger is invalid or not.
@@ -75,11 +81,14 @@ function ActionEdit() {
   const hasInvalidTrigger = useCallback(() => {
     if (data.type.includes(":") && !customTrigger) {
       return true;
-    } if (customTrigger) {
+    }
+    if (customTrigger) {
       return false;
-    } if (data.type === "interval" || data.type === "schedule") {
+    }
+    if (data.type === "interval" || data.type === "schedule") {
       return false;
-    } if (data.type === "condition") {
+    }
+    if (data.type === "condition") {
       return false;
     }
     return true;
@@ -110,11 +119,21 @@ function ActionEdit() {
     return (
       JSON.stringify(initialDataNorm) !== JSON.stringify(currentDataNorm) ||
       JSON.stringify(initialAction.current) !== JSON.stringify(action) ||
-      JSON.stringify(initialPluginTriggerData.current) !== JSON.stringify(pluginTriggerData) ||
-      JSON.stringify(initialConditionData.current) !== JSON.stringify(conditionDataNorm) ||
-      JSON.stringify(initialScheduleData.current) !== JSON.stringify(scheduleData)
+      JSON.stringify(initialPluginTriggerData.current) !==
+        JSON.stringify(pluginTriggerData) ||
+      JSON.stringify(initialConditionData.current) !==
+        JSON.stringify(conditionDataNorm) ||
+      JSON.stringify(initialScheduleData.current) !==
+        JSON.stringify(scheduleData)
     );
-  }, [hasInvalidTrigger, action, pluginTriggerData, scheduleData, conditionData, data]);
+  }, [
+    hasInvalidTrigger,
+    action,
+    pluginTriggerData,
+    scheduleData,
+    conditionData,
+    data,
+  ]);
   const [errors, setErrors] = useState<any>({});
 
   /**
@@ -135,12 +154,13 @@ function ActionEdit() {
         await zFrontActionPost.parseAsync(action);
       } else {
         const item = typeModules.find(
-          (x) => `${x.pluginID}:${x.setup.id}` === (action.type?.id || action?.type)
+          (x) =>
+            `${x.pluginID}:${x.setup.id}` === (action.type?.id || action?.type),
         );
         if (item) {
           const err = validateConfigFields(
             item.setup?.option?.configs as IPluginConfigField[],
-            action
+            action,
           );
           if (err) {
             error.action = err;
@@ -164,7 +184,8 @@ function ActionEdit() {
 
       if (conditionData) {
         const oneUnlock =
-          conditionData.unlockConditions?.some((x) => x.variable || x.value) || false;
+          conditionData.unlockConditions?.some((x) => x.variable || x.value) ||
+          false;
         if (!oneUnlock) {
           conditionData.unlockConditions = [];
         } else {
@@ -198,7 +219,7 @@ function ActionEdit() {
       } else if (customTrigger) {
         const err = validateConfigFields(
           customTrigger.setup.option.configs as IPluginConfigField[],
-          pluginTriggerData
+          pluginTriggerData,
         );
         if (err) {
           error.trigger = err;
@@ -220,7 +241,15 @@ function ActionEdit() {
     }
     setErrors({});
     return true;
-  }, [typeModules, action, data, customTrigger, pluginTriggerData, conditionData, scheduleData]);
+  }, [
+    typeModules,
+    action,
+    data,
+    customTrigger,
+    pluginTriggerData,
+    conditionData,
+    scheduleData,
+  ]);
 
   /**
    * Called when the record was fetched by the edit page.
@@ -251,7 +280,7 @@ function ActionEdit() {
       action,
       scheduleData,
       conditionData,
-      pluginTriggerData
+      pluginTriggerData,
     );
 
     await editAction(id, formatted);
@@ -283,7 +312,7 @@ function ActionEdit() {
     (field: keyof IAction, value) => {
       setData({ ...data, [field]: value });
     },
-    [data]
+    [data],
   );
 
   /**
@@ -347,6 +376,7 @@ function ActionEdit() {
 
   return (
     <EditPage<IAction>
+      resourceId={id}
       color={theme.action}
       documentTitle="Action"
       icon={EIcon.bolt}

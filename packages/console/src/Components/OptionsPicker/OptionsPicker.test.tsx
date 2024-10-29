@@ -1,10 +1,12 @@
-import { fireEvent, render, screen } from "../../../utils/test-utils.ts";
+import { render, screen } from "../../../utils/test-utils";
+import { renderWithEvents } from "../../../utils/test-utils.tsx";
+import { waitFor } from "@testing-library/react";
 import OptionsPicker from "./OptionsPicker.tsx";
 
 const defaultProps = {
-  onGetOptions: jest.fn().mockImplementation(() => []),
-  onRenderOption: jest.fn(),
-  onChange: jest.fn(),
+  onGetOptions: vi.fn().mockImplementation(() => []),
+  onRenderOption: vi.fn(),
+  onChange: vi.fn(),
 };
 
 test("renders without crashing", () => {
@@ -17,10 +19,12 @@ test("renders input", () => {
   expect(screen.getByRole("textbox")).toBeInTheDocument();
 });
 
-test("opens options when focusing input", () => {
-  render(<OptionsPicker {...defaultProps} />);
-  fireEvent.focus(screen.getByRole("textbox"));
-  expect(screen.getByTestId("options")).toBeInTheDocument();
+test("opens options when focusing input", async () => {
+  const { user } = renderWithEvents(<OptionsPicker {...defaultProps} />);
+  await user.click(screen.getByRole("textbox"));
+  await waitFor(() =>
+    expect(screen.getByTestId("options")).toBeInTheDocument(),
+  );
 });
 
 test("respects `placeholder` prop", () => {
@@ -28,26 +32,30 @@ test("respects `placeholder` prop", () => {
   expect(screen.getByRole("textbox")).toHaveProperty("placeholder", "Hello");
 });
 
-test("renders correct icon with no value", () => {
+test("renders correct icon with no value", async () => {
   render(<OptionsPicker {...defaultProps} />);
-  expect(screen.getByText("caret-down-icon-mock")).toBeInTheDocument();
+  expect(await screen.findByTestId("svg-caret-down")).toBeInTheDocument();
 });
 
-test("renders correct icon with value", () => {
+test("renders correct icon with value", async () => {
   render(<OptionsPicker<any> {...defaultProps} value={{}} />);
-  expect(screen.getByText("times-icon-mock")).toBeInTheDocument();
+  expect(await screen.findByTestId("svg-times")).toBeInTheDocument();
 });
 
-test("clears value when clicking on the clear button", () => {
-  const onChange = jest.fn();
-  render(<OptionsPicker {...defaultProps} onChange={onChange} value={{}} />);
-  fireEvent.click(screen.getByText("times-icon-mock"));
+test("clears value when clicking on the clear button", async () => {
+  const onChange = vi.fn();
+  const { user } = renderWithEvents(
+    <OptionsPicker {...defaultProps} onChange={onChange} value={{}} />,
+  );
+  await user.click(await screen.findByTestId("svg-times"));
   expect(onChange).toHaveBeenCalledWith(null);
 });
 
-test("calls onChange when selecting option", () => {
-  const onChange = jest.fn();
-  render(<OptionsPicker {...defaultProps} onChange={onChange} value={{}} />);
-  fireEvent.click(screen.getByText("times-icon-mock"));
+test("calls onChange when selecting option", async () => {
+  const onChange = vi.fn();
+  const { user } = renderWithEvents(
+    <OptionsPicker {...defaultProps} onChange={onChange} value={{}} />,
+  );
+  await user.click(await screen.findByTestId("svg-times"));
   expect(onChange).toHaveBeenCalledWith(null);
 });

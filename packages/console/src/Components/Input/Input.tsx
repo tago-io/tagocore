@@ -2,7 +2,7 @@ import { type InputHTMLAttributes, memo, forwardRef } from "react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.tsx";
 import * as Style from "./Input.style";
 
-interface IInput extends InputHTMLAttributes<HTMLInputElement> {
+export interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   /**
    * Indicates if this component has invalid data.
    * If this is set to `true`, this component will get a red border.

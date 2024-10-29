@@ -2,30 +2,16 @@ import type { ITag } from "@tago-io/tcore-sdk/types";
 import Input from "../Input/Input.tsx";
 import RowManipulatorTable from "../RowManipulatorTable/RowManipulatorTable.tsx";
 
-/**
- * Props.
- */
-interface ITagsProps {
+export interface ITags {
   data: ITag[];
-  /**
-   * Tags' errors.
-   */
   errors?: any;
-  /**
-   */
   onChange: (newData: ITag[]) => void;
-  /**
-   */
   disabled?: boolean;
 }
 
-/**
- */
-function Tags(props: ITagsProps) {
+function Tags(props: ITags) {
   const { data, disabled, errors } = props;
 
-  /**
-   */
   const onChange = (field: keyof ITag, value: string, rowIndex: number) => {
     if (!data[rowIndex]) {
       data[rowIndex] = { key: "", value: "" }; // create the item if it doesn't exist
@@ -34,8 +20,6 @@ function Tags(props: ITagsProps) {
     props.onChange([...data]);
   };
 
-  /**
-   */
   const renderKey = (item: ITag, index: number) => {
     const error = errors?.[index]?.key;
     return (
@@ -49,8 +33,6 @@ function Tags(props: ITagsProps) {
     );
   };
 
-  /**
-   */
   const renderValue = (item: ITag, index: number) => {
     const error = errors?.[index]?.value;
     return (
@@ -64,15 +46,11 @@ function Tags(props: ITagsProps) {
     );
   };
 
-  /**
-   */
   const addItem = () => {
     props.data.push({ key: "", value: "" });
     props.onChange([...props.data]);
   };
 
-  /**
-   */
   const removeItem = (index: number) => {
     props.data.splice(index, 1);
     props.onChange([...props.data]);

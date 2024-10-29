@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouteMatch } from "react-router";
+import { useMatch, useNavigate } from "react-router";
 import { observer } from "mobx-react";
 import useApiRequest from "../../../Helpers/useApiRequest.ts";
 import Loading from "../../Loading/Loading.tsx";
@@ -14,8 +14,9 @@ import Sidebar from "./Sidebar/Sidebar.tsx";
  * The plugin details page.
  */
 function PluginDetails() {
-  const match = useRouteMatch<{ id: string }>();
-  const { id } = match.params;
+  const match = useMatch("/console/pluginstore/detail/:id");
+  const id = match?.params?.id;
+  const navigate = useNavigate();
 
   const [selectedVersion, setSelectedVersion] = useState(() => "");
 
@@ -31,13 +32,16 @@ function PluginDetails() {
    * Updates the URL with the new selected version.
    */
   useEffect(() => {
-    history.replaceState(null, "", `/console/pluginstore/details/${id}`);
+    navigate(`/console/pluginstore/detail/${id}`, { replace: true });
   }, [id]);
 
   /**
    */
   useEffect(() => {
-    window.top?.postMessage({ type: "set-link", url: `/console/pluginstore/detail/${id}` }, "*");
+    window.top?.postMessage(
+      { type: "set-link", url: `/console/pluginstore/detail/${id}` },
+      "*",
+    );
   }, [id]);
 
   if (error) {
