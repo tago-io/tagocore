@@ -1,6 +1,7 @@
-import { Account } from "@tago-io/sdk";
 import axios from "axios";
 import { getMachineID } from "./Helpers.ts";
+import Account from "@tago-io/sdk/lib/modules/Resources/Account.js";
+
 
 /**
  * Lists all instances that have the current machine id.
