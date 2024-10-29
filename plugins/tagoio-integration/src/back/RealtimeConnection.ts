@@ -1,6 +1,6 @@
 import os from "node:os";
 import { URLSearchParams } from "node:url";
-import { core, helpers } from "@tago-io/tcore-sdk";
+import { core, helpers, pluginStorage } from "@tago-io/tcore-sdk";
 import { cache } from "./Global.ts";
 import { getMachineID } from "./Helpers.ts";
 import EventSource from "eventsource";
@@ -20,10 +20,15 @@ function startRealtimeCommunication(token: string) {
 
   const channel = "commands";
   const params = new URLSearchParams({ token, channel });
-  const url = `https://sse.tago.io/events?${params.toString()}`;
+  const url = `${process.env.TAGOIO_SSE}/events?${params.toString()}`;
 
   const connect = () => {
     events = new EventSource(url);
+
+    events.onopen = async () => {
+      const tcore = await pluginStorage.get("tcore").catch(() => null);
+      await emitStartData(token, tcore.id);
+    };
 
     events.onmessage = async (event) => {
       console.log("Received event", event);
@@ -94,7 +99,7 @@ async function emitStartData(token: string, connID: string) {
     tcore_start_time: tcoreStartTime,
     tcore_version: "0.7.0",
   };
-
+  console.log("Start data", connID);
   const response = await sendDataToTagoio(token, startData, connID, "update-tcore");
   console.info("Start data sent", response);
 }
