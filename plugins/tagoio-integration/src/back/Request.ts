@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getMachineID } from "./Helpers.ts";
-import TagoCores from "@tago-io/sdk/lib/modules/Resources/TagoCores";
+import TagoCores from "@tago-io/sdk/lib/modules/Resources/TagoCores.js";
 
 
 /**
