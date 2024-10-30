@@ -1,6 +1,6 @@
 import http from "node:http";
 import os from "node:os";
-import { core, helpers, pluginStorage } from "@tago-io/tcore-sdk";
+import { helpers, pluginStorage } from "@tago-io/tcore-sdk";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { type Request, type Response } from "express";
@@ -9,7 +9,7 @@ import { cache } from "./Global.ts";
 import { getMachineID } from "./Helpers.ts";
 import { createTCore, sendDataToTagoio } from "./Request.ts";
 import { closeRealtimeConnection, startRealtimeCommunication } from "./RealtimeConnection.ts";
-import Tags from "@tago-io/sdk/out/modules/Account/Tags";
+import { Server } from "socket.io";
 
 let server: http.Server | null = null;
 
@@ -36,6 +36,13 @@ function initServer() {
 
   server = http.createServer(app);
   server.listen("8999");
+
+  cache.serverIO = new Server(server);
+  cache.serverIO.on("connection", () => {
+    if (cache.events) {
+      cache.serverIO?.emit("status", { status: true });
+    }
+  });
 }
 
 /**
@@ -63,7 +70,6 @@ async function routeGetTCore(req: Request, res: Response) {
 async function routeSignOut(req: Request, res: Response) {
   await pluginStorage.delete("token");
   closeRealtimeConnection();
-  pluginStorage.delete("tcore");
   res.sendStatus(200);
 }
 
@@ -73,7 +79,7 @@ async function routeStartTCore(req: Request, res: Response) {
   const systemStartTime = new Date(Date.now() - os.uptime() * 1000);
   const tcoreStartTime = new Date(Date.now() - process.uptime() * 1000);
   const osInfo = await helpers.getOSInfo();
-  const profileToken = req.headers.token as string;
+  const profileToken = "p-".concat(req.headers.token as string);
   const item = await pluginStorage.get("tcore").catch(() => null);
 
   if (item?.token) {

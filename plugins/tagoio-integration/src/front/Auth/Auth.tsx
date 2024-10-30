@@ -11,8 +11,7 @@ import Otp from "./Otp/Otp.tsx";
 import OtpPicker from "./OtpPicker/OtpPicker.tsx";
 import Profiles from "./Profiles/Profiles.tsx";
 
-// const API_URL = process.env.TAGOIO_API;
-const API_URL = "http://localhost:3000";
+const API_URL = process.env.TAGOIO_API;
 
 /**
  * Props.
