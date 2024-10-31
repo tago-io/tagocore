@@ -34,7 +34,7 @@ function FormDivision(props: IFormDivision) {
   const { renderBorder, icon, title, description } = props;
 
   return (
-    <Style.Container renderBorder={renderBorder}>
+    <Style.Container $renderBorder={renderBorder}>
       {(icon || title) && (
         <div className="title">
           {icon && <Icon size="12px" icon={icon} />}

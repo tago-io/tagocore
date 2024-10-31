@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils.ts";
+import { render, screen } from "../../../utils/test-utils";
 import { EIcon } from "../Icon/Icon.types";
 import InnerNav from "./InnerNav.tsx";
 
@@ -20,9 +20,9 @@ test("renders title", () => {
   expect(screen.getByText("Hello world")).toBeInTheDocument();
 });
 
-test("renders icon", () => {
+test("renders icon", async () => {
   render(<InnerNav {...defaultProps} icon={EIcon.device} />);
-  expect(screen.getByText("device-icon-mock")).toBeInTheDocument();
+  expect(await screen.findByTestId("svg-device")).toBeInTheDocument();
 });
 
 test("renders description", () => {

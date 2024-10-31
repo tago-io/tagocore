@@ -1,30 +1,33 @@
-const os = {
-  networkInterfaces: jest.fn(() => ({})),
-  platform: jest.fn(() => ({})),
-  hostname: jest.fn(() => ({})),
-  version: jest.fn(() => ({})),
-};
+import { it, expect, vi, afterEach, describe } from "vitest";
+import os from "node:os";
 
-const si = {
-  system: jest.fn(() => ({})),
-  osInfo: jest.fn(() => ({})),
-  mem: jest.fn(() => ({})),
-  networkStats: jest.fn(() => ({})),
-  networkInterfaces: jest.fn(() => ({})),
-  get: jest.fn(() => ({})),
-  fsSize: jest.fn(() => ({})),
-  battery: jest.fn(() => ({})),
-};
+vi.mock("os", () => (
+  { default: {
+    networkInterfaces: vi.fn(() => ({})),
+    platform: vi.fn(() => ({})),
+    hostname: vi.fn(() => ({})),
+    version: vi.fn(() => ({})),
+  }
+  })
+);
 
-jest.mock("os", () => os);
-
-jest.mock("systeminformation", () => si);
+vi.mock("systeminformation", () => ({
+    system: vi.fn(() => ({})),
+    osInfo: vi.fn(() => ({})),
+    mem: vi.fn(() => ({})),
+    networkStats: vi.fn(() => ({})),
+    networkInterfaces: vi.fn(() => ({})),
+    get: vi.fn(() => ({})),
+    fsSize: vi.fn(() => ({})),
+    battery: vi.fn(() => ({})),
+  })
+);
 
 import { getLocalIPs, getPlatformCode } from "./Hardware.ts";
 
 afterEach(() => {
-  jest.restoreAllMocks();
-  jest.clearAllMocks();
+  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
 
 describe("Get local ip", () => {

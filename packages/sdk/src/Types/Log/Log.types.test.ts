@@ -1,6 +1,6 @@
-import { time } from "node:console";
 import type { ZodError } from "zod";
 import { zLogCreate, zLogList } from "./Log.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zLogCreate", () => {
   test("parses simple object", () => {

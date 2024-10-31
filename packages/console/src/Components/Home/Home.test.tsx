@@ -1,12 +1,13 @@
-jest.setMock("./RequestChart/RequestChart.tsx", "div");
+vi.mock("./Statistics/Statistics.tsx", () => ({
+  Statistics: vi.fn(),
+}));
 
 import { getSystemName } from "@tago-io/tcore-shared";
-import { render, screen } from "../../../utils/test-utils.ts";
+import { render, screen } from "../../../utils/test-utils";
 import Home from "./Home.tsx";
 
 test("renders without crashing", () => {
-  const fn = () => render(<Home />);
-  expect(fn).not.toThrowError();
+  render(<Home />);
 });
 
 test("sets document.title", () => {

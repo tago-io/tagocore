@@ -1,5 +1,6 @@
 import type { ZodError } from "zod";
 import { zAccountList, zAccountCreate, zAccountTokenCreate, zAccountListQuery } from "./Account.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zAccountList", () => {
   test("parses simple object", () => {

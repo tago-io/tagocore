@@ -9,6 +9,7 @@ import {
   zDeviceParameter,
   type IDeviceParameter,
 } from "./Device.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zDeviceParameter", () => {
   test("parses simple object", () => {

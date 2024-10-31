@@ -16,6 +16,7 @@ import {
   zPluginModuleListItem,
   zPluginModuleList,
 } from "./Plugin.types.ts";
+import { test, expect, describe } from "vitest";
 
 describe("zPluginModuleIDCombo", () => {
   test("valid id", () => {

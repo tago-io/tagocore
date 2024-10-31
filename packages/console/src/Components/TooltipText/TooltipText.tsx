@@ -38,7 +38,7 @@ function TooltipText(props: ITooltipTextProps) {
 
   return (
     <Tooltip icon={icon} text={tooltip}>
-      <Style.Container color={color} bold={bold} usesTooltip={usesTooltip}>
+      <Style.Container color={color} bold={bold} $usesTooltip={usesTooltip}>
         {children}
       </Style.Container>
     </Tooltip>

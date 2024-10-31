@@ -62,15 +62,15 @@ function Switch(props: ISwitchProps) {
   const icon = selected ? selectedText : unselectedText;
 
   return (
-    <Style.Container stretch onClick={() => onChange?.(!selected)}>
+    <Style.Container $stretch onClick={() => onChange?.(!selected)}>
       {props.children && <span className="text">{props.children}</span>}
 
       <Style.Rectangle
         size={size}
         selected={selected}
         disabled={props.disabled}
-        selectedColor={selectedColor}
-        unselectedColor={unselectedColor}
+        $selectedColor={selectedColor}
+        $unselectedColor={unselectedColor}
       >
         <Style.Slider selected={selected} />
         <Style.InnerText selected={selected}>{icon}</Style.InnerText>

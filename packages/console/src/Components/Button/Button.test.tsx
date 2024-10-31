@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "../../../utils/test-utils.ts";
+import { render, renderWithEvents, screen } from "../../../utils/test-utils";
 import Button from "./Button.tsx";
 
 test("renders without crashing", () => {
@@ -6,10 +6,10 @@ test("renders without crashing", () => {
   expect(fn).not.toThrowError();
 });
 
-test("calls onClick", () => {
-  const fn = jest.fn();
-  render(<Button onClick={fn} />);
-  fireEvent.click(screen.getByRole("button"));
+test("calls onClick", async () => {
+  const fn = vi.fn();
+  const { user } = renderWithEvents(<Button onClick={fn} />);
+  await user.click(screen.getByRole("button"));
   expect(fn).toHaveBeenCalled();
 });
 
@@ -32,5 +32,5 @@ test("respects color prop", () => {
   render(<Button color="red" />);
   const button = screen.getByRole("button");
   const style = window.getComputedStyle(button);
-  expect(style.backgroundColor).toEqual("red");
+  expect(style.backgroundColor).toEqual("rgb(255, 0, 0)");
 });

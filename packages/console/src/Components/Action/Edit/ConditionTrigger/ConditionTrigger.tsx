@@ -19,7 +19,8 @@ interface IConditionTrigger {
  */
 function ConditionTrigger(props: IConditionTrigger) {
   const { errors, conditionData, onChangeConditionData } = props;
-  const oneUnlock = conditionData.unlockConditions?.some((x) => x.variable || x.value) || false;
+  const oneUnlock =
+    conditionData.unlockConditions?.some((x) => x.variable || x.value) || false;
   const [unlockOpen, setUnlockOpen] = useState(() => oneUnlock);
 
   /**
@@ -50,8 +51,12 @@ function ConditionTrigger(props: IConditionTrigger) {
       <DeviceRadio
         device={conditionData.device}
         deviceType={conditionData.type as any}
-        onChangeDevice={(device) => onChangeConditionData({ ...conditionData, device })}
-        onChangeDeviceType={(type: any) => onChangeConditionData({ ...conditionData, type })}
+        onChangeDevice={(device) =>
+          onChangeConditionData({ ...conditionData, device })
+        }
+        onChangeDeviceType={(type: any) =>
+          onChangeConditionData({ ...conditionData, type })
+        }
         onChangeTag={(tag) => onChangeConditionData({ ...conditionData, tag })}
         tag={conditionData.tag}
         errors={errors}
@@ -68,7 +73,9 @@ function ConditionTrigger(props: IConditionTrigger) {
             name="Trigger"
             data={conditionData?.conditions || []}
             errors={errors?.conditions}
-            onChange={(e) => onChangeConditionData({ ...conditionData, conditions: e })}
+            onChange={(e) =>
+              onChangeConditionData({ ...conditionData, conditions: e })
+            }
           />
         </Accordion>
       </div>
@@ -87,7 +94,9 @@ function ConditionTrigger(props: IConditionTrigger) {
             name="Trigger"
             data={conditionData?.unlockConditions || []}
             errors={errors?.unlockConditions}
-            onChange={(e) => onChangeConditionData({ ...conditionData, unlockConditions: e })}
+            onChange={(e) =>
+              onChangeConditionData({ ...conditionData, unlockConditions: e })
+            }
           />
         </Accordion>
       </div>

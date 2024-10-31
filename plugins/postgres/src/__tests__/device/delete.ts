@@ -1,4 +1,5 @@
 import type { IDeviceCreate } from "@tago-io/tcore-sdk/types";
+import { describe, beforeEach, afterEach, it } from "vitest";
 import axios from "axios";
 
 let deviceID: string | undefined;
@@ -34,7 +35,7 @@ describe("Delete device", () => {
 
     expect(res?.data?.status).toBeTruthy();
 
-    const spy = jest.fn();
+    const spy = vi.fn();
     await axios.get(`/device/${id}`).catch(spy);
     expect(spy).toHaveBeenCalled();
   });

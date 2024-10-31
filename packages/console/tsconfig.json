@@ -14,7 +14,7 @@
     "outDir": "./build-tsc",
     "rootDir": "./src",
     "baseUrl": ".",
-    "jsx": "react-jsx",
+    "jsx": "react",
     "noImplicitAny": true,
     "declaration": true,
     "allowImportingTsExtensions": true,

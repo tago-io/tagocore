@@ -21,9 +21,7 @@ export const Container = styled.div`
   }
 `;
 
-/**
- */
-export const Buttons = styled.div<{ last: boolean }>`
+export const Buttons = styled.div<{ $last: boolean }>`
   flex: none;
   display: flex;
   justify-content: center;
@@ -33,7 +31,7 @@ export const Buttons = styled.div<{ last: boolean }>`
     margin-right: -1px;
 
     ${(props) =>
-      !props.last &&
+      !props.$last &&
       css`
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;

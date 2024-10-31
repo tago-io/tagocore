@@ -4,6 +4,11 @@ import type Module from "../Module/Module.ts";
 import Validator from "../Validator/Validator.ts";
 import { callbackInterval } from "../Worker/Worker.ts";
 import Plugin from "./Plugin.ts";
+import { test, expect, vi, afterAll } from "vitest";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+const __filename = fileURLToPath(import.meta.url);
+const dirname__ = dirname(__filename);
 
 afterAll(() => {
   if (callbackInterval) {
@@ -12,14 +17,14 @@ afterAll(() => {
 });
 
 test("throws error if package is not found", () => {
-  const folder = __dirname;
+  const folder = dirname__;
   const msg = "Unable to load plugin package.json";
   expect(() => new Plugin(folder)).toThrowError(msg);
 });
 
 test("calls Validator.validatePackageJSON", async () => {
-  const fn = jest.spyOn(Validator.prototype, "validatePackageJSON");
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin4");
+  const fn = vi.spyOn(Validator.prototype, "validatePackageJSON");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin4");
   const plugin = new Plugin(folder);
   await plugin.start();
   expect(fn).toHaveBeenCalled();
@@ -27,7 +32,7 @@ test("calls Validator.validatePackageJSON", async () => {
 });
 
 test("sets properties correctly", () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin2");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin2");
   const plugin = new Plugin(folder);
   expect(plugin.description).toEqual("Description of plugin2");
   expect(plugin.id).toEqual("27eea77f2d965a9a9d91db45b35d2aa9");
@@ -45,24 +50,24 @@ test("sets properties correctly", () => {
 });
 
 test("loads full_description correctly", () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin3");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin3");
   const plugin = new Plugin(folder);
   expect(plugin.fullDescription).toEqual("# Hello World\n");
 });
 
 test("throws error if full_description file doesn't exist", () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin8");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin8");
   expect(() => new Plugin(folder)).toThrowError(/ENOENT/g);
 });
 
 test("has correct initial state", () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin3");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin3");
   const plugin = new Plugin(folder);
   expect(plugin.state).toEqual("idle");
 });
 
 test("starts a simple plugin", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin4");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin4");
   const plugin = new Plugin(folder);
   await plugin.start();
   expect(plugin.state).toEqual("started");
@@ -80,7 +85,7 @@ test("starts a simple plugin", async () => {
 });
 
 test("throws when attempting to start an already started plugin", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin4");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin4");
   const plugin = new Plugin(folder);
   await plugin.start();
   try {
@@ -93,7 +98,7 @@ test("throws when attempting to start an already started plugin", async () => {
 });
 
 test("gracefully stops a simple plugin", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin4");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin4");
   const plugin = new Plugin(folder);
   await plugin.start();
   await plugin.stop();
@@ -107,7 +112,7 @@ test("gracefully stops a simple plugin", async () => {
 });
 
 test("loads a plugin that has just an error", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin5");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin5");
   const plugin = new Plugin(folder);
   const error = "Invalid database port";
   await plugin.start().catch((e) => expect(e.message).toEqual(error));
@@ -120,7 +125,7 @@ test("loads a plugin that has just an error", async () => {
 });
 
 test("loads a plugin that has an error after a module definition", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin6");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin6");
   const plugin = new Plugin(folder);
   const error = "Invalid database port";
   await plugin.start().catch((e) => expect(e.message).toEqual(error));
@@ -138,7 +143,7 @@ test("loads a plugin that has an error after a module definition", async () => {
 });
 
 test("loads a plugin that has an error in a module.onLoad call", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin9");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin9");
   const plugin = new Plugin(folder);
   await plugin.start();
 
@@ -155,7 +160,7 @@ test("loads a plugin that has an error in a module.onLoad call", async () => {
 });
 
 test("only returns after all modules were loaded", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin10");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin10");
   const plugin = new Plugin(folder);
   await plugin.start();
 
@@ -178,7 +183,7 @@ test("only returns after all modules were loaded", async () => {
 });
 
 test("stops plugin execution without waiting for onDestroy", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin11");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin11");
   const plugin = new Plugin(folder);
   await plugin.start();
 
@@ -197,7 +202,7 @@ test("stops plugin execution without waiting for onDestroy", async () => {
 });
 
 test("stops plugin execution waiting for onDestroy", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin11");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin11");
   const plugin = new Plugin(folder);
   await plugin.start();
 
@@ -216,7 +221,7 @@ test("stops plugin execution waiting for onDestroy", async () => {
 });
 
 test("sets message property of module correctly", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin12");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin12");
   const plugin = new Plugin(folder);
   plugins.set(plugin.id, plugin);
   await plugin.start();
@@ -230,7 +235,7 @@ test("sets message property of module correctly", async () => {
 });
 
 test("shuts down plugin when disabling it", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin12");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin12");
   const plugin = new Plugin(folder);
   await plugin.start();
   await plugin.disable();
@@ -244,7 +249,7 @@ test("shuts down plugin when disabling it", async () => {
 });
 
 test("removes error when disabling plugin", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin5");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin5");
   const plugin = new Plugin(folder);
   await plugin.start().catch(() => null);
 
@@ -257,7 +262,7 @@ test("removes error when disabling plugin", async () => {
 });
 
 test("ignores disable if already disabled", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin12");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin12");
   const plugin = new Plugin(folder);
   await plugin.start();
   await plugin.disable();
@@ -269,7 +274,7 @@ test("ignores disable if already disabled", async () => {
 });
 
 test("starts plugin when enabling it", async () => {
-  const folder = path.join(__dirname, "..", "__mocks__", "plugin12");
+  const folder = path.join(dirname__, "..", "__mocks__", "plugin12");
   const plugin = new Plugin(folder);
   await plugin.start();
   await plugin.disable();

@@ -5,7 +5,7 @@ import { ESwitchSize } from "./Switch.types";
 /**
  * Main style.
  */
-export const Container = styled.div<{ stretch?: boolean }>`
+export const Container = styled.div<{ $stretch?: boolean }>`
   display: inline-flex;
   align-items: center;
   cursor: pointer;
@@ -16,7 +16,7 @@ export const Container = styled.div<{ stretch?: boolean }>`
 
   ${(props) =>
     // stretch to fill remaining size
-    props.stretch &&
+    props.$stretch &&
     css`
       display: flex;
       flex: 1;
@@ -33,8 +33,8 @@ export const Container = styled.div<{ stretch?: boolean }>`
 export const Rectangle = styled.button<{
   selected?: boolean;
   size?: ESwitchSize;
-  selectedColor?: string;
-  unselectedColor?: string;
+  $selectedColor?: string;
+  $unselectedColor?: string;
 }>`
   height: ${(props) => (props.size === ESwitchSize.big ? 33 : 20)}px;
   width: ${(props) => (props.size === ESwitchSize.big ? 105 : 45)}px;
@@ -47,7 +47,8 @@ export const Rectangle = styled.button<{
   cursor: pointer;
   display: flex;
   align-items: center;
-  background: ${(props) => (props.selected ? props.selectedColor : props.unselectedColor)};
+  background: ${(props) =>
+    props.selected ? props.$selectedColor : props.$unselectedColor};
 
   :disabled {
     pointer-events: none;
@@ -85,7 +86,9 @@ export const InnerText = styled.span<{ selected?: boolean }>`
   text-overflow: ellipsis;
   font-size: ${fonts.default};
   position: relative;
-  transition: transform 0.15s, left 0.25s;
+  transition:
+    transform 0.15s,
+    left 0.25s;
   color: white;
   display: inline-block;
 
