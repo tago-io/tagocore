@@ -219,7 +219,7 @@ function Details(props: IDetailsProps) {
               tooltip="Which TagoIO Cloud Profile is associated to this TagoCore instance."
             >
               <div className="inner-profile">
-                <Input value={props.tcore.profile_name} readOnly />
+                <Input value={props.tcore.profile} readOnly />
                 {!props.tcore.cluster && (
                   <Button
                     disabled={signingOut}
