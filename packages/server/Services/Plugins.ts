@@ -156,7 +156,7 @@ async function getInstalledInsidePlugins(
     );
     const isInstalledDatabasePlugin =
       settings.database_plugin?.split(":")[0] === md5(getPackage.name);
-    const isDatabase = getPackage?.tcore?.types?.includes("sqlite");
+    const isDatabase = getPackage?.tcore?.types?.includes("database");
     const isStore = getPackage?.tcore?.store;
 
     if (

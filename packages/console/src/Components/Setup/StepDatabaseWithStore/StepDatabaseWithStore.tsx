@@ -43,7 +43,7 @@ function StepDatabaseWithStore(props: any) {
   });
   const { data: platform } = useApiRequest<string>("/hardware/platform");
 
-  const installedListFiltered = installedList?.filter((x) => !x.error) || [];
+  const installedListFiltered = installedList;//installedList?.filter((x) => !x.error) || [];
 
   const loading = !installedListFiltered; // || !storeList;
 
@@ -103,7 +103,7 @@ function StepDatabaseWithStore(props: any) {
   /**
    */
   const confirm = useCallback(async () => {
-    const installed = installedListFiltered?.some((x) => x.id === selectedItem?.id && !x.error);
+    const installed = installedListFiltered?.some((x) => x.id === selectedItem?.id);
     if (!installed) {
       try {
         setButtonsDisabled(true);
@@ -253,18 +253,6 @@ function StepDatabaseWithStore(props: any) {
               value={filter}
               disabled={loading}
             />
-
-            <Tooltip text="Install local plugin">
-              <Button onClick={activateModalFile}>
-                <Icon size="18px" icon={EIcon["file-arrow-up"]} />
-              </Button>
-            </Tooltip>
-
-            <Tooltip text="Download from URL">
-              <Button onClick={activateModalURL}>
-                <Icon size="18px" icon={EIcon["globe-americas"]} />
-              </Button>
-            </Tooltip>
           </div>
 
           {loading && <Loading />}
@@ -272,18 +260,6 @@ function StepDatabaseWithStore(props: any) {
           <div className="plugin-list">{storePluginList.map(renderItem)}</div>
         </Style.Content>
       </SetupForm>
-
-      {modalUpload && (
-        <ModalUploadPlugin
-          file={uploadedFile as File}
-          onClose={deactivateModalFile}
-          onUpload={activateModalInstall}
-        />
-      )}
-
-      {modalURL && (
-        <ModalDownloadFromURL onClose={deactivateModalURL} onConfirm={activateModalInstall} />
-      )}
 
       {modalInstall && (
         <ModalInstallPlugin
