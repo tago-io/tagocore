@@ -1,4 +1,4 @@
-{
+  {
   "name": "@tago-io/tcore-plugin-filesystem-local",
   "version": "0.0.1",
   "private": true,
@@ -6,7 +6,7 @@
   "type": "module",
   "tcore": {
     "name": "Local Disk Filesystem",
-    "types": ["filesystem"],
+    "types": ["filesystem", "default"],
     "icon": "./assets/icon.png",
     "short_description": "Allows users to select files and folders in the server's filesystem.",
     "full_description": "./README.md",

@@ -32,7 +32,7 @@ function Banner(props: IBannerProps) {
   const { data: installedPlugins } =
     useApiRequest<Array<string>>("/plugins/installed");
   const { plugin } = props;
-  const { id, logo_url, name, publisher, short_description, compatibility } =
+  const { id, logo_url, name, publisher, short_description, compatibility, types } =
     plugin;
 
   const [isInstalled, setIsInstalled] = useState(
@@ -112,6 +112,7 @@ function Banner(props: IBannerProps) {
    */
   const renderInstall = () => {
     const disabled = isIncompatible || isInstalled;
+    const defaultPlugin = types?.includes("default");
 
     if (isInstalled) {
       return (
@@ -130,6 +131,18 @@ function Banner(props: IBannerProps) {
             <span>Deactivate</span>
           </Button>
         </Style.Install>
+      );
+    }
+
+    if (defaultPlugin) {
+      return (
+        <Tooltip text={""}>
+        <Style.Install disabled={true}>
+          <Button type={EButton.primary}>
+            Default Plugin
+          </Button>
+        </Style.Install>
+      </Tooltip>
       );
     }
 
