@@ -43,9 +43,9 @@ function StepDatabaseWithStore(props: any) {
   });
   const { data: platform } = useApiRequest<string>("/hardware/platform");
 
-  const installedListFiltered = installedList;//installedList?.filter((x) => !x.error) || [];
+  const installedListFiltered = installedList;
 
-  const loading = !installedListFiltered; // || !storeList;
+  const loading = !installedListFiltered;
 
   /**
    * Opens the file selector modal.
