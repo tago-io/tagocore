@@ -34,7 +34,6 @@ function startRealtimeCommunication(token: string) {
       await emitStartData(token, tcore.id);
       pingFunction = setInterval(async () => {
         await emitStartData(token, tcore.id);
-        console.log("enviou");
       }, pingInterval);
     };
 
