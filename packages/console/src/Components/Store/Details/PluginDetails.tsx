@@ -88,7 +88,6 @@ function PluginDetails() {
           categories={plugin.categories || []}
           classTypes={plugin.class_types || []}
           permissions={plugin.permissions || []}
-          platforms={plugin.platforms || []}
           publishDate={plugin.created_at}
           publisherName={plugin.publisher?.name}
           publisherDomain={plugin.publisher.domain}

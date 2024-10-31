@@ -10,7 +10,11 @@
     "icon": "./assets/icon.png",
     "cluster": true,
     "types": ["database"],
-    "permissions": ["action", "analysis", "device-data", "device"]
+    "permissions": ["action", "analysis", "device-data", "device"],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
   "scripts": {
     "migrate": "knex migrate:make --client=mysql --migrations-directory=src/Migrations"

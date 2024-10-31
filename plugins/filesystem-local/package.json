@@ -8,10 +8,15 @@
     "name": "Local Disk Filesystem",
     "types": ["filesystem"],
     "icon": "./assets/icon.png",
+    "short_description": "Allows users to select files and folders in the server's filesystem.",
     "full_description": "./README.md",
     "hidden": true,
     "cluster": true,
-    "permissions": []
+    "permissions": [],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
   "dependencies": {
   }

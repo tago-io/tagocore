@@ -37,6 +37,7 @@ interface IPluginPackage {
   full_description_url: string;
   fullPath: string;
   icon: string;
+  permissions: string[];
   publisher: {
     name: string;
     domain: string;
@@ -226,6 +227,7 @@ export async function getAllInsidePlugins() {
           logo_url: `/images/${md5(pluginPackage.name)}/icon`,
           fullPath: fullPath,
           icon: pluginPackage.tcore.icon,
+          permissions: pluginPackage.tcore.permissions,
           publisher: {
             name: pluginPackage.tcore.publisher?.name,
             domain: pluginPackage.tcore.publisher?.domain,

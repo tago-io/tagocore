@@ -19,7 +19,11 @@
       "device",
       "action",
       "device-data"
-    ]
+    ],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
   "dependencies": {
   },
