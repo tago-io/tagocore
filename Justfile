@@ -12,7 +12,10 @@ linter:
   @npx @biomejs/biome check
 
 test *args="":
-  @npx vitest {{args}}
+  @npx vitest run {{args}}
+
+test-watch *args="":
+  @npx vitest watch {{args}}
 
 build-console:
   just _pre-build
