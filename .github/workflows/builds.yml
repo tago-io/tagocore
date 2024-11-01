@@ -35,3 +35,5 @@ jobs:
           file: Dockerfile
           platforms: ${{ matrix.platform }}
           outputs: type=local,dest=./output/${{ matrix.platform }}
+          build-args:
+            BUILD_PLATFORM=${{ matrix.platform }}

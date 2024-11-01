@@ -1,5 +1,9 @@
 FROM node:22-bookworm-slim
 
+# Def
+ARG BUILD_PLATFORM="linux/arm64/v8"
+ENV BUILD_PLATFORM=$BUILD_PLATFORM
+
 # Set the working directory
 WORKDIR /tagocore
 
@@ -9,13 +13,13 @@ COPY . .
 # Set environment variables
 ENV JUST_VERSION=1.36.0
 
-# RUN node just_bin.mjs ${JUST_VERSION} && exit 1
+# RUN node just_bin.mjs ${JUST_VERSION} ${BUILD_PLATFORM} && exit 1
 
 # Install distro libs, download and install 'just', and clean up in a single RUN statement
 RUN apt update && \
     apt install -y curl netcat-openbsd && \
     rm -rf /var/lib/apt/lists/* && \
-    export JUST_FILENAME=$(node just_bin.mjs ${JUST_VERSION}) && \
+    export JUST_FILENAME=$(node just_bin.mjs ${JUST_VERSION} ${BUILD_PLATFORM}) && \
     curl -L -o just.tar.gz https://github.com/casey/just/releases/download/${JUST_VERSION}/$JUST_FILENAME && \
     tar -xzf just.tar.gz && \
     mv just /usr/local/bin/just && \
