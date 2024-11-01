@@ -30,14 +30,22 @@ function Network(props: INetworkProps) {
         <div className="data">
           <h3>{name}</h3>
           <span className="ip">{ip}</span>
-          <span className="description">Transferred: {formatBytes(bytesTransferred)}</span>
-          <span className="description">Dropped: {formatBytes(bytesDropped)}</span>
+          <span className="description">
+            Transferred: {formatBytes(bytesTransferred)}
+          </span>
+          <span className="description">
+            Dropped: {formatBytes(bytesDropped)}
+          </span>
         </div>
       </Style.Item>
     );
   };
 
-  return <Style.Container data-testid="home-network">{data.map(renderData)}</Style.Container>;
+  return (
+    <Style.Container data-testid="home-network">
+      {data.map(renderData)}
+    </Style.Container>
+  );
 }
 
 export default memo(Network);

@@ -152,7 +152,9 @@ function ResourceHistoryChart(props: IResourceHistoryChart) {
 
     for (let i = 0; i <= 15; i++) {
       const p = statistics?.find((x) => {
-        const diff = Math.floor(Interval.fromDateTimes(new Date(x.time), now).length("minute"));
+        const diff = Math.floor(
+          Interval.fromDateTimes(new Date(x.time), now).length("minute"),
+        );
         return i === diff;
       });
 

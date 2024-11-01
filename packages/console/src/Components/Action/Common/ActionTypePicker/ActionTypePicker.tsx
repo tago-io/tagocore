@@ -1,9 +1,12 @@
+import type {
+  IPluginConfigField,
+  IPluginModuleList,
+} from "@tago-io/tcore-sdk/types";
 import { useCallback, useEffect, useState } from "react";
-import type { IPluginConfigField, IPluginModuleList } from "@tago-io/tcore-sdk/types";
+import { useApiRequest } from "../../../../index.ts";
 import Icon from "../../../Icon/Icon.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import OptionsPicker from "../../../OptionsPicker/OptionsPicker.tsx";
-import { useApiRequest } from "../../../../index.ts";
 import * as Style from "./ActionTypePicker.style";
 
 interface IOption {
@@ -25,7 +28,8 @@ const defaultOptions: IOption[] = [
     name: "Run Analysis",
   },
   {
-    description: "Will send a POST request to an endpoint whenever this action is triggered",
+    description:
+      "Will send a POST request to an endpoint whenever this action is triggered",
     icon: EIcon["network-wired"],
     id: "post",
     name: "Post data to endpoint using HTTP",
@@ -69,9 +73,12 @@ interface IActionTypePicker {
  * Picker for the type of action.
  */
 function ActionTypePicker(props: IActionTypePicker) {
-  const { data: actionTypes } = useApiRequest<IPluginModuleList>("/module?type=action-type");
+  const { data: actionTypes } = useApiRequest<IPluginModuleList>(
+    "/module?type=action-type",
+  );
   const { error, optionsPosition } = props;
-  const isSchedule = props.triggerID === "schedule" || props.triggerID === "interval";
+  const isSchedule =
+    props.triggerID === "schedule" || props.triggerID === "interval";
   const [options] = useState([...defaultOptions]);
 
   const mappedPluginOptions: IOption[] = actionTypes?.map((x) => ({
@@ -101,7 +108,11 @@ function ActionTypePicker(props: IActionTypePicker) {
       <Style.Item>
         <div className="content">
           <div className="icon-container">
-            {isModule ? renderPluginImage(item) : <Icon icon={item.icon as EIcon} size="25px" />}
+            {isModule ? (
+              renderPluginImage(item)
+            ) : (
+              <Icon icon={item.icon as EIcon} size="25px" />
+            )}
           </div>
 
           <div className="info">
@@ -123,7 +134,7 @@ function ActionTypePicker(props: IActionTypePicker) {
       const response = allOptions.find((x) => x.id === id);
       return response;
     },
-    [options, mappedPluginOptions]
+    [options, mappedPluginOptions],
   );
 
   /**
@@ -148,7 +159,7 @@ function ActionTypePicker(props: IActionTypePicker) {
         );
       });
     },
-    [isSchedule, options, mappedPluginOptions]
+    [isSchedule, options, mappedPluginOptions],
   );
 
   useEffect(() => {

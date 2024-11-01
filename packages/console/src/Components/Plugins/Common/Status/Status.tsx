@@ -48,7 +48,8 @@ function Status(props: IStatusProps) {
       }, 350);
 
       return () => clearTimeout(timeout.current);
-    }if (runAgain.current) {
+    }
+    if (runAgain.current) {
       runAgain.current = false;
       setRunningAnimation(true);
     }

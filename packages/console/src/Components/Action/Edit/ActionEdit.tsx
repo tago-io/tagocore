@@ -6,21 +6,21 @@ import {
   zTags,
 } from "@tago-io/tcore-sdk/types";
 import cloneDeep from "lodash.clonedeep";
+import { observer } from "mobx-react";
 import { useCallback, useRef, useState } from "react";
 import { useMatch } from "react-router";
 import { useTheme } from "styled-components";
-import { observer } from "mobx-react";
 import { z } from "zod";
 import normalizeTags from "../../../Helpers/normalizeTags.ts";
-import EditPage from "../../EditPage/EditPage.tsx";
-import { EIcon } from "../../Icon/Icon.types";
-import Switch from "../../Switch/Switch.tsx";
+import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
 import deleteAction from "../../../Requests/deleteAction.ts";
-import TagsTab from "../../Tags/TagsTab.tsx";
 import editAction from "../../../Requests/editAction/editAction.ts";
 import buildZodError from "../../../Validation/buildZodError.ts";
 import { useApiRequest } from "../../../index.ts";
-import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
+import EditPage from "../../EditPage/EditPage.tsx";
+import { EIcon } from "../../Icon/Icon.types";
+import Switch from "../../Switch/Switch.tsx";
+import TagsTab from "../../Tags/TagsTab.tsx";
 import {
   type IConditionData,
   type IScheduleData,
@@ -34,9 +34,9 @@ import {
   zFrontScheduleData,
 } from "../Action.interface";
 import ActionTab from "./ActionTab/ActionTab.tsx";
-import MoreTab from "./MoreTab/MoreTab.tsx";
 import { convertActionFromAPI } from "./Logic/convertActionFromAPI.ts";
 import { convertActionToAPI } from "./Logic/convertActionToAPI.ts";
+import MoreTab from "./MoreTab/MoreTab.tsx";
 
 /**
  * The Action' edit page.

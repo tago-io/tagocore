@@ -1,4 +1,4 @@
-import type { IDeviceData, IDevice } from "@tago-io/tcore-sdk/types";
+import type { IDevice, IDeviceData } from "@tago-io/tcore-sdk/types";
 import { memo, useCallback, useState } from "react";
 import Button from "../../../Button/Button.tsx";
 import { EButton } from "../../../Button/Button.types";

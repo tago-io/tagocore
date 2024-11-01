@@ -13,14 +13,21 @@ class ActionTriggerModule extends TCoreModule {
    * Called when this action type is triggered.
    * This will decide if the action should be executed or not.
    */
-  public async onCall(actionID: TGenericID, values: any, data: any): Promise<void> {
+  public async onCall(
+    actionID: TGenericID,
+    values: any,
+    data: any,
+  ): Promise<void> {
     return Promise.resolve();
   }
 
   /**
    * Called when the triggers of an action change.
    */
-  public async onTriggerChange(actionID: TGenericID, trigger: any): Promise<void> {
+  public async onTriggerChange(
+    actionID: TGenericID,
+    trigger: any,
+  ): Promise<void> {
     //
   }
 }

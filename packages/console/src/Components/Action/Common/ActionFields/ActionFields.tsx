@@ -3,11 +3,11 @@ import FlexRow from "../../../FlexRow/FlexRow.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import Input from "../../../Input/Input.tsx";
+import PluginConfigFields from "../../../Plugins/Common/PluginConfigFields/PluginConfigFields.tsx";
 import Switch from "../../../Switch/Switch.tsx";
 import ActionTypePicker from "../ActionTypePicker/ActionTypePicker.tsx";
 import HttpHeaders from "../HttpHeaders/HttpHeaders.tsx";
 import MultipleAnalysis from "../MultipleAnalysis/MultipleAnalysis.tsx";
-import PluginConfigFields from "../../../Plugins/Common/PluginConfigFields/PluginConfigFields.tsx";
 
 /**
  * Props.
@@ -52,7 +52,9 @@ function ActionFields(props: IActionFields) {
         >
           <Input
             autoComplete="new-password"
-            onChange={(e) => onChangeAction({ ...action, token: e.target.value })}
+            onChange={(e) =>
+              onChangeAction({ ...action, token: e.target.value })
+            }
             placeholder="enter a device's token"
             type="password"
             value={action?.token || ""}
@@ -94,7 +96,9 @@ function ActionFields(props: IActionFields) {
             <div style={{ marginRight: "10px", flex: 1 }}>
               <Input
                 value={action.fallback_token ?? ""}
-                onChange={(e) => onChangeAction({ ...action, fallback_token: e.target.value })}
+                onChange={(e) =>
+                  onChangeAction({ ...action, fallback_token: e.target.value })
+                }
                 disabled={!action.http_post_fallback_enabled}
                 placeholder="Fallback device token"
                 error={errors?.fallback_token}
@@ -144,7 +148,9 @@ function ActionFields(props: IActionFields) {
       <PluginConfigFields
         data={actionType.configs || []}
         values={action}
-        onChangeValues={(values) => onChangeAction({ ...values, type: actionType })}
+        onChangeValues={(values) =>
+          onChangeAction({ ...values, type: actionType })
+        }
         errors={errors}
       />
     );
@@ -156,11 +162,14 @@ function ActionFields(props: IActionFields) {
   const renderContent = () => {
     if (actionType?.id === "script") {
       return renderAnalysis();
-    }if (actionType?.id === "post") {
+    }
+    if (actionType?.id === "post") {
       return renderPost();
-    }if (actionType?.id === "tagoio") {
+    }
+    if (actionType?.id === "tagoio") {
       return renderTagoIO();
-    }if (actionType?.id) {
+    }
+    if (actionType?.id) {
       return renderCustomOption();
     }
     return null;

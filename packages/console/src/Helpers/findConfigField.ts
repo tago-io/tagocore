@@ -5,7 +5,7 @@ import { flattenConfigFields } from "@tago-io/tcore-shared";
  */
 function findConfigField(
   configs: IPluginConfigField[],
-  fieldID: string
+  fieldID: string,
 ): IPluginConfigField | null {
   const fields = flattenConfigFields(configs);
   for (const field of fields) {

@@ -18,13 +18,25 @@ interface ISetupFormProps {
 /**
  */
 function SetupForm(props: ISetupFormProps) {
-  const { onRenderAfterFooter, loading, description, buttons, title, children } = props;
+  const {
+    onRenderAfterFooter,
+    loading,
+    description,
+    buttons,
+    title,
+    children,
+  } = props;
 
   /**
    */
   const renderButton = (button: any, index: number) => {
     return (
-      <Button disabled={button.disabled} key={index} onClick={button.onClick} type={button.type}>
+      <Button
+        disabled={button.disabled}
+        key={index}
+        onClick={button.onClick}
+        type={button.type}
+      >
         {button.label}
       </Button>
     );

@@ -1,4 +1,5 @@
 import { DatabaseModule } from "@tago-io/tcore-sdk";
+import { destroyKnex, setupKnex } from "./Database/index.ts";
 import createAccount from "./Providers/Account/createAccount.ts";
 import createAccountToken from "./Providers/Account/createAccountToken.ts";
 import getAccountAmount from "./Providers/Account/getAccountAmount.ts";
@@ -62,13 +63,12 @@ import getHourlyStatistics from "./Providers/Statistic/getHourlyStatistics.ts";
 import getSummary from "./Providers/Summary/getSummary.ts";
 import getTagKeys from "./Providers/Tag/getTagKeys.ts";
 import configs from "./settings.ts";
-import { setupKnex, destroyKnex } from "./Database/index.ts";
 
 export const postgreSQL = new DatabaseModule({
-    id: "PostgreSQL",
-    name: "PostgreSQL",
-    configs,
-  });
+  id: "PostgreSQL",
+  name: "PostgreSQL",
+  configs,
+});
 
 postgreSQL.onLoad = setupKnex;
 postgreSQL.onDestroy = destroyKnex;

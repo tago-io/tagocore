@@ -1,8 +1,8 @@
+import { PLUGIN_STORE_PLUGIN_ID } from "@tago-io/tcore-shared";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import { PLUGIN_STORE_PLUGIN_ID } from "@tago-io/tcore-shared";
-import { EIcon, EmptyMessage, Loading, useApiRequest } from "../../../index.ts";
 import store from "../../../System/Store.ts";
+import { EIcon, EmptyMessage, Loading, useApiRequest } from "../../../index.ts";
 import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalMasterPassword.tsx";
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import StepDatabaseWithStore from "../StepDatabaseWithStore/StepDatabaseWithStore.tsx";
@@ -20,7 +20,7 @@ function StepDatabaseWrapper(props: any) {
     {
       method: "post",
       skip: !store.masterPassword,
-    }
+    },
   );
   const { onBack, onNext } = props;
 

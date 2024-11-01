@@ -5,7 +5,10 @@ import store from "../System/Store.ts";
 
 /**
  */
-async function editAnalysis(id: TGenericID, data: IAnalysisEdit): Promise<void> {
+async function editAnalysis(
+  id: TGenericID,
+  data: IAnalysisEdit,
+): Promise<void> {
   const account = new Account({ token: store.token });
   await account.analysis.edit(id, data as Partial<AnalysisInfo>);
 }

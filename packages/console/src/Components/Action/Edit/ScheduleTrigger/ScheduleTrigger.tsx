@@ -1,11 +1,11 @@
-import { type CSSProperties, useCallback, useEffect, useState } from "react";
 import * as cronstrue from "cronstrue";
+import { type CSSProperties, useCallback, useEffect, useState } from "react";
 import { EIcon } from "../../../../index.ts";
 import FormDivision from "../../../FormDivision/FormDivision.tsx";
 import Select from "../../../Select/Select.tsx";
 import TimezonePicker from "../../../TimezonePicker/TimezonePicker.tsx";
-import { getCronFromScheduleData } from "../Logic/getCronFromScheduleData.ts";
 import type { IScheduleData } from "../../Action.interface";
+import { getCronFromScheduleData } from "../Logic/getCronFromScheduleData.ts";
 import AdvancedCron from "./AdvancedCron/AdvancedCron.tsx";
 import BasicCron from "./BasicCron/BasicCron.tsx";
 import MinimumScheduleMessage from "./MinimumScheduleMessage.tsx";
@@ -51,7 +51,7 @@ function ScheduleTrigger(props: IScheduleTrigger) {
       }
       onChangeScheduleData({ ...scheduleData, [field]: value });
     },
-    [onChangeScheduleData, scheduleData]
+    [onChangeScheduleData, scheduleData],
   );
 
   useEffect(() => {
@@ -61,7 +61,8 @@ function ScheduleTrigger(props: IScheduleTrigger) {
   }, [scheduleData.cron]);
 
   const showExplanation =
-    cronExplanation && (scheduleData.canRender || scheduleData.recurrenceType === "advanced");
+    cronExplanation &&
+    (scheduleData.canRender || scheduleData.recurrenceType === "advanced");
 
   return (
     <>
@@ -76,7 +77,11 @@ function ScheduleTrigger(props: IScheduleTrigger) {
       {scheduleData.type === "schedule" && (
         <div style={{ position: "relative" }}>
           <Style.Header>
-            <FormDivision icon={EIcon["calendar-alt"]} title="Recurrence options" renderBorder />
+            <FormDivision
+              icon={EIcon["calendar-alt"]}
+              title="Recurrence options"
+              renderBorder
+            />
 
             <div className="right-side-options">
               <div style={timezoneContainerStyle}>
@@ -128,7 +133,8 @@ function ScheduleTrigger(props: IScheduleTrigger) {
 function getCronExplanation(cron: string) {
   try {
     let cronAsString = cronstrue.toString(cron);
-    cronAsString = cronAsString.charAt(0).toLowerCase() + cronAsString.substring(1);
+    cronAsString =
+      cronAsString.charAt(0).toLowerCase() + cronAsString.substring(1);
     return cronAsString;
   } catch (ex) {
     return "";

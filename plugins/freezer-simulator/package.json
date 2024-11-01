@@ -9,10 +9,7 @@
     "short_description": "Ice cream freezer that simulates internal temperature, door and compressor status",
     "full_description": "./README.md",
     "icon": "./assets/icon.png",
-    "keywords": [
-      "Raspberry",
-      "action"
-    ],
+    "keywords": ["Raspberry", "action"],
     "types": ["action-type", "action-trigger", "service"],
     "permissions": ["device", "device-data"],
     "publisher": {
@@ -23,6 +20,5 @@
   "dependencies": {
     "csv-parser": "3.0.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

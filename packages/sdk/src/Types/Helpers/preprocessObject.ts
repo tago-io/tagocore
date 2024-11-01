@@ -7,11 +7,11 @@ function preprocessObject(value: unknown): any {
   if (typeof value === "object") {
     return value;
   }
-    try {
-      return JSON.parse(value as string);
-    } catch (ex) {
-      return null;
-    }
+  try {
+    return JSON.parse(value as string);
+  } catch (ex) {
+    return null;
+  }
 }
 
 export default preprocessObject;

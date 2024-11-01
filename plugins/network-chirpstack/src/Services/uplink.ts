@@ -1,7 +1,7 @@
 import { core } from "@tago-io/tcore-sdk";
 import type { Request, Response } from "express";
-import type { IConfigParam } from "../types.ts";
 import sendResponse from "../lib/sendResponse.ts";
+import type { IConfigParam } from "../types.ts";
 
 interface IChirpstackPayload {
   applicationID: string;
@@ -41,7 +41,9 @@ async function getDevice(devEui: string) {
   if (!deviceList || !deviceList.length) {
     throw "Authorization Denied: Device EUI doesn't match any serial tag";
   }
-  const device = deviceList.find((x) => x.tags.find((tag) => tag.key === "serial" && tag.value === devEui));
+  const device = deviceList.find((x) =>
+    x.tags.find((tag) => tag.key === "serial" && tag.value === devEui),
+  );
   if (!device) {
     throw "Authorization Denied: Device EUI doesn't match any serial tag";
   }
@@ -57,16 +59,25 @@ async function getDevice(devEui: string) {
  * @param res - express res param
  * @returns {void}
  */
-async function uplinkService(config: IConfigParam, req: Request, res: Response) {
-  const authorization = req.headers["Authorization"] || req.headers["authorization"];
+async function uplinkService(
+  config: IConfigParam,
+  req: Request,
+  res: Response,
+) {
+  const authorization = req.headers.Authorization || req.headers.authorization;
   if (!authorization || authorization !== config.authorization_code) {
-    console.error(`[Network Server] Request refused, authentication is invalid: ${authorization}`);
-    return sendResponse(res, { body: "Invalid authorization header", status: 401 });
+    console.error(
+      `[Network Server] Request refused, authentication is invalid: ${authorization}`,
+    );
+    return sendResponse(res, {
+      body: "Invalid authorization header",
+      status: 401,
+    });
   }
 
   const data: IChirpstackPayload = req.body;
   if (!data.devEUI) {
-    console.error(`[Network Server] Request refused, body is invalid`);
+    console.error("[Network Server] Request refused, body is invalid");
     return sendResponse(res, { body: "Invalid body received", status: 401 });
   }
 

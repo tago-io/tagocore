@@ -1,5 +1,5 @@
 import type { IAccount, IPluginList } from "@tago-io/tcore-sdk/types";
-import { observable, makeObservable } from "mobx";
+import { makeObservable, observable } from "mobx";
 
 interface IStore {
   socketConnected?: boolean;

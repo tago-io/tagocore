@@ -9,15 +9,8 @@
     "full_description": "./README.md",
     "icon": "./assets/icon.png",
     "cluster": true,
-    "types": [
-      "database"
-    ],
-    "permissions": [
-      "action",
-      "analysis",
-      "device-data",
-      "device"
-    ],
+    "types": ["database"],
+    "permissions": ["action", "analysis", "device-data", "device"],
     "publisher": {
       "name": "TagoIO",
       "domain": "tago.io"

@@ -9,7 +9,9 @@ const nanoid = customAlphabet(hexAlphabet, 20);
  */
 export function generateResourceID(): string {
   const firstCase = String(Date.now()).slice(0, 2).split("").reverse().join("");
-  const secondCase = Buffer.from([Number(String(Date.now()).slice(2, 4))]).toString("hex");
+  const secondCase = Buffer.from([
+    Number(String(Date.now()).slice(2, 4)),
+  ]).toString("hex");
   return `${firstCase}${secondCase}${nanoid()}`;
 }
 

@@ -15,14 +15,14 @@ await build({
     deno: false,
   },
   package: {
-    "name": "@tago-io/tcore-sdk",
-    "version": "0.7.0",
-    "description": "TCore SDK for creating plugins",
-    "author": "Tago LLC",
-    "homepage": "https://github.com/tago-io/tcore",
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/tago-io/tcore"
+    name: "@tago-io/tcore-sdk",
+    version: "0.7.0",
+    description: "TCore SDK for creating plugins",
+    author: "Tago LLC",
+    homepage: "https://github.com/tago-io/tcore",
+    repository: {
+      type: "git",
+      url: "https://github.com/tago-io/tcore",
     },
   },
   // postBuild() {

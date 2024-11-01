@@ -6,7 +6,9 @@ import timezonesJSON from "./timezones.json";
  * Maps all the timezones to a better format.
  */
 const timezones = timezonesJSON.map((tz) => {
-  const correctOffset = [tz.offset.slice(0, 3), ":", tz.offset.slice(3)].join("");
+  const correctOffset = [tz.offset.slice(0, 3), ":", tz.offset.slice(3)].join(
+    "",
+  );
   return {
     id: tz.name,
     name: `(GMT${correctOffset}) ${tz.shortname}`,
@@ -46,9 +48,11 @@ function TimezonePicker(props: ITimezonePicker) {
   const onGetOptions = useCallback(async (query: string, page: number) => {
     if (page === 1) {
       const queryTrim = query.toLowerCase().trim();
-      return timezones.filter((x) => x.name.toLowerCase().trim().includes(queryTrim));
+      return timezones.filter((x) =>
+        x.name.toLowerCase().trim().includes(queryTrim),
+      );
     }
-      return [];
+    return [];
   }, []);
 
   /**

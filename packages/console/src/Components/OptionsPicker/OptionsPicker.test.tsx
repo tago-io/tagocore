@@ -1,6 +1,6 @@
-import { render, screen } from "../../../utils/test-utils";
-import { renderWithEvents } from "../../../utils/test-utils.tsx";
 import { waitFor } from "@testing-library/react";
+import { render, screen } from "../../../utils/test-utils.tsx";
+import { renderWithEvents } from "../../../utils/test-utils.tsx";
 import OptionsPicker from "./OptionsPicker.tsx";
 
 const defaultProps = {

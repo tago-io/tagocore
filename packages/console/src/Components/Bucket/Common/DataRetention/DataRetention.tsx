@@ -61,12 +61,14 @@ function DataRetention(props: IDataRetentionProps) {
         &nbsp;
         <span>
           This selection limits the storage for this device to{" "}
-          <b>1 Million data registers per {chunkPeriod}</b> (you cannot change this <b>period</b>).
-          But, you can always edit the retention from 0 to {max} {chunkPeriod}s.
+          <b>1 Million data registers per {chunkPeriod}</b> (you cannot change
+          this <b>period</b>). But, you can always edit the retention from 0 to{" "}
+          {max} {chunkPeriod}s.
           <br />
           <br />
-          The retention starts considering the current period - if you were to select &apos;0&apos;
-          months it would delete all data when a new month starts.&nbsp;
+          The retention starts considering the current period - if you were to
+          select &apos;0&apos; months it would delete all data when a new month
+          starts.&nbsp;
         </span>
       </>
     );
@@ -85,12 +87,14 @@ function DataRetention(props: IDataRetentionProps) {
         &nbsp;
         <span>
           This selection limits the storage for this device to{" "}
-          <b>1 Million data registers per {chunkPeriod}</b> (you cannot change this <b>period</b>).
-          But, you can always edit the retention from 0 to {max} {chunkPeriod}s.
+          <b>1 Million data registers per {chunkPeriod}</b> (you cannot change
+          this <b>period</b>). But, you can always edit the retention from 0 to{" "}
+          {max} {chunkPeriod}s.
           <br />
           <br />
-          The retention starts considering the current period - if you select &apos;0&apos; months
-          it will delete all data when a new month starts.&nbsp;
+          The retention starts considering the current period - if you select
+          &apos;0&apos; months it will delete all data when a new month
+          starts.&nbsp;
         </span>
       </>
     );
@@ -112,7 +116,8 @@ function DataRetention(props: IDataRetentionProps) {
                 onChange={(e) => {
                   if (
                     MAX_INPUT_VALUES[e.target.value] &&
-                    Number(data.chunk_retention) > MAX_INPUT_VALUES[e.target.value]
+                    Number(data.chunk_retention) >
+                      MAX_INPUT_VALUES[e.target.value]
                   ) {
                     data.chunk_retention = MAX_INPUT_VALUES[e.target.value];
                   }
@@ -162,16 +167,26 @@ function DataRetention(props: IDataRetentionProps) {
                   }
                 }}
                 onChange={(e) => {
-                  if (e.target.value.includes(".") || e.target.value.includes(",")) {
+                  if (
+                    e.target.value.includes(".") ||
+                    e.target.value.includes(",")
+                  ) {
                     // discard
-                  } else if (Number(e.target.value) > MAX_INPUT_VALUES[chunkPeriod]) {
-                    onChange("chunk_retention", String(MAX_INPUT_VALUES[chunkPeriod]));
+                  } else if (
+                    Number(e.target.value) > MAX_INPUT_VALUES[chunkPeriod]
+                  ) {
+                    onChange(
+                      "chunk_retention",
+                      String(MAX_INPUT_VALUES[chunkPeriod]),
+                    );
                   } else {
                     onChange("chunk_retention", e.target.value);
                   }
                 }}
                 placeholder={
-                  chunkPeriod ? `0-${MAX_INPUT_VALUES[chunkPeriod] || 30} ${chunkPeriod}s` : ""
+                  chunkPeriod
+                    ? `0-${MAX_INPUT_VALUES[chunkPeriod] || 30} ${chunkPeriod}s`
+                    : ""
                 }
                 type="number"
                 value={chunk_retention ?? ""}
@@ -181,7 +196,11 @@ function DataRetention(props: IDataRetentionProps) {
           </Col>
 
           <Col size="12">
-            {error && <ErrorMessage>You must select a Period and Retention</ErrorMessage>}
+            {error && (
+              <ErrorMessage>
+                You must select a Period and Retention
+              </ErrorMessage>
+            )}
           </Col>
         </Row>
       </FormGroup>
@@ -191,7 +210,8 @@ function DataRetention(props: IDataRetentionProps) {
           <AlertInfo type={EAlertInfo.info}>
             <Icon icon={EIcon["info-circle"]} />
             <span>
-              &nbsp; Data Retention is available only for the Optimized Device Data (Immutable).
+              &nbsp; Data Retention is available only for the Optimized Device
+              Data (Immutable).
             </span>
           </AlertInfo>
         </FormGroup>
@@ -201,8 +221,8 @@ function DataRetention(props: IDataRetentionProps) {
             {props.type === "create"
               ? renderAlertCreation()
               : props.type === "edit"
-              ? renderAlertEdit()
-              : null}
+                ? renderAlertEdit()
+                : null}
           </AlertInfo>
         </FormGroup>
       ) : null}

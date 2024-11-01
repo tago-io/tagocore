@@ -1,5 +1,10 @@
 import { getSystemName } from "@tago-io/tcore-shared";
-import { type KeyboardEvent, type MouseEvent, useCallback, useState } from "react";
+import {
+  type KeyboardEvent,
+  type MouseEvent,
+  useCallback,
+  useState,
+} from "react";
 import Checkbox from "../../../Checkbox/Checkbox.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
 import Input from "../../../Input/Input.tsx";
@@ -48,7 +53,7 @@ function ModalUninstallPlugin(props: IModalUninstallPluginProps) {
         window.location.reload();
       }
     },
-    [keepData, onConfirm, redirectTo]
+    [keepData, onConfirm, redirectTo],
   );
 
   /**
@@ -62,13 +67,15 @@ function ModalUninstallPlugin(props: IModalUninstallPluginProps) {
         }
       }
     },
-    [confirm, value]
+    [confirm, value],
   );
 
   return (
     <Modal
       confirmButtonText="Yes, uninstall this plugin"
-      isConfirmButtonDisabled={buttonDisabled || value.toLowerCase() !== "uninstall"}
+      isConfirmButtonDisabled={
+        buttonDisabled || value.toLowerCase() !== "uninstall"
+      }
       isCancelButtonDisabled={buttonDisabled}
       onCancel={onClose}
       onClose={onClose}
@@ -78,7 +85,9 @@ function ModalUninstallPlugin(props: IModalUninstallPluginProps) {
     >
       <FormGroup>Do you really want to uninstall this plugin?</FormGroup>
 
-      <FormGroup label={`If you want to uninstall the plugin, type "uninstall"`}>
+      <FormGroup
+        label={`If you want to uninstall the plugin, type "uninstall"`}
+      >
         <Input
           autoFocus
           onChange={(e) => setValue(e.target.value)}
@@ -90,7 +99,10 @@ function ModalUninstallPlugin(props: IModalUninstallPluginProps) {
       </FormGroup>
 
       <FormGroup addMarginBottom={false}>
-        <Checkbox checked={keepData} onChange={(e) => setKeepData(e.target.checked)}>
+        <Checkbox
+          checked={keepData}
+          onChange={(e) => setKeepData(e.target.checked)}
+        >
           <TooltipText
             tooltip={`Checking this option prevents ${getSystemName()} from erasing settings related to this plugin`}
           >

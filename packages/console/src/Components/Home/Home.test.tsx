@@ -3,7 +3,8 @@ vi.mock("./Statistics/Statistics.tsx", () => ({
 }));
 
 import { getSystemName } from "@tago-io/tcore-shared";
-import { render, screen } from "../../../utils/test-utils";
+import { vi } from "vitest";
+import { render, screen } from "../../../utils/test-utils.tsx";
 import Home from "./Home.tsx";
 
 test("renders without crashing", () => {

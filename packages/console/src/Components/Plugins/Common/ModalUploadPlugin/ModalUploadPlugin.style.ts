@@ -15,7 +15,11 @@ const animationEffectProgressBar = keyframes`
 /**
  * Progress bar of the modal.
  */
-export const Progress = styled.div<{ done: boolean; error: boolean; value: number }>`
+export const Progress = styled.div<{
+  done: boolean;
+  error: boolean;
+  value: number;
+}>`
   width: 100%;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 5px;

@@ -1,6 +1,6 @@
+import type { ILiveInspectorMessage } from "@tago-io/tcore-sdk/types";
 import { memo, useCallback, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
-import type { ILiveInspectorMessage } from "@tago-io/tcore-sdk/types";
 import downloadFile from "../../../../Helpers/download.ts";
 import getDateTimeObject from "../../../../Helpers/getDateTimeObject.ts";
 import Button from "../../../Button/Button.tsx";
@@ -48,8 +48,11 @@ interface ILiveInspectorProps {
  */
 function LiveInspector(props: ILiveInspectorProps) {
   const [filter, setFilter] = useState("");
-  const [logsFiltered, setLogsFiltered] = useState<ILiveInspectorMessage[][]>([]);
-  const { enabled, limit, logs, onClear, onChangeEnabled, onChangeLimit } = props;
+  const [logsFiltered, setLogsFiltered] = useState<ILiveInspectorMessage[][]>(
+    [],
+  );
+  const { enabled, limit, logs, onClear, onChangeEnabled, onChangeLimit } =
+    props;
   const theme = useTheme();
 
   /**
@@ -98,7 +101,10 @@ function LiveInspector(props: ILiveInspectorProps) {
 
     const sorted = array
       .sort((a, b) => {
-        return new Date(b[0].timestamp).getTime() - new Date(a[0].timestamp).getTime();
+        return (
+          new Date(b[0].timestamp).getTime() -
+          new Date(a[0].timestamp).getTime()
+        );
       })
       .slice(0, limit);
 
@@ -170,7 +176,8 @@ function LiveInspector(props: ILiveInspectorProps) {
             <>
               <div>Nothing yet.</div>
               <div>
-                Press <Icon icon={EIcon.play} size="13px" color="green" /> to start the inspector.
+                Press <Icon icon={EIcon.play} size="13px" color="green" /> to
+                start the inspector.
               </div>
             </>
           )
@@ -207,7 +214,9 @@ function LiveInspector(props: ILiveInspectorProps) {
   const renderBody = () => {
     const hasLogs = Object.keys(logsFiltered).length > 0;
     return (
-      <Style.Body isEmpty={!hasLogs}>{hasLogs ? renderLogs() : renderEmptyMessage()}</Style.Body>
+      <Style.Body isEmpty={!hasLogs}>
+        {hasLogs ? renderLogs() : renderEmptyMessage()}
+      </Style.Body>
     );
   };
 

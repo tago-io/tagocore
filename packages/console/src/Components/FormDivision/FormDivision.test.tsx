@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils";
+import { render, screen } from "../../../utils/test-utils.tsx";
 import { EIcon } from "../Icon/Icon.types";
 import FormDivision from "./FormDivision.tsx";
 

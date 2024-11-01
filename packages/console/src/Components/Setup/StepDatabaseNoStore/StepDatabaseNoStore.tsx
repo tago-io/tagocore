@@ -1,8 +1,8 @@
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import { Button, EButton, EIcon, Icon } from "../../../index.ts";
 import selectPluginFile from "../../../Helpers/selectPluginFile.ts";
 import store from "../../../System/Store.ts";
+import { Button, EButton, EIcon, Icon } from "../../../index.ts";
 import ModalDownloadFromURL from "../../Plugins/Common/ModalDownloadFromURL/ModalDownloadFromURL.tsx";
 import ModalInstallPlugin from "../../Plugins/Common/ModalInstallPlugin/ModalInstallPlugin.tsx";
 import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalMasterPassword.tsx";
@@ -110,14 +110,22 @@ function StepDatabaseNoStore(props: any) {
         <Style.Content>
           <Icon icon={EIcon.database} size="50px" color="rgba(0, 0, 0, 0.2)" />
 
-          <span className="to-continue">To continue, you must load a .tcore file</span>
+          <span className="to-continue">
+            To continue, you must load a .tcore file
+          </span>
 
           <div className="decision">
-            <Button onClick={() => setAction("local-file")} type={EButton.primary}>
+            <Button
+              onClick={() => setAction("local-file")}
+              type={EButton.primary}
+            >
               Select local file
             </Button>
             <span>or</span>
-            <Button onClick={() => setAction("download-url")} type={EButton.primary}>
+            <Button
+              onClick={() => setAction("download-url")}
+              type={EButton.primary}
+            >
               Download from URL
             </Button>
           </div>
@@ -133,12 +141,19 @@ function StepDatabaseNoStore(props: any) {
       )}
 
       {modalURL && (
-        <ModalDownloadFromURL onClose={deactivateModalURL} onConfirm={activateModalInstall} />
+        <ModalDownloadFromURL
+          onClose={deactivateModalURL}
+          onConfirm={activateModalInstall}
+        />
       )}
 
-      {modalInstall && <ModalInstallPlugin source={source} onClose={deactivateModalInstall} />}
+      {modalInstall && (
+        <ModalInstallPlugin source={source} onClose={deactivateModalInstall} />
+      )}
 
-      {action && !store.masterPassword && <ModalMasterPassword onClose={() => setAction("")} />}
+      {action && !store.masterPassword && (
+        <ModalMasterPassword onClose={() => setAction("")} />
+      )}
     </>
   );
 }

@@ -1,8 +1,8 @@
-import path from "node:path";
 import fs from "node:fs";
 import os from "node:os";
-import si from "systeminformation";
+import path from "node:path";
 import type { IPluginFilesystemItem } from "@tago-io/tcore-sdk/types";
+import si from "systeminformation";
 
 /**
  * Checks if a file path is directory or not.
@@ -21,7 +21,10 @@ async function isDirectory(file: string): Promise<boolean> {
  * Receives an array of paths and adds some characteristics to each file in
  * the path, such as name, full path, and if the path is a folder or not.
  */
-async function transformFiles(root: string, paths: string[]): Promise<IPluginFilesystemItem[]> {
+async function transformFiles(
+  root: string,
+  paths: string[],
+): Promise<IPluginFilesystemItem[]> {
   const transformed: any[] = [];
 
   for (const item of paths) {
@@ -44,10 +47,9 @@ async function getMounts() {
     // windows
     const mounts = await si.fsSize();
     return mounts.map((x) => x.mount);
-  } else {
-    // unix-like
-    return ["/"];
   }
+  // unix-like
+  return ["/"];
 }
 
 /**
@@ -63,7 +65,8 @@ async function resolveFolder(folderPath: string) {
     filterArray.unshift("/");
   }
 
-  const isExistingFile = folderPath && fs.existsSync(folderPath) && !(await isDirectory(folderPath));
+  const isExistingFile =
+    folderPath && fs.existsSync(folderPath) && !(await isDirectory(folderPath));
   if (isExistingFile) {
     // if the folder path is pointing to a file, we must show the parent folder of the file
     filterArray.pop();
@@ -80,11 +83,15 @@ async function resolveFolder(folderPath: string) {
       accumulatedString += path.sep;
     }
 
-    const subFolders = await fs.promises.readdir(accumulatedString).catch(() => []);
+    const subFolders = await fs.promises
+      .readdir(accumulatedString)
+      .catch(() => []);
 
     const temp = last?.find((x) => x.name === folder);
     if (temp) {
-      temp.children = await transformFiles(accumulatedString, subFolders).catch(() => []);
+      temp.children = await transformFiles(accumulatedString, subFolders).catch(
+        () => [],
+      );
       last = temp.children;
     }
   }
@@ -94,6 +101,6 @@ async function resolveFolder(folderPath: string) {
   }
 
   return roots;
-};
+}
 
 export { resolveFolder };

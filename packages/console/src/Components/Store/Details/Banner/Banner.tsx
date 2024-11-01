@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
+import { getLocalStorage } from "../../../../Helpers/localStorage.ts";
 import useApiRequest from "../../../../Helpers/useApiRequest.ts";
-import Publisher from "../../../Plugins/Common/Publisher/Publisher.tsx";
+import store from "../../../../System/Store.ts";
 import Button from "../../../Button/Button.tsx";
 import { EButton } from "../../../Button/Button.types";
 import Icon from "../../../Icon/Icon.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
-import Tooltip from "../../../Tooltip/Tooltip.tsx";
 import PluginImage from "../../../PluginImage/PluginImage.tsx";
-import { getLocalStorage } from "../../../../Helpers/localStorage.ts";
-import store from "../../../../System/Store.ts";
+import Publisher from "../../../Plugins/Common/Publisher/Publisher.tsx";
+import Tooltip from "../../../Tooltip/Tooltip.tsx";
 import * as Style from "./Banner.style";
 
 /**
@@ -32,8 +32,15 @@ function Banner(props: IBannerProps) {
   const { data: installedPlugins } =
     useApiRequest<Array<string>>("/plugins/installed");
   const { plugin } = props;
-  const { id, logo_url, name, publisher, short_description, compatibility, types } =
-    plugin;
+  const {
+    id,
+    logo_url,
+    name,
+    publisher,
+    short_description,
+    compatibility,
+    types,
+  } = plugin;
 
   const [isInstalled, setIsInstalled] = useState(
     installedPlugins?.includes(id),
@@ -137,12 +144,10 @@ function Banner(props: IBannerProps) {
     if (defaultPlugin) {
       return (
         <Tooltip text={""}>
-        <Style.Install disabled={true}>
-          <Button type={EButton.primary}>
-            Default Plugin
-          </Button>
-        </Style.Install>
-      </Tooltip>
+          <Style.Install disabled={true}>
+            <Button type={EButton.primary}>Default Plugin</Button>
+          </Style.Install>
+        </Tooltip>
       );
     }
 

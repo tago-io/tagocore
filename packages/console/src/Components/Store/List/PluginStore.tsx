@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useTheme } from "styled-components";
 import useApiRequest from "../../../Helpers/useApiRequest.ts";
-import InnerNav from "../../InnerNav/InnerNav.tsx";
 import EmptyMessage from "../../EmptyMessage/EmptyMessage.tsx";
 import { EIcon } from "../../Icon/Icon.types";
+import InnerNav from "../../InnerNav/InnerNav.tsx";
 import Loading from "../../Loading/Loading.tsx";
-import * as Style from "./PluginStore.style";
 import Card from "./Card/Card.tsx";
+import * as Style from "./PluginStore.style";
 
 /**
  * The plugin store page.
@@ -38,7 +38,10 @@ function PluginStore() {
   /**
    */
   useEffect(() => {
-    window.top?.postMessage({ type: "set-link", url: "/pages/pluginstore" }, "*");
+    window.top?.postMessage(
+      { type: "set-link", url: "/pages/pluginstore" },
+      "*",
+    );
   }, []);
 
   return (
@@ -57,7 +60,9 @@ function PluginStore() {
             message={
               <Style.ConnectErrorMsg>
                 <h1>Could not connect to the Plugin Store.</h1>
-                <div>Make sure you have internet access and try again later.</div>
+                <div>
+                  Make sure you have internet access and try again later.
+                </div>
               </Style.ConnectErrorMsg>
             }
           />
@@ -69,7 +74,10 @@ function PluginStore() {
               {loading ? (
                 <Loading />
               ) : plugins.length === 0 ? (
-                <EmptyMessage icon={EIcon["puzzle-piece"]} message="No plugins found" />
+                <EmptyMessage
+                  icon={EIcon["puzzle-piece"]}
+                  message="No plugins found"
+                />
               ) : (
                 plugins.map(renderPlugin)
               )}

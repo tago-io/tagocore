@@ -47,7 +47,10 @@ function TypeScheduleOptions(props: ITypeScheduleOptions) {
         <FormGroup>
           <IconRadio
             onChange={(type) =>
-              onChangeScheduleData({ ...scheduleData, type: type as TScheduleDataType })
+              onChangeScheduleData({
+                ...scheduleData,
+                type: type as TScheduleDataType,
+              })
             }
             value={scheduleData.type as TScheduleDataType}
             options={[
@@ -80,7 +83,10 @@ function TypeScheduleOptions(props: ITypeScheduleOptions) {
                 type="number"
                 min="0"
                 onChange={(e) =>
-                  onChangeScheduleData({ ...scheduleData, interval: Number(e.target.value) || 0 })
+                  onChangeScheduleData({
+                    ...scheduleData,
+                    interval: Number(e.target.value) || 0,
+                  })
                 }
                 value={scheduleData.interval || ""}
               />
@@ -98,9 +104,18 @@ function TypeScheduleOptions(props: ITypeScheduleOptions) {
                     value: "minute",
                     label: `Minute${Number(scheduleData.interval) === 1 ? "" : "s"}`,
                   },
-                  { value: "hour", label: `Hour${Number(scheduleData.interval) === 1 ? "" : "s"}` },
-                  { value: "day", label: `Day${Number(scheduleData.interval) === 1 ? "" : "s"}` },
-                  { value: "week", label: `Week${Number(scheduleData.interval) === 1 ? "" : "s"}` },
+                  {
+                    value: "hour",
+                    label: `Hour${Number(scheduleData.interval) === 1 ? "" : "s"}`,
+                  },
+                  {
+                    value: "day",
+                    label: `Day${Number(scheduleData.interval) === 1 ? "" : "s"}`,
+                  },
+                  {
+                    value: "week",
+                    label: `Week${Number(scheduleData.interval) === 1 ? "" : "s"}`,
+                  },
                   {
                     value: "month",
                     label: `Month${Number(scheduleData.interval) === 1 ? "" : "s"}`,
@@ -109,7 +124,10 @@ function TypeScheduleOptions(props: ITypeScheduleOptions) {
                     value: "quarter",
                     label: `Quarter${Number(scheduleData.interval) === 1 ? "" : "s"}`,
                   },
-                  { value: "year", label: `Year${Number(scheduleData.interval) === 1 ? "" : "s"}` },
+                  {
+                    value: "year",
+                    label: `Year${Number(scheduleData.interval) === 1 ? "" : "s"}`,
+                  },
                 ]}
               />
             </Style.IntervalContainer>

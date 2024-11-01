@@ -5,9 +5,16 @@ import { DateTime } from "luxon";
 export function convertDateToISO(date: Date | string, timezone?: string) {
   const rawDate = DateTime.fromJSDate(new Date(date));
   if (timezone) {
-    return rawDate.setZone(timezone, { keepLocalTime: true }).toISO() || rawDate.toISO() || DateTime.utc().toISO();
+    return (
+      rawDate.setZone(timezone, { keepLocalTime: true }).toISO() ||
+      rawDate.toISO() ||
+      DateTime.utc().toISO()
+    );
   }
-    return rawDate.setZone("UTC", { keepLocalTime: true }).toISO() || DateTime.utc().toISO();
+  return (
+    rawDate.setZone("UTC", { keepLocalTime: true }).toISO() ||
+    DateTime.utc().toISO()
+  );
 }
 
 /**
@@ -59,9 +66,13 @@ export function parseRelativeDate(expire_time, bool_minus, date = new Date()) {
 
   let time: DateTime;
   if (bool_minus) {
-    time = DateTime.fromJSDate(new Date(date)).minus({ [fixDuration(split[2])]: Number(split[1]) });
+    time = DateTime.fromJSDate(new Date(date)).minus({
+      [fixDuration(split[2])]: Number(split[1]),
+    });
   } else {
-    time = DateTime.fromJSDate(new Date(date)).plus({ [fixDuration(split[2])]: Number(split[1]) });
+    time = DateTime.fromJSDate(new Date(date)).plus({
+      [fixDuration(split[2])]: Number(split[1]),
+    });
   }
 
   if (!time.isValid) {

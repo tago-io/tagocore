@@ -1,6 +1,9 @@
 import type { IScheduleData } from "../../Action.interface";
 
-function spreadCronToScheduleData(cron: string, scheduleData: IScheduleData): void {
+function spreadCronToScheduleData(
+  cron: string,
+  scheduleData: IScheduleData,
+): void {
   if (!cron) {
     return;
   }
@@ -19,9 +22,12 @@ function spreadCronToScheduleData(cron: string, scheduleData: IScheduleData): vo
     const cronDay = cronSplitted[2];
     const cronMonth = cronSplitted[3];
     const cronWeekday = cronSplitted[4];
-    const isDayComplex = cronDay.includes("-") || cronDay.includes(",") || cronDay.includes("/");
+    const isDayComplex =
+      cronDay.includes("-") || cronDay.includes(",") || cronDay.includes("/");
     const isMonthComplex =
-      cronMonth.includes("-") || cronMonth.includes(",") || cronMonth.includes("/");
+      cronMonth.includes("-") ||
+      cronMonth.includes(",") ||
+      cronMonth.includes("/");
 
     if (isDayComplex && isMonthComplex) {
       // we can't work with 'every x days AND every x months'

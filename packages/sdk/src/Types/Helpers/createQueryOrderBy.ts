@@ -14,7 +14,7 @@ function createQueryOrderBy<T extends z.ZodTypeAny>(value: T) {
       z
         .string()
         .transform((x) => x.split(","))
-        .refine((x) => x[0] && (x[1] === "asc" || x[1] === "desc"), errorMsg)
+        .refine((x) => x[0] && (x[1] === "asc" || x[1] === "desc"), errorMsg),
     )
     .nullish()
     .transform((x) => x ?? ["name", "asc"]);

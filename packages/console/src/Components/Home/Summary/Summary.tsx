@@ -2,8 +2,8 @@ import type { ISummary } from "@tago-io/tcore-sdk/types";
 import type { AxiosError } from "axios";
 import { observer } from "mobx-react";
 import { memo } from "react";
-import { EmptyMessage } from "../../../index.ts";
 import store from "../../../System/Store.ts";
+import { EmptyMessage } from "../../../index.ts";
 import Icon from "../../Icon/Icon.tsx";
 import { EIcon } from "../../Icon/Icon.types";
 import * as Style from "./Summary.style";
@@ -54,7 +54,10 @@ function Summary(props: ISummaryProps) {
   return (
     <Style.Container $loading={loading && !errorMessage}>
       {error ? (
-        <EmptyMessage icon={EIcon["exclamation-triangle"]} message={errorMessage} />
+        <EmptyMessage
+          icon={EIcon["exclamation-triangle"]}
+          message={errorMessage}
+        />
       ) : (
         <>
           <div className="group">

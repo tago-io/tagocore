@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils";
+import { render, screen } from "../../../utils/test-utils.tsx";
 import Select from "./Select.tsx";
 
 describe("Select", () => {

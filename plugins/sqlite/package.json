@@ -8,15 +8,8 @@
     "short_description": "Integrates the SQLite Database with TagoCore",
     "full_description": "./README.md",
     "icon": "./assets/icon.png",
-    "types": [
-      "database"
-    ],
-    "permissions": [
-      "action",
-      "analysis",
-      "device-data",
-      "device"
-    ],
+    "types": ["database"],
+    "permissions": ["action", "analysis", "device-data", "device"],
     "publisher": {
       "name": "TagoIO",
       "domain": "tago.io"

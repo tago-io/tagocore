@@ -1,6 +1,13 @@
+import { describe, expect, test } from "vitest";
 import { validateResourceID } from "../index.ts";
-import { type IQuery, zActiveAutoGen, zDateAutoGen, zObjectIDAutoGen, zQuery, zTagsAutoGen } from "./Common.types.ts";
-import { test, expect, describe } from "vitest";
+import {
+  type IQuery,
+  zActiveAutoGen,
+  zDateAutoGen,
+  zObjectIDAutoGen,
+  zQuery,
+  zTagsAutoGen,
+} from "./Common.types.ts";
 
 describe("zTagsAutoGen", () => {
   test("parses null", () => {
@@ -137,7 +144,13 @@ describe("zQuery", () => {
   test("parses empty object", () => {
     const data: IQuery = {};
     const parsed = zQuery.parse(data);
-    expect(parsed).toEqual({ page: 1, amount: 20, fields: [], filter: {}, orderBy: ["name", "asc"] });
+    expect(parsed).toEqual({
+      page: 1,
+      amount: 20,
+      fields: [],
+      filter: {},
+      orderBy: ["name", "asc"],
+    });
   });
 
   test("parses page correctly", () => {

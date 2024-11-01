@@ -1,11 +1,11 @@
+import type { IPluginClassListItem } from "@tago-io/tcore-sdk/types";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "styled-components";
-import type { IPluginClassListItem } from "@tago-io/tcore-sdk/types";
 import Button from "../../../Button/Button.tsx";
 import { EButton } from "../../../Button/Button.types";
+import EmptyMessage from "../../../EmptyMessage/EmptyMessage.tsx";
 import Icon from "../../../Icon/Icon.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
-import EmptyMessage from "../../../EmptyMessage/EmptyMessage.tsx";
 import * as Style from "./EncoderStack.style";
 import ModalAddEncoder from "./ModalAddEncoder.tsx";
 
@@ -60,7 +60,7 @@ function EncoderStack(props: IEncoderStackProps) {
         onChange(value);
       }
     },
-    [value, onChange]
+    [value, onChange],
   );
 
   /**
@@ -68,7 +68,9 @@ function EncoderStack(props: IEncoderStackProps) {
    */
   const renderItem = useCallback(
     (item: string, i: number) => {
-      const plugin = encoderModules?.find((x) => `${x.pluginID}:${x.setupID}` === item);
+      const plugin = encoderModules?.find(
+        (x) => `${x.pluginID}:${x.setupID}` === item,
+      );
       return (
         <Style.Item index={i} selected={selectedID === item} key={item}>
           <span className="a">
@@ -80,13 +82,19 @@ function EncoderStack(props: IEncoderStackProps) {
               </div>
             ) : (
               <>
-                <Icon icon={EIcon["exclamation-triangle"]} color={theme.buttonDanger} />
+                <Icon
+                  icon={EIcon["exclamation-triangle"]}
+                  color={theme.buttonDanger}
+                />
                 <span>&nbsp;&nbsp;Encoder not found</span>
               </>
             )}
           </span>
 
-          <div className="icon-container" onMouseDown={(e) => onItemMouseDown(e, item)}>
+          <div
+            className="icon-container"
+            onMouseDown={(e) => onItemMouseDown(e, item)}
+          >
             <Icon icon={EIcon["caret-up"]} />
             <div />
             <div />
@@ -99,7 +107,7 @@ function EncoderStack(props: IEncoderStackProps) {
         </Style.Item>
       );
     },
-    [theme, encoderModules, removeItem, onItemMouseDown, selectedID]
+    [theme, encoderModules, removeItem, onItemMouseDown, selectedID],
   );
 
   /**
@@ -173,7 +181,9 @@ function EncoderStack(props: IEncoderStackProps) {
         <div className="title">
           <div className="text">
             <h5>Encoder Stack</h5>
-            <span className="description">Select the order of encoder plugins for new data.</span>
+            <span className="description">
+              Select the order of encoder plugins for new data.
+            </span>
           </div>
 
           <Button

@@ -1,8 +1,8 @@
 import type { IDevice, IDeviceData } from "@tago-io/tcore-sdk/types";
 import { useCallback, useState } from "react";
-import { EIcon } from "../../../Icon/Icon.types";
-import { FormGroup, Input, Modal } from "../../../../index.ts";
 import editDeviceData from "../../../../Requests/editDeviceData.ts";
+import { FormGroup, Input, Modal } from "../../../../index.ts";
+import { EIcon } from "../../../Icon/Icon.types";
 import * as Style from "./ModalEditGroup.style";
 
 /**

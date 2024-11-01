@@ -42,7 +42,7 @@ function Publisher(props: IPublisherProps) {
     if (size === "medium") {
       return fonts.medium;
     }
-      return fonts.default;
+    return fonts.default;
   }, [size]);
 
   /**
@@ -52,7 +52,7 @@ function Publisher(props: IPublisherProps) {
     if (size === "medium") {
       return "12px";
     }
-      return "10px";
+    return "10px";
   }, [size]);
 
   /**
@@ -77,21 +77,34 @@ function Publisher(props: IPublisherProps) {
   });
 
   return (
-    <Style.Container onMouseDown={(e) => e.stopPropagation()} onClick={activateTooltip}>
-      <Style.Name clickable={!!(clickable && domain)} style={{ fontSize: getFontSize() }}>
+    <Style.Container
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={activateTooltip}
+    >
+      <Style.Name
+        clickable={!!(clickable && domain)}
+        style={{ fontSize: getFontSize() }}
+      >
         {name || "Unknown"}
       </Style.Name>
 
       {name && domain ? (
         <>
           <Style.IconContainer clickable={clickable} size={size as string}>
-            <Icon color={theme.link} icon={EIcon.certificate} size={getIconSize()} />
+            <Icon
+              color={theme.link}
+              icon={EIcon.certificate}
+              size={getIconSize()}
+            />
             <Icon color="white" icon={EIcon.check} size={getIconSize()} />
           </Style.IconContainer>
 
           {tooltip && (
             <Style.Tooltip>
-              <div>We&apos;ve verified that the publisher {name} controls the domain:</div>
+              <div>
+                We&apos;ve verified that the publisher {name} controls the
+                domain:
+              </div>
               <div className="domain">
                 <Icon icon={EIcon.certificate} size={"11px"} />
                 <span>{domain}</span>

@@ -1,4 +1,4 @@
-  {
+{
   "name": "@tago-io/tcore-plugin-filesystem-local",
   "version": "0.0.1",
   "private": true,
@@ -18,6 +18,5 @@
       "domain": "tago.io"
     }
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

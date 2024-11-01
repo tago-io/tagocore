@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { render, renderWithEvents, screen } from "../../../utils/test-utils";
+import {
+  render,
+  renderWithEvents,
+  screen,
+} from "../../../utils/test-utils.tsx";
 import Tags, { type ITags } from "./Tags.tsx";
 
 function StatefulTags(props: ITags) {

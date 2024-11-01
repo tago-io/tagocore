@@ -1,21 +1,21 @@
-import { Fragment, useCallback } from "react";
-import { useNavigate } from "react-router";
-import { useTheme } from "styled-components";
-import { readableColor } from "polished";
-import { observer } from "mobx-react";
 import type {
   IPluginButtonModuleSetupOption,
   IPluginListItem,
 } from "@tago-io/tcore-sdk/types";
-import Button from "../Button/Button.tsx";
-import Icon from "../Icon/Icon.tsx";
-import { EIcon } from "../Icon/Icon.types";
+import { observer } from "mobx-react";
+import { readableColor } from "polished";
+import { Fragment, useCallback } from "react";
+import { useNavigate } from "react-router";
+import { useTheme } from "styled-components";
 import LogoBlack from "../../../assets/images/logo-black.svg";
 import LogoWhite from "../../../assets/images/logo-white.svg";
-import { EButton } from "../Button/Button.types";
-import Link from "../Link/Link.tsx";
 import { setLocalStorage } from "../../Helpers/localStorage.ts";
 import store from "../../System/Store.ts";
+import Button from "../Button/Button.tsx";
+import { EButton } from "../Button/Button.types";
+import Icon from "../Icon/Icon.tsx";
+import { EIcon } from "../Icon/Icon.types";
+import Link from "../Link/Link.tsx";
 import * as Style from "./Navbar.style";
 
 /**

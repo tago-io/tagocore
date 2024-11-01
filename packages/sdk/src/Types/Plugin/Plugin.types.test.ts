@@ -1,22 +1,22 @@
+import { describe, expect, test } from "vitest";
 import type { ZodError } from "zod";
 import {
-  zPluginModuleIDCombo,
-  zPluginType,
-  zPluginPublisher,
-  zPluginInstallOptions,
-  zPluginPermission,
-  zPluginManifestCliOption,
-  zPluginManifestCliCommand,
-  zPluginPackageTCore,
-  zPluginConfigField,
-  zPluginStorageItemSet,
-  zPluginModule,
-  zPlugin,
   zModuleMessageOptions,
-  zPluginModuleListItem,
+  zPlugin,
+  zPluginConfigField,
+  zPluginInstallOptions,
+  zPluginManifestCliCommand,
+  zPluginManifestCliOption,
+  zPluginModule,
+  zPluginModuleIDCombo,
   zPluginModuleList,
+  zPluginModuleListItem,
+  zPluginPackageTCore,
+  zPluginPermission,
+  zPluginPublisher,
+  zPluginStorageItemSet,
+  zPluginType,
 } from "./Plugin.types.ts";
-import { test, expect, describe } from "vitest";
 
 describe("zPluginModuleIDCombo", () => {
   test("valid id", () => {
@@ -101,7 +101,9 @@ describe("zPluginManifestCliCommand", () => {
       zPluginManifestCliCommand.parse(data);
     } catch (error) {
       const e = (error as ZodError).flatten();
-      expect(e.fieldErrors).toStrictEqual({ arguments: ["Expected string, received number"] });
+      expect(e.fieldErrors).toStrictEqual({
+        arguments: ["Expected string, received number"],
+      });
     }
   });
 });
@@ -194,7 +196,9 @@ describe("zPluginModuleListItem", () => {
       zPluginModuleListItem.parse(data);
     } catch (error) {
       const e = (error as ZodError).flatten();
-      expect(e.fieldErrors).toStrictEqual({ setup: ["Required", "Required", "Required"] });
+      expect(e.fieldErrors).toStrictEqual({
+        setup: ["Required", "Required", "Required"],
+      });
     }
   });
 });
@@ -207,7 +211,9 @@ describe("zPluginModuleList", () => {
     } catch (error) {
       const e = (error as ZodError).flatten();
       console.log(e);
-      expect(e.formErrors).toStrictEqual({ setup: ["Required", "Required", "Required"] });
+      expect(e.formErrors).toStrictEqual({
+        setup: ["Required", "Required", "Required"],
+      });
     }
   });
 });

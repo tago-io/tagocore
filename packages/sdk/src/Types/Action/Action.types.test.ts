@@ -1,3 +1,5 @@
+import { describe, expect, test } from "vitest";
+import { validateResourceID } from "../../Shared/ResourceID.ts";
 import {
   type IActionTypePost,
   type IActionTypeScript,
@@ -6,9 +8,7 @@ import {
   zActionTypeScript,
   zActionTypeTagoIO,
 } from "../index.ts";
-import { validateResourceID } from "../../Shared/ResourceID.ts";
 import { zActionCreate } from "./Action.types.ts";
-import { test, expect, describe } from "vitest";
 
 describe("zActionCreate", () => {
   test("parses simple object", () => {
@@ -103,7 +103,10 @@ describe("zActionTypeScript", () => {
 
 describe("zActionTypeTagoIO", () => {
   test("parses simple tagoio object", () => {
-    const data: IActionTypeTagoIO = { type: "tagoio", token: "1014121a-d123-4a56-789a-c16b4be056fa" };
+    const data: IActionTypeTagoIO = {
+      type: "tagoio",
+      token: "1014121a-d123-4a56-789a-c16b4be056fa",
+    };
     const parsed = zActionTypeTagoIO.parse(data);
     expect(parsed).toEqual(data);
   });
@@ -115,7 +118,10 @@ describe("zActionTypeTagoIO", () => {
   });
 
   test("throws error if token is not an uuid", () => {
-    const data: IActionTypeTagoIO = { type: "tagoio", token: "1014121a-c16b4be056" };
+    const data: IActionTypeTagoIO = {
+      type: "tagoio",
+      token: "1014121a-c16b4be056",
+    };
     const fn = () => zActionTypeTagoIO.parse(data);
     expect(fn).toThrow();
   });
@@ -123,13 +129,20 @@ describe("zActionTypeTagoIO", () => {
 
 describe("zActionTypePost", () => {
   test("parses simple post object", () => {
-    const data: IActionTypePost = { type: "post", url: "http://localhost:8888" };
+    const data: IActionTypePost = {
+      type: "post",
+      url: "http://localhost:8888",
+    };
     const parsed = zActionTypePost.parse(data);
     expect(parsed).toEqual(data);
   });
 
   test("allows headers", () => {
-    const data: IActionTypePost = { type: "post", url: "http://localhost:8888", headers: { token: "abc" } };
+    const data: IActionTypePost = {
+      type: "post",
+      url: "http://localhost:8888",
+      headers: { token: "abc" },
+    };
     const parsed = zActionTypePost.parse(data);
     expect(parsed).toEqual(data);
   });
@@ -145,7 +158,11 @@ describe("zActionTypePost", () => {
   });
 
   test("throws error if fallback_token is not an uuid", () => {
-    const data: IActionTypePost = { type: "post", url: "hello world", fallback_token: 1 as any };
+    const data: IActionTypePost = {
+      type: "post",
+      url: "hello world",
+      fallback_token: 1 as any,
+    };
     const fn = () => zActionTypePost.parse(data);
     expect(fn).toThrow();
   });

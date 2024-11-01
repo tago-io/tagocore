@@ -1,8 +1,8 @@
 import axios from "axios";
 import { observer } from "mobx-react";
 import { useCallback, useEffect, useState } from "react";
-import { EButton, EIcon, FormGroup, Input } from "../../../index.ts";
 import store from "../../../System/Store.ts";
+import { EButton, EIcon, FormGroup, Input } from "../../../index.ts";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage.tsx";
 import InputPassword from "../../InputPassword/InputPassword.tsx";
 import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalMasterPassword.tsx";
@@ -92,7 +92,12 @@ function StepSignUp(props: any) {
         title="Create an account"
         buttons={[
           { label: "Back", onClick: onBack, disabled: loading },
-          { label: "Create account", onClick: signUp, disabled: loading, type: EButton.primary },
+          {
+            label: "Create account",
+            onClick: signUp,
+            disabled: loading,
+            type: EButton.primary,
+          },
         ]}
       >
         <Style.Content>
@@ -143,7 +148,9 @@ function StepSignUp(props: any) {
                 disabled={loading}
                 error={error?.password_confirmation}
                 value={data.password_confirmation || ""}
-                onChange={(e) => setData({ ...data, password_confirmation: e.target.value })}
+                onChange={(e) =>
+                  setData({ ...data, password_confirmation: e.target.value })
+                }
                 placeholder="Confirm your password"
                 autoComplete="new-password"
               />
@@ -155,13 +162,17 @@ function StepSignUp(props: any) {
                 error={error?.password_hint}
                 value={data.password_hint || ""}
                 placeholder="Hint (Recommended)"
-                onChange={(e) => setData({ ...data, password_hint: e.target.value })}
+                onChange={(e) =>
+                  setData({ ...data, password_hint: e.target.value })
+                }
               />
             </FormGroup>
 
             {error?.message && (
               <FormGroup>
-                <ErrorMessage style={{ textAlign: "left", display: "flex", marginTop: 0 }}>
+                <ErrorMessage
+                  style={{ textAlign: "left", display: "flex", marginTop: 0 }}
+                >
                   {error?.message}
                 </ErrorMessage>
               </FormGroup>

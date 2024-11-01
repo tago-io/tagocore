@@ -1,6 +1,6 @@
+import { describe, expect, test } from "vitest";
 import type { ZodError } from "zod";
-import { zOSInfo, zNetworkInfo, zComputerUsage } from "./Hardware.types.ts";
-import { test, expect, describe } from "vitest";
+import { zComputerUsage, zNetworkInfo, zOSInfo } from "./Hardware.types.ts";
 
 describe("zOSInfo", () => {
   test("parses simple object", () => {
@@ -41,7 +41,9 @@ describe("zOSInfo", () => {
       zOSInfo.parse(data);
     } catch (error) {
       const e = (error as ZodError).flatten();
-      expect(e.fieldErrors.code[0].startsWith("Invalid enum value.")).toBeTruthy();
+      expect(
+        e.fieldErrors.code[0].startsWith("Invalid enum value."),
+      ).toBeTruthy();
     }
   });
 });

@@ -1,6 +1,6 @@
 import { Suspense, memo } from "react";
-import { type EIcon, icons } from "./Icon.types";
 import * as Style from "./Icon.style";
+import { type EIcon, icons } from "./Icon.types";
 
 /**
  * Props.

@@ -1,15 +1,15 @@
+import { type IDevice, zDeviceCreate } from "@tago-io/tcore-sdk/types";
 import { type MouseEvent, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useTheme } from "styled-components";
-import { type IDevice, zDeviceCreate } from "@tago-io/tcore-sdk/types";
+import createDevice from "../../../../Requests/createDevice.ts";
+import buildZodError from "../../../../Validation/buildZodError.ts";
+import DataRetention from "../../../Bucket/Common/DataRetention/DataRetention.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import Input from "../../../Input/Input.tsx";
 import Modal from "../../../Modal/Modal.tsx";
 import BucketTypePicker from "../DeviceTypePicker/DeviceTypePicker.tsx";
-import createDevice from "../../../../Requests/createDevice.ts";
-import DataRetention from "../../../Bucket/Common/DataRetention/DataRetention.tsx";
-import buildZodError from "../../../../Validation/buildZodError.ts";
 
 /**
  * Props.

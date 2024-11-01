@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import {
   type IDeviceDataCreate,
   type IDeviceDataCreateLocation,
@@ -6,8 +7,11 @@ import {
   validateResourceID,
   zDeviceDataQuery,
 } from "../index.ts";
-import { type IDeviceData, zDeviceData, zDeviceDataCreate } from "./DeviceData.types.ts";
-import { test, expect, describe } from "vitest";
+import {
+  type IDeviceData,
+  zDeviceData,
+  zDeviceDataCreate,
+} from "./DeviceData.types.ts";
 
 describe("zDeviceData", () => {
   const data: IDeviceData = {
@@ -57,7 +61,10 @@ describe("zDeviceDataCreate", () => {
   });
 
   test("uses time from object if it was informed", () => {
-    const data: IDeviceDataCreate = { time: new Date("2020-01-01T15:00:00Z"), variable: "temperature" };
+    const data: IDeviceDataCreate = {
+      time: new Date("2020-01-01T15:00:00Z"),
+      variable: "temperature",
+    };
     const parsed = zDeviceDataCreate.parse(data);
     expect(parsed.time).toEqual(new Date("2020-01-01T15:00:00Z"));
   });
@@ -67,13 +74,19 @@ describe("zDeviceDataCreate", () => {
       zDeviceDataCreate.parse({ time: "2021", variable: "temperature" });
       zDeviceDataCreate.parse({ time: "2021/01", variable: "temperature" });
       zDeviceDataCreate.parse({ time: "2021/01/20", variable: "temperature" });
-      zDeviceDataCreate.parse({ time: "2021T15:00:00Z", variable: "temperature" });
+      zDeviceDataCreate.parse({
+        time: "2021T15:00:00Z",
+        variable: "temperature",
+      });
     };
     expect(fn).not.toThrow();
   });
 
   test("throws error if time is invalid", () => {
-    const data: IDeviceDataCreate = { time: new Date("2020-01-01ABC15:00:00Z"), variable: "temperature" };
+    const data: IDeviceDataCreate = {
+      time: new Date("2020-01-01ABC15:00:00Z"),
+      variable: "temperature",
+    };
     const fn = () => zDeviceDataCreate.parse(data);
     expect(fn).toThrow();
   });
@@ -86,7 +99,10 @@ describe("zDeviceDataCreate", () => {
   });
 
   test("parses location with coordinates", () => {
-    const location: IDeviceDataCreateLocation = { type: "Point", coordinates: [20, 10] };
+    const location: IDeviceDataCreateLocation = {
+      type: "Point",
+      coordinates: [20, 10],
+    };
     const data: IDeviceDataCreate = { variable: "location", location };
     const parsed = zDeviceDataCreate.parse(data);
     expect(parsed.location).toEqual(location);
@@ -213,7 +229,9 @@ describe("zDeviceDataQuery", () => {
   });
 
   test("throws error if start_date has invalid dates", () => {
-    expect(() => zDeviceDataQuery.parse({ start_date: new Date("abc") })).toThrowError();
+    expect(() =>
+      zDeviceDataQuery.parse({ start_date: new Date("abc") }),
+    ).toThrowError();
     expect(() => zDeviceDataQuery.parse({ start_date: true })).toThrowError();
     expect(() => zDeviceDataQuery.parse({ start_date: false })).toThrowError();
     expect(() => zDeviceDataQuery.parse({ start_date: {} })).toThrowError();
@@ -227,9 +245,14 @@ describe("zDeviceDataQuery", () => {
   });
 
   test("parses ids as filled array", () => {
-    const data: IDeviceDataQuery = { ids: ["61b2517991639c00197811e2", "11b2517991639c00197811e2"] };
+    const data: IDeviceDataQuery = {
+      ids: ["61b2517991639c00197811e2", "11b2517991639c00197811e2"],
+    };
     const parsed = zDeviceDataQuery.parse(data);
-    expect(parsed.ids).toEqual(["61b2517991639c00197811e2", "11b2517991639c00197811e2"]);
+    expect(parsed.ids).toEqual([
+      "61b2517991639c00197811e2",
+      "11b2517991639c00197811e2",
+    ]);
   });
 
   test("parses ids as null", () => {
@@ -259,7 +282,10 @@ describe("zDeviceDataQuery", () => {
   });
 
   test("prefers ids property over id property", () => {
-    const data = { ids: ["61b251e291639c0019781ec2"], id: "11b2517991639c00197811e2" };
+    const data = {
+      ids: ["61b251e291639c0019781ec2"],
+      id: "11b2517991639c00197811e2",
+    };
     const parsed = zDeviceDataQuery.parse(data);
     expect(parsed.ids).toEqual(["61b251e291639c0019781ec2"]);
     expect(parsed).not.toHaveProperty("id");
@@ -279,9 +305,14 @@ describe("zDeviceDataQuery", () => {
   });
 
   test("parses values as filled array", () => {
-    const data: IDeviceDataQuery = { values: ["61b2517991639c00197811e2", "11b2517991639c00197811e2"] };
+    const data: IDeviceDataQuery = {
+      values: ["61b2517991639c00197811e2", "11b2517991639c00197811e2"],
+    };
     const parsed = zDeviceDataQuery.parse(data);
-    expect(parsed.values).toEqual(["61b2517991639c00197811e2", "11b2517991639c00197811e2"]);
+    expect(parsed.values).toEqual([
+      "61b2517991639c00197811e2",
+      "11b2517991639c00197811e2",
+    ]);
   });
 
   test("parses values as null", () => {
@@ -323,7 +354,10 @@ describe("zDeviceDataQuery", () => {
   });
 
   test("prefers values property over value property", () => {
-    const data = { values: ["61b251e291639c0019781ec2"], value: "11b2517991639c00197811e2" };
+    const data = {
+      values: ["61b251e291639c0019781ec2"],
+      value: "11b2517991639c00197811e2",
+    };
     const parsed = zDeviceDataQuery.parse(data);
     expect(parsed.values).toEqual(["61b251e291639c0019781ec2"]);
     expect(parsed).not.toHaveProperty("value");
@@ -536,7 +570,9 @@ describe("zDeviceDataQuery", () => {
   });
 
   test("throws error if ordination is not a valid value", () => {
-    expect(() => zDeviceDataQuery.parse({ ordination: "hello" })).toThrowError();
+    expect(() =>
+      zDeviceDataQuery.parse({ ordination: "hello" }),
+    ).toThrowError();
     expect(() => zDeviceDataQuery.parse({ ordination: true })).toThrowError();
     expect(() => zDeviceDataQuery.parse({ ordination: false })).toThrowError();
     expect(() => zDeviceDataQuery.parse({ ordination: {} })).toThrowError();

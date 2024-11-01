@@ -1,8 +1,13 @@
 import axios from "axios";
-import { type KeyboardEvent, type MouseEvent, useCallback, useState } from "react";
-import { EIcon } from "../../../../index.ts";
+import {
+  type KeyboardEvent,
+  type MouseEvent,
+  useCallback,
+  useState,
+} from "react";
 import { promiseDelay } from "../../../../Helpers/promiseDelay.ts";
 import store from "../../../../System/Store.ts";
+import { EIcon } from "../../../../index.ts";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
 import Input from "../../../Input/Input.tsx";
 import Modal from "../../../Modal/Modal.tsx";
@@ -47,7 +52,7 @@ function ModalMasterPassword(props: IModalMasterPasswordProps) {
           setLoading(false);
         });
     },
-    [value, onConfirm]
+    [value, onConfirm],
   );
 
   /**
@@ -59,7 +64,7 @@ function ModalMasterPassword(props: IModalMasterPasswordProps) {
         check();
       }
     },
-    [check, value]
+    [check, value],
   );
 
   return (
@@ -74,11 +79,15 @@ function ModalMasterPassword(props: IModalMasterPasswordProps) {
       width="550px"
     >
       <FormGroup>
-        In order to perform this action, we need to verify if this is really you. Please enter your
-        master password in the field below.
+        In order to perform this action, we need to verify if this is really
+        you. Please enter your master password in the field below.
       </FormGroup>
 
-      <FormGroup addMarginBottom={false} label="Master Password" icon={EIcon.key}>
+      <FormGroup
+        addMarginBottom={false}
+        label="Master Password"
+        icon={EIcon.key}
+      >
         <Input
           autoFocus
           disabled={loading}

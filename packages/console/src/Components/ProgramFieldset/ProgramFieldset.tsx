@@ -30,7 +30,8 @@ interface IProgramFieldsetProps {
  * path of the file you want to be run by the binary executable.
  */
 function ProgramFieldset(props: IProgramFieldsetProps) {
-  const { title, binaryPath, onChangeBinaryPath, onChangeFilePath, filePath } = props;
+  const { title, binaryPath, onChangeBinaryPath, onChangeFilePath, filePath } =
+    props;
 
   return (
     <Style.Container>
@@ -41,7 +42,8 @@ function ProgramFieldset(props: IProgramFieldsetProps) {
 
       <FormGroup>
         <div className="description">
-          Specify the binary executable and file path to be executed when your Analysis runs.
+          Specify the binary executable and file path to be executed when your
+          Analysis runs.
         </div>
       </FormGroup>
 

@@ -13,7 +13,10 @@ const animatedFrom = keyframes`
 /**
  * Main container.
  */
-export const Container = styled.div<{ iconColor?: string; backgroundColor?: string }>`
+export const Container = styled.div<{
+  iconColor?: string;
+  backgroundColor?: string;
+}>`
   display: flex;
   align-items: center;
   border-radius: 5px;

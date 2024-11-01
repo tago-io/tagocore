@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils";
+import { render, screen } from "../../../utils/test-utils.tsx";
 import Link from "./Link.tsx";
 
 test("renders without crashing", () => {

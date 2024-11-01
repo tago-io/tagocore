@@ -1,4 +1,9 @@
-import { type IDatabaseDeviceDataCreate, type IModuleSetupWithoutType, type TGenericID, TDeviceType } from "../../Types.ts";
+import {
+  type IDatabaseDeviceDataCreate,
+  type IModuleSetupWithoutType,
+  TDeviceType,
+  type TGenericID,
+} from "../../Types.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
 /**
@@ -13,7 +18,10 @@ class QueueModule extends TCoreModule {
    * Trigger this function when data added to device.
    * The data is already parsed and encoded.
    */
-  public async onAddDeviceData(deviceID: TGenericID, data: IDatabaseDeviceDataCreate[]): Promise<void> {
+  public async onAddDeviceData(
+    deviceID: TGenericID,
+    data: IDatabaseDeviceDataCreate[],
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 }

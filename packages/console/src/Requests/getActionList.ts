@@ -6,7 +6,11 @@ import store from "../System/Store.ts";
 /**
  * Retrieves a list of actions.
  */
-async function getActionList(page: number, amount: number, filter: any): Promise<IAction[]> {
+async function getActionList(
+  page: number,
+  amount: number,
+  filter: any,
+): Promise<IAction[]> {
   const query: IActionListQuery = {
     page,
     amount,
@@ -15,7 +19,15 @@ async function getActionList(page: number, amount: number, filter: any): Promise
       name: filter.name ? `*${filter.name}*` : undefined,
       tags: filter.tags,
     },
-    fields: ["name", "active", "lock", "type", "action", "last_triggered", "created_at"],
+    fields: [
+      "name",
+      "active",
+      "lock",
+      "type",
+      "action",
+      "last_triggered",
+      "created_at",
+    ],
   };
 
   const account = new Account({ token: store.token });

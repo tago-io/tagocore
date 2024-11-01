@@ -84,7 +84,15 @@ const zFrontConditionDataMultiple = z.object({
 const zFrontIntervalData = z.object({
   type: z.literal("interval"),
   interval: z.number().int().min(1),
-  interval_unit: z.enum(["minute", "hour", "day", "week", "month", "quarter", "year"]),
+  interval_unit: z.enum([
+    "minute",
+    "hour",
+    "day",
+    "week",
+    "month",
+    "quarter",
+    "year",
+  ]),
 });
 
 /**
@@ -100,7 +108,14 @@ const zFrontScheduleData = z.object({
 /**
  * Intervals allowed for the 'interval' of the schedule data.
  */
-type TScheduleDataIntervalUnit = "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year";
+type TScheduleDataIntervalUnit =
+  | "minute"
+  | "hour"
+  | "day"
+  | "week"
+  | "month"
+  | "quarter"
+  | "year";
 
 type TScheduleDataType = "schedule" | "interval";
 

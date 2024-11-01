@@ -1,5 +1,5 @@
-import type { ITab } from "./Tabs.types";
 import * as Style from "./Tabs.style";
+import type { ITab } from "./Tabs.types";
 
 /**
  * Props.
