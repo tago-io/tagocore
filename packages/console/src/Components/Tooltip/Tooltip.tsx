@@ -1,4 +1,10 @@
-import { type ReactNode, cloneElement, Children, useEffect, useRef } from "react";
+import {
+  Children,
+  type ReactNode,
+  cloneElement,
+  useEffect,
+  useRef,
+} from "react";
 import type { EIcon } from "../../index.ts";
 import TooltipPopup from "./TooltipPopup.tsx";
 
@@ -80,7 +86,7 @@ function Tooltip(props: ITooltipProps) {
       {Children.map(children, (child, index) =>
         cloneElement(child as any, {
           ref: (e: HTMLElement) => (childrenRefs.current[index] = e),
-        })
+        }),
       )}
 
       <TooltipPopup

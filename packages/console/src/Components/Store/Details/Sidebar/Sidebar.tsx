@@ -1,8 +1,8 @@
 import type { TPluginType } from "@tago-io/tcore-sdk/types";
-import MainInformation from "../../../Plugins/Common/MainInformation/MainInformation.tsx";
-import Platforms from "../../../Plugins/Common/Platforms/Platforms.tsx";
 import ClassTypes from "../../../Plugins/Common/ClassTypes/ClassTypes.tsx";
+import MainInformation from "../../../Plugins/Common/MainInformation/MainInformation.tsx";
 import Permissions from "../../../Plugins/Common/Permissions/Permissions.tsx";
+import Platforms from "../../../Plugins/Common/Platforms/Platforms.tsx";
 import * as Style from "./Sidebar.style";
 
 interface ISidebarProps {

@@ -50,7 +50,12 @@ function Select(props: ISelectProps) {
    */
   const renderOption = (option: IOption) => {
     return (
-      <Style.Option data-test key={option.value} value={option.value} disabled={option.disabled}>
+      <Style.Option
+        data-test
+        key={option.value}
+        value={option.value}
+        disabled={option.disabled}
+      >
         {option.label}
       </Style.Option>
     );

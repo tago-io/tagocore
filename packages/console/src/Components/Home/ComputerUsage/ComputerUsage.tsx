@@ -29,14 +29,17 @@ function ComputerUsage(props: IComputerUsageProps) {
   const getIcon = (type: string) => {
     if (type === "memory") {
       return EIcon.memory;
-    }if (type === "cpu") {
+    }
+    if (type === "cpu") {
       return EIcon.microchip;
-    }if (type === "disk") {
+    }
+    if (type === "disk") {
       return EIcon.hdd;
-    }if (type === "battery") {
+    }
+    if (type === "battery") {
       return EIcon["battery-full"];
     }
-      return EIcon.cog;
+    return EIcon.cog;
   };
 
   /**

@@ -1,6 +1,12 @@
+import { describe, expect, test } from "vitest";
 import type { ZodError } from "zod";
-import { zAnalysisCreate, zAnalysisEdit, zAnalysisList, zAnalysisListQuery, zAnalysisLogList } from "./Analysis.types.ts";
-import { test, expect, describe } from "vitest";
+import {
+  zAnalysisCreate,
+  zAnalysisEdit,
+  zAnalysisList,
+  zAnalysisListQuery,
+  zAnalysisLogList,
+} from "./Analysis.types.ts";
 
 describe("zAnalysis Create", () => {
   test("Success", () => {
@@ -24,7 +30,9 @@ describe("zAnalysis Create", () => {
       zAnalysisCreate.parse(analysis_obj);
     } catch (error) {
       const e = (error as ZodError).flatten();
-      expect(e.fieldErrors.name[0]).toBe("String must contain at least 3 character(s)");
+      expect(e.fieldErrors.name[0]).toBe(
+        "String must contain at least 3 character(s)",
+      );
     }
   });
 
@@ -41,7 +49,9 @@ describe("zAnalysis Create", () => {
       zAnalysisCreate.parse(analysis_obj);
     } catch (error) {
       const errorF = (error as ZodError).flatten();
-      expect(errorF.fieldErrors.name[0]).toBe("String must contain at most 100 character(s)");
+      expect(errorF.fieldErrors.name[0]).toBe(
+        "String must contain at most 100 character(s)",
+      );
     }
   });
 
@@ -55,7 +65,9 @@ describe("zAnalysis Create", () => {
       zAnalysisCreate.parse(analysis_obj);
     } catch (error) {
       const errorF = (error as ZodError).flatten();
-      expect(errorF.fieldErrors.active[0]).toBe("Expected boolean, received string");
+      expect(errorF.fieldErrors.active[0]).toBe(
+        "Expected boolean, received string",
+      );
     }
   });
 
@@ -69,7 +81,9 @@ describe("zAnalysis Create", () => {
       zAnalysisCreate.parse(analysis_obj);
     } catch (error) {
       const errorF = (error as ZodError).flatten();
-      expect(errorF.fieldErrors.tags[0]).toBe("Expected array, received object");
+      expect(errorF.fieldErrors.tags[0]).toBe(
+        "Expected array, received object",
+      );
     }
   });
 
@@ -97,7 +111,9 @@ describe("zAnalysis Create", () => {
       zAnalysisCreate.parse(analysis_obj);
     } catch (error) {
       const errorF = (error as ZodError).flatten();
-      expect(errorF.fieldErrors.file_path[0]).toBe("Expected string, received object");
+      expect(errorF.fieldErrors.file_path[0]).toBe(
+        "Expected string, received object",
+      );
     }
   });
 
@@ -111,7 +127,9 @@ describe("zAnalysis Create", () => {
       zAnalysisCreate.parse(analysis_obj);
     } catch (error) {
       const errorF = (error as ZodError).flatten();
-      expect(errorF.fieldErrors.binary_path[0]).toBe("Expected string, received object");
+      expect(errorF.fieldErrors.binary_path[0]).toBe(
+        "Expected string, received object",
+      );
     }
   });
 
@@ -126,8 +144,12 @@ describe("zAnalysis Create", () => {
       zAnalysisCreate.parse(analysis_obj);
     } catch (error) {
       const errorF = (error as ZodError).flatten();
-      expect(errorF.fieldErrors.created_at[0]).toBe("Expected date, received string");
-      expect(errorF.fieldErrors.updated_at[0]).toBe("Expected date, received string");
+      expect(errorF.fieldErrors.created_at[0]).toBe(
+        "Expected date, received string",
+      );
+      expect(errorF.fieldErrors.updated_at[0]).toBe(
+        "Expected date, received string",
+      );
     }
   });
 });
@@ -163,17 +185,23 @@ describe("Analysis Edit", () => {
       zAnalysisEdit.parse(analysis_obj);
     } catch (error) {
       const errorF = (error as ZodError).flatten();
-      expect(errorF.fieldErrors.name[0]).toBe("String must contain at least 3 character(s)");
+      expect(errorF.fieldErrors.name[0]).toBe(
+        "String must contain at least 3 character(s)",
+      );
     }
   });
 });
 
 describe("Analysis List", () => {
   test("Success", () => {
-    const result = zAnalysisList.parse([{ id: "testid", tags: [{ key: "analysis_type", value: "math" }] }]);
+    const result = zAnalysisList.parse([
+      { id: "testid", tags: [{ key: "analysis_type", value: "math" }] },
+    ]);
 
     expect(result[0].id).toBe("testid");
-    expect(result[0].tags).toStrictEqual([{ key: "analysis_type", value: "math" }]);
+    expect(result[0].tags).toStrictEqual([
+      { key: "analysis_type", value: "math" },
+    ]);
   });
 
   test("Error - Required tags", () => {

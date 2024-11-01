@@ -1,4 +1,13 @@
-import { test, expect, vi, afterAll, beforeAll, afterEach, describe, type Mock } from "vitest";
+import {
+  type Mock,
+  afterAll,
+  afterEach,
+  beforeAll,
+  describe,
+  expect,
+  test,
+  vi,
+} from "vitest";
 import { invokeDatabaseFunction } from "../../Plugins/invokeDatabaseFunction.ts";
 
 vi.mock("../../Plugins/invokeDatabaseFunction.ts", () => ({
@@ -9,7 +18,7 @@ vi.mock("../../Plugins/invokeDatabaseFunction.ts", () => ({
       default:
         return [];
     }
-  })
+  }),
 }));
 
 import {
@@ -152,9 +161,10 @@ describe("addDeviceDataByDevice", () => {
   });
 
   test("payload parser can return a data array", async () => {
-    vi
-      .spyOn(PayloadParser, "runPayloadParser")
-      .mockResolvedValue([dataCreate, dataCreate]);
+    vi.spyOn(PayloadParser, "runPayloadParser").mockResolvedValue([
+      dataCreate,
+      dataCreate,
+    ]);
     const result = await DeviceData.addDeviceDataByDevice(activeDevice, []);
     expect(result).toEqual("2 items added");
   });
@@ -384,9 +394,10 @@ describe("deleteDeviceData", () => {
 
   test("passes array of ids to database deleteDeviceData", async () => {
     vi.spyOn(Device, "getDeviceInfo").mockResolvedValue(mutableDevice);
-    vi
-      .spyOn(DeviceData, "getDeviceData")
-      .mockResolvedValue([mockData, mockData]);
+    vi.spyOn(DeviceData, "getDeviceData").mockResolvedValue([
+      mockData,
+      mockData,
+    ]);
     await DeviceData.deleteDeviceData(mutableDevice.id);
 
     const arg1 = (invokeDatabaseFunction as Mock).mock.calls[2][0]; // method
@@ -501,9 +512,7 @@ describe("applyPayloadEncoder", () => {
   test("invokes onCall on the module", async () => {
     const plugin: any = { modules: new Map() };
     plugin.modules.set("module1", new Module(plugin, {} as any));
-    plugin.modules.get("module1").invokeOnCall = vi
-      .fn()
-      .mockResolvedValue(444);
+    plugin.modules.get("module1").invokeOnCall = vi.fn().mockResolvedValue(444);
     plugins.set("plugin1", plugin);
 
     const device = { ...mutableDevice, encoder_stack: ["plugin1:module1"] };

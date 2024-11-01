@@ -5,4 +5,4 @@ interface IConfigParam {
   url: string;
 }
 
-export { IConfigParam };
+export type { IConfigParam };

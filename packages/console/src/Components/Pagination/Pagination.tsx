@@ -52,7 +52,14 @@ interface IPaginationProps {
 /**
  */
 function Pagination(props: IPaginationProps) {
-  const { page, pageAmount, amountOfRecords, idealAmountOfRows, infinitePages, onChange } = props;
+  const {
+    page,
+    pageAmount,
+    amountOfRecords,
+    idealAmountOfRows,
+    infinitePages,
+    onChange,
+  } = props;
   const containerRef = useRef<HTMLDivElement>(null);
 
   /**
@@ -75,18 +82,30 @@ function Pagination(props: IPaginationProps) {
   const renderItem = (value: number | string, index: number) => {
     const selected = page === value;
     if (typeof value === "string") {
-      return <Style.PaginationSeparator key={`separator-${index}`}>...</Style.PaginationSeparator>;
-    }
       return (
-        <Style.Button key={value} onClick={() => onChange(value)} selected={selected}>
-          {value}
-        </Style.Button>
+        <Style.PaginationSeparator key={`separator-${index}`}>
+          ...
+        </Style.PaginationSeparator>
       );
+    }
+    return (
+      <Style.Button
+        key={value}
+        onClick={() => onChange(value)}
+        selected={selected}
+      >
+        {value}
+      </Style.Button>
+    );
   };
 
   /**
    */
-  const renderArrow = (icon: EIcon, disabled: boolean, onClick: VoidFunction) => {
+  const renderArrow = (
+    icon: EIcon,
+    disabled: boolean,
+    onClick: VoidFunction,
+  ) => {
     return (
       <Style.Button disabled={disabled} onClick={onClick}>
         <Icon icon={icon} />
@@ -104,7 +123,11 @@ function Pagination(props: IPaginationProps) {
       return null;
     }
 
-    const array = getPageList(pageAmount, containerRef?.current?.clientWidth, page);
+    const array = getPageList(
+      pageAmount,
+      containerRef?.current?.clientWidth,
+      page,
+    );
     const nextDisabled = !pageAmount || page === pageAmount;
     return (
       <>
@@ -131,7 +154,7 @@ function Pagination(props: IPaginationProps) {
           {renderArrow(
             EIcon["chevron-right"],
             (amountOfRecords || 0) < (idealAmountOfRows || 0),
-            goForward
+            goForward,
           )}
         </>
       ) : pageAmount > 0 ? (

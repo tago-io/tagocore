@@ -1,22 +1,22 @@
 import type { IPlugin, IPluginModule } from "@tago-io/tcore-sdk/types";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useMatch } from "react-router";
-import { useTheme } from "styled-components";
-import cloneDeep from "lodash.clonedeep";
 import { flattenConfigFields } from "@tago-io/tcore-shared";
+import cloneDeep from "lodash.clonedeep";
 import { observer } from "mobx-react";
-import EditPage from "../../EditPage/EditPage.tsx";
-import PluginImage from "../../PluginImage/PluginImage.tsx";
-import uninstallPlugin from "../../../Requests/uninstallPlugin.ts";
-import editPluginSettings from "../../../Requests/editPluginSettings.ts";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useMatch, useNavigate } from "react-router";
+import { useTheme } from "styled-components";
 import removeEmptyKeys from "../../../Helpers/removeEmptyKeys.ts";
 import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
+import disablePlugin from "../../../Requests/disablePlugin.ts";
+import editPluginSettings from "../../../Requests/editPluginSettings.ts";
+import enablePlugin from "../../../Requests/enablePlugin.ts";
 import startPluginModule from "../../../Requests/startPluginModule.ts";
 import stopPluginModule from "../../../Requests/stopPluginModule.ts";
-import enablePlugin from "../../../Requests/enablePlugin.ts";
-import disablePlugin from "../../../Requests/disablePlugin.ts";
-import store from "../../../System/Store.ts";
+import uninstallPlugin from "../../../Requests/uninstallPlugin.ts";
 import { getSocket } from "../../../System/Socket.ts";
+import store from "../../../System/Store.ts";
+import EditPage from "../../EditPage/EditPage.tsx";
+import PluginImage from "../../PluginImage/PluginImage.tsx";
 import SettingsTab from "./SettingsTab/SettingsTab.tsx";
 
 /**

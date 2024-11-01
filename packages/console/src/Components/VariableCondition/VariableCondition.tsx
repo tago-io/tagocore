@@ -35,7 +35,11 @@ function VariableCondition(props: IVariableCondition) {
   /**
    * Changes a condition's value.
    */
-  const onChangeItem = (item: ICondition, field: keyof ICondition, value: any) => {
+  const onChangeItem = (
+    item: ICondition,
+    field: keyof ICondition,
+    value: any,
+  ) => {
     item[field] = value;
     onChange([...data]);
   };
@@ -74,7 +78,11 @@ function VariableCondition(props: IVariableCondition) {
   /**
    * Renders a value field (value or second value)
    */
-  const renderValue = (item: ICondition, field: keyof ICondition, error: any) => {
+  const renderValue = (
+    item: ICondition,
+    field: keyof ICondition,
+    error: any,
+  ) => {
     return (
       <Input
         value={item[field] || ""}
@@ -139,7 +147,8 @@ function VariableCondition(props: IVariableCondition) {
     item.value_type = item.value_type || "string";
 
     const text = fieldTypeNames[item.value_type as keyof typeof fieldTypeNames];
-    const color = fieldTypeColors[item.value_type as keyof typeof fieldTypeNames];
+    const color =
+      fieldTypeColors[item.value_type as keyof typeof fieldTypeNames];
 
     return (
       <Tooltip text={`This row will be compared as a ${item.value_type}`}>

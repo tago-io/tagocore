@@ -29,7 +29,11 @@ function HttpHeaders(props: IHttpHeaders) {
     value.push({ name: "", value: "" });
   }
 
-  const onChangeField = (field: keyof IHttpHeaderItem, v: string, rowIndex: number) => {
+  const onChangeField = (
+    field: keyof IHttpHeaderItem,
+    v: string,
+    rowIndex: number,
+  ) => {
     if (!value[rowIndex]) {
       value[rowIndex] = { name: "", value: "" }; // create the item if it doesn't exist
     }

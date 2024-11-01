@@ -19,7 +19,10 @@ parentPort?.setMaxListeners(100);
 abstract class TCoreModule<IConfigValues = any> {
   private started = false;
 
-  constructor(protected setup: IModuleSetupWithoutType, protected type: TPluginType) {
+  constructor(
+    protected setup: IModuleSetupWithoutType,
+    protected type: TPluginType,
+  ) {
     this.attachEvents();
     this.validateSetupID();
 
@@ -31,7 +34,10 @@ abstract class TCoreModule<IConfigValues = any> {
   /**
    * Shows a message in the module's configuration page.
    */
-  public async showMessage(type: TModuleMessageType, message: string): Promise<void> {
+  public async showMessage(
+    type: TModuleMessageType,
+    message: string,
+  ): Promise<void> {
     if (type === "info") {
       const color = "hsl(208, 96%, 75%, 0.2)";
       const iconColor = "hsl(208, 96%, 35%, 1)";
@@ -146,7 +152,11 @@ abstract class TCoreModule<IConfigValues = any> {
    * Executes a method from this module with the given parameters.
    * The connectionID must be informed in order to sync the result in the API.
    */
-  private async executeMethod(method: string, params: any[], connectionID: string) {
+  private async executeMethod(
+    method: string,
+    params: any[],
+    connectionID: string,
+  ) {
     const event = "pluginMethodResponse";
     const methodExists = !!this[method];
 

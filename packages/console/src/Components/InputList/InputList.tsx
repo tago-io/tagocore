@@ -20,7 +20,8 @@ interface IInputList {
  * A Row manipulator of inputs.
  */
 function InputList(props: IInputList) {
-  const { title, description, placeholder, icon, value, errors, onChange } = props;
+  const { title, description, placeholder, icon, value, errors, onChange } =
+    props;
 
   /**
    * Called when an item changes.
@@ -76,7 +77,13 @@ function InputList(props: IInputList) {
   }
 
   return (
-    <Accordion isAlwaysOpen icon={icon} description={description} title={title} open>
+    <Accordion
+      isAlwaysOpen
+      icon={icon}
+      description={description}
+      title={title}
+      open
+    >
       {content}
     </Accordion>
   );

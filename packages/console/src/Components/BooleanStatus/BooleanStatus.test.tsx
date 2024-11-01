@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils";
+import { render, screen } from "../../../utils/test-utils.tsx";
 import BooleanStatus from "./BooleanStatus.tsx";
 
 test("renders without crashing", () => {

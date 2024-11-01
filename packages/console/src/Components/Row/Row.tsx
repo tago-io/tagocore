@@ -13,7 +13,9 @@ interface IRowProps {
  * Bootstrap row.
  */
 function Row(props: IRowProps) {
-  return <Style.Container style={props.style}>{props.children}</Style.Container>;
+  return (
+    <Style.Container style={props.style}>{props.children}</Style.Container>
+  );
 }
 
 export default Row;

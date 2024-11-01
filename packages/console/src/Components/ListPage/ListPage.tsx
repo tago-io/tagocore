@@ -1,11 +1,17 @@
-import { useState, useCallback, useEffect, type ReactNode, useRef } from "react";
-import type { ITag, ISummary } from "@tago-io/tcore-sdk/types";
+import type { ISummary, ITag } from "@tago-io/tcore-sdk/types";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
+import useApiRequest from "../../Helpers/useApiRequest.ts";
 import { EIcon } from "../Icon/Icon.types";
 import InnerNav from "../InnerNav/InnerNav.tsx";
 import PaginatedTable from "../PaginatedTable/PaginatedTable.tsx";
 import type { IColumn } from "../PaginatedTable/PaginatedTable.types";
-import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
-import useApiRequest from "../../Helpers/useApiRequest.ts";
 import * as Style from "./ListPage.style";
 
 /**
@@ -51,7 +57,11 @@ interface IListPageProps<T> {
   /**
    * Called to fetch the data for the page.
    */
-  onGetData: (page: number, idealAmountOfRows: number, filter: any) => Promise<T[]> | T[];
+  onGetData: (
+    page: number,
+    idealAmountOfRows: number,
+    filter: any,
+  ) => Promise<T[]> | T[];
 }
 
 /**
@@ -73,7 +83,7 @@ function ListPage<T extends { id?: string }>(props: IListPageProps<T>) {
     (item: T) => {
       return `/console/${path}/${item.id}`;
     },
-    [path]
+    [path],
   );
 
   /**
@@ -87,7 +97,7 @@ function ListPage<T extends { id?: string }>(props: IListPageProps<T>) {
       }
 
       const usingFilter = Object.keys(filterWithTags).some(
-        (x) => filterWithTags[x] !== undefined && filterWithTags[x] !== ""
+        (x) => filterWithTags[x] !== undefined && filterWithTags[x] !== "",
       );
       const data = await onGetData(pg, idealAmountOfRows, filterWithTags);
 
@@ -96,7 +106,7 @@ function ListPage<T extends { id?: string }>(props: IListPageProps<T>) {
 
       return data;
     },
-    [onGetData]
+    [onGetData],
   );
 
   /**
@@ -159,7 +169,9 @@ function ListPage<T extends { id?: string }>(props: IListPageProps<T>) {
       </InnerNav>
 
       <PaginatedTable<T>
-        amountOfRecords={infinitePages ? amountOfRecords : summary?.[summaryKey] || 0}
+        amountOfRecords={
+          infinitePages ? amountOfRecords : summary?.[summaryKey] || 0
+        }
         columns={getColumns()}
         emptyMessage={"Nothing here yet."}
         emptyMessageIcon={props.icon}

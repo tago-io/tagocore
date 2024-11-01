@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import splitColon from "./splitColon.ts";
 
 describe("Split Colon", () => {

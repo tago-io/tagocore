@@ -54,10 +54,17 @@ function Item(props: IItemProps) {
     }
 
     const selected =
-      buttonURL === "/console/" ? currentPath === buttonURL : currentPath.startsWith(buttonURL);
+      buttonURL === "/console/"
+        ? currentPath === buttonURL
+        : currentPath.startsWith(buttonURL);
 
     return (
-      <Style.ItemLink to={buttonURL} color={color} selected={selected} data-testid={testId}>
+      <Style.ItemLink
+        to={buttonURL}
+        color={color}
+        selected={selected}
+        data-testid={testId}
+      >
         {content}
       </Style.ItemLink>
     );

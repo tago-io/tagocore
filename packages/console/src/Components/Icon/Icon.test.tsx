@@ -1,4 +1,4 @@
-import { render, screen } from "../../../utils/test-utils";
+import { render, screen } from "../../../utils/test-utils.tsx";
 import Icon from "./Icon.tsx";
 import { EIcon } from "./Icon.types";
 

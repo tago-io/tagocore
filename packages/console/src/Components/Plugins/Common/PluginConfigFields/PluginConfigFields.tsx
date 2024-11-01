@@ -13,18 +13,18 @@ import type {
   IPluginConfigFieldStringList,
 } from "@tago-io/tcore-sdk/types";
 import type { ReactNode } from "react";
-import Icon from "../../../Icon/Icon.tsx";
-import TooltipText from "../../../TooltipText/TooltipText.tsx";
+import isConfigFieldVisible from "../../../../Helpers/isConfigFieldVisible.ts";
+import type { EIcon } from "../../../../index.ts";
 import FileSelect from "../../../FileSelect/FileSelect.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
+import Icon from "../../../Icon/Icon.tsx";
 import IconRadio from "../../../IconRadio/IconRadio.tsx";
 import Input from "../../../Input/Input.tsx";
 import InputList from "../../../InputList/InputList.tsx";
 import OptionList from "../../../OptionList/OptionList.tsx";
 import Select from "../../../Select/Select.tsx";
 import Switch from "../../../Switch/Switch.tsx";
-import type { EIcon } from "../../../../index.ts";
-import isConfigFieldVisible from "../../../../Helpers/isConfigFieldVisible.ts";
+import TooltipText from "../../../TooltipText/TooltipText.tsx";
 import * as Style from "./PluginConfigFields.style";
 
 /**
@@ -78,7 +78,9 @@ function PluginConfigFields(props: IPluginConfigFieldsProps) {
     return (
       <Input
         error={errors?.[field.field]}
-        onChange={(e) => onChangeValues({ ...values, [field.field]: e.target.value })}
+        onChange={(e) =>
+          onChangeValues({ ...values, [field.field]: e.target.value })
+        }
         placeholder={field.placeholder || ""}
         value={values[field.field] || ""}
       />
@@ -93,7 +95,9 @@ function PluginConfigFields(props: IPluginConfigFieldsProps) {
       <Input
         autoComplete="new-password"
         error={errors?.[field.field]}
-        onChange={(e) => onChangeValues({ ...values, [field.field]: e.target.value })}
+        onChange={(e) =>
+          onChangeValues({ ...values, [field.field]: e.target.value })
+        }
         placeholder={field.placeholder || ""}
         type="password"
         value={values[field.field] || ""}
@@ -108,7 +112,9 @@ function PluginConfigFields(props: IPluginConfigFieldsProps) {
     return (
       <Input
         error={errors?.[field.field]}
-        onChange={(e) => onChangeValues({ ...values, [field.field]: Number(e.target.value) })}
+        onChange={(e) =>
+          onChangeValues({ ...values, [field.field]: Number(e.target.value) })
+        }
         onWheel={(e) => (e.target as HTMLInputElement).blur()} // annoying scroll
         placeholder={field.placeholder || ""}
         type="number"
@@ -123,11 +129,16 @@ function PluginConfigFields(props: IPluginConfigFieldsProps) {
    * Renders a select field with a bunch of options.
    */
   const renderOption = (field: IPluginConfigFieldOption) => {
-    const options = [{ value: "", label: "", disabled: true }, ...(field.options || [])];
+    const options = [
+      { value: "", label: "", disabled: true },
+      ...(field.options || []),
+    ];
     return (
       <Select
         error={errors?.[field.field]}
-        onChange={(e) => onChangeValues({ ...values, [field.field]: e.target.value })}
+        onChange={(e) =>
+          onChangeValues({ ...values, [field.field]: e.target.value })
+        }
         options={options}
         placeholder={field.placeholder || ""}
         value={values[field.field] || ""}
@@ -266,7 +277,7 @@ function PluginConfigFields(props: IPluginConfigFieldsProps) {
         </FormGroup>
       );
     }
-      return <FormGroup key={field.field}>{content}</FormGroup>;
+    return <FormGroup key={field.field}>{content}</FormGroup>;
   };
 
   /**
@@ -281,7 +292,8 @@ function PluginConfigFields(props: IPluginConfigFieldsProps) {
 
     if (field.type === "boolean") {
       return renderBoolean(field);
-    }if (field.type === "option") {
+    }
+    if (field.type === "option") {
       content = renderOption(field);
     } else if (field.type === "string") {
       content = renderString(field);

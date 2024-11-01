@@ -1,20 +1,28 @@
 import {
   type IDevice,
-  type ILiveInspectorMessage,
   type IDeviceParameter,
   type IDeviceToken,
+  type ILiveInspectorMessage,
+  type IPluginClassListItem,
   zDevice,
   zDeviceParameter,
-  type IPluginClassListItem,
 } from "@tago-io/tcore-sdk/types";
 import cloneDeep from "lodash.clonedeep";
-import { useEffect, useCallback, useState, useRef } from "react";
+import { observer } from "mobx-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useMatch } from "react-router";
 import { useTheme } from "styled-components";
 import { z } from "zod";
-import { observer } from "mobx-react";
+import getDeviceTypeName from "../../../Helpers/getDeviceTypeName.ts";
+import { setLocalStorageAsJSON } from "../../../Helpers/localStorage.ts";
 import normalizeTags from "../../../Helpers/normalizeTags.ts";
 import useApiRequest from "../../../Helpers/useApiRequest.ts";
+import createDeviceToken from "../../../Requests/createDeviceToken.ts";
+import deleteDevice from "../../../Requests/deleteDevice.ts";
+import deleteDeviceToken from "../../../Requests/deleteDeviceToken.ts";
+import editDevice from "../../../Requests/editDevice.ts";
+import setDeviceParams from "../../../Requests/setDeviceParams.ts";
+import { getSocket } from "../../../System/Socket.ts";
 import buildZodError from "../../../Validation/buildZodError.ts";
 import EditPage from "../../EditPage/EditPage.tsx";
 import Icon from "../../Icon/Icon.tsx";
@@ -22,16 +30,8 @@ import { EIcon } from "../../Icon/Icon.types";
 import Switch from "../../Switch/Switch.tsx";
 import TagsTab from "../../Tags/TagsTab.tsx";
 import DeviceInputOutput from "../Common/DeviceInputOutput.tsx";
-import normalizeConfigParameters from "../Helpers/normalizeConfigParameters.ts";
 import type { IInspectorData } from "../Common/LiveInspector/LiveInspector.types";
-import setDeviceParams from "../../../Requests/setDeviceParams.ts";
-import createDeviceToken from "../../../Requests/createDeviceToken.ts";
-import deleteDevice from "../../../Requests/deleteDevice.ts";
-import deleteDeviceToken from "../../../Requests/deleteDeviceToken.ts";
-import editDevice from "../../../Requests/editDevice.ts";
-import { setLocalStorageAsJSON } from "../../../Helpers/localStorage.ts";
-import getDeviceTypeName from "../../../Helpers/getDeviceTypeName.ts";
-import { getSocket } from "../../../System/Socket.ts";
+import normalizeConfigParameters from "../Helpers/normalizeConfigParameters.ts";
 import ConfigParametersTab from "./ConfigParametersTab/ConfigParametersTab.tsx";
 import GeneralInformationTab from "./GeneralInformationTab/GeneralInformationTab.tsx";
 import LiveInspectorTab from "./LiveInspectorTab/LiveInspectorTab.tsx";

@@ -45,7 +45,11 @@ function InputRadio(props: IInputRadioProps) {
     );
   };
 
-  return <Style.Container stretch={stretch}>{options.map(renderItem)}</Style.Container>;
+  return (
+    <Style.Container stretch={stretch}>
+      {options.map(renderItem)}
+    </Style.Container>
+  );
 }
 
 export default InputRadio;

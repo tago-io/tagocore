@@ -1,5 +1,5 @@
+import { describe, expect, test } from "vitest";
 import { parseSafe } from "./parseSafe.ts";
-import { test, expect, describe } from "vitest";
 
 describe("parseSafe", () => {
   test("assure correct parsing", () => {

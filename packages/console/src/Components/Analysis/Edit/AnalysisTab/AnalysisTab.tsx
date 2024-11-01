@@ -7,11 +7,11 @@ import { EButton } from "../../../Button/Button.types";
 import Console from "../../../Console/Console.tsx";
 import FlexRow from "../../../FlexRow/FlexRow.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
-import Tooltip from "../../../Tooltip/Tooltip.tsx";
 import Icon from "../../../Icon/Icon.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import Input from "../../../Input/Input.tsx";
 import ProgramFieldset from "../../../ProgramFieldset/ProgramFieldset.tsx";
+import Tooltip from "../../../Tooltip/Tooltip.tsx";
 import AutomateTip from "../../Common/AutomateTip/AutomateTip.tsx";
 import ConsoleOptions from "../../Common/ConsoleOptions/ConsoleOptions.tsx";
 import * as Style from "./AnalysisTab.style";
@@ -55,7 +55,9 @@ function AnalysisTab(props: IAnalysisTabProps) {
    */
   const downloadLogs = useCallback(() => {
     const mapped = logsTrimmed.map((item) => {
-      const date = getDateTimeObject(item.timestamp)?.toFormat("yyyy-LL-dd HH:mm:ss.SSS");
+      const date = getDateTimeObject(item.timestamp)?.toFormat(
+        "yyyy-LL-dd HH:mm:ss.SSS",
+      );
       const message = String(item.message).trim();
       return `[${date}]: ${message}`;
     });

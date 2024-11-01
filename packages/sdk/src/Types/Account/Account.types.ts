@@ -1,7 +1,7 @@
-import { z } from "zod";
 import { v4 as uuid } from "uuid";
-import { zObjectID, zToken } from "../index.ts";
+import { z } from "zod";
 import { generateResourceID } from "../../Shared/ResourceID.ts";
+import { zObjectID, zToken } from "../index.ts";
 
 /**
  * Configuration of an account.
@@ -18,12 +18,21 @@ export const zAccount = z.object({
 /**
  * Configuration of the account list.
  */
-export const zAccountList = z.array(zAccount.partial().extend({ password: z.string(), id: zObjectID }));
+export const zAccountList = z.array(
+  zAccount.partial().extend({ password: z.string(), id: zObjectID }),
+);
 
 /**
  * Allowed fields in a account list query.
  */
-const zAccountListQueryField = z.enum(["id", "name", "username", "password", "password_hint", "created_at"]);
+const zAccountListQueryField = z.enum([
+  "id",
+  "name",
+  "username",
+  "password",
+  "password_hint",
+  "created_at",
+]);
 
 /**
  * Configuration of the account list.

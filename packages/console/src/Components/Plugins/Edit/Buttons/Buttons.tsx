@@ -68,7 +68,8 @@ function Buttons(props: IButtonsProps) {
             <Icon icon={EIcon.check} />
             <span>Enable</span>
           </Button>
-        ) : props.data.state === "stopping" || props.data.state === "starting" ? (
+        ) : props.data.state === "stopping" ||
+          props.data.state === "starting" ? (
           <Button disabled addIconMargin>
             <span>Loading...</span>
           </Button>

@@ -41,7 +41,8 @@ interface ILiveInspectorTabProps {
  * The device's `Live Inspector` tab.
  */
 function LiveInspectorTab(props: ILiveInspectorTabProps) {
-  const { enabled, limit, logs, onChangeEnabled, onChangeLimit, onClear } = props;
+  const { enabled, limit, logs, onChangeEnabled, onChangeLimit, onClear } =
+    props;
 
   return (
     <>

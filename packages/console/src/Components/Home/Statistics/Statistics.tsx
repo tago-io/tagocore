@@ -2,13 +2,13 @@ import type { IStatistic } from "@tago-io/tcore-sdk/types";
 import { observer } from "mobx-react";
 import { memo, useEffect, useRef, useState } from "react";
 import useApiRequest from "../../../Helpers/useApiRequest.ts";
+import { getSocket } from "../../../System/Socket.ts";
 import store from "../../../System/Store.ts";
-import TooltipText from "../../TooltipText/TooltipText.tsx";
 import EmptyMessage from "../../EmptyMessage/EmptyMessage.tsx";
 import { EIcon } from "../../Icon/Icon.types";
+import TooltipText from "../../TooltipText/TooltipText.tsx";
 import * as HomeStyle from "../Home.style";
 import RequestChart from "../RequestChart/RequestChart.tsx";
-import { getSocket } from "../../../System/Socket.ts";
 
 /**
  * Statistics section of the home page.

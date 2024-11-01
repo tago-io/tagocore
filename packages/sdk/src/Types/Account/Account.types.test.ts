@@ -1,6 +1,11 @@
+import { describe, expect, test } from "vitest";
 import type { ZodError } from "zod";
-import { zAccountList, zAccountCreate, zAccountTokenCreate, zAccountListQuery } from "./Account.types.ts";
-import { test, expect, describe } from "vitest";
+import {
+  zAccountCreate,
+  zAccountList,
+  zAccountListQuery,
+  zAccountTokenCreate,
+} from "./Account.types.ts";
 
 describe("zAccountList", () => {
   test("parses simple object", () => {
@@ -59,7 +64,9 @@ describe("zAccountListQuery", () => {
       zAccountListQuery.parse(data);
     } catch (error) {
       const e = (error as ZodError).flatten();
-      expect(e.fieldErrors.fields[0].startsWith("Invalid enum value.")).toBeTruthy();
+      expect(
+        e.fieldErrors.fields[0].startsWith("Invalid enum value."),
+      ).toBeTruthy();
     }
   });
 
@@ -113,7 +120,9 @@ describe("zAccountTokenCreate", () => {
       zAccountTokenCreate.parse(data);
     } catch (error) {
       const e = (error as ZodError).flatten();
-      expect(e.fieldErrors.permission[0].startsWith("Invalid enum value.")).toBeTruthy();
+      expect(
+        e.fieldErrors.permission[0].startsWith("Invalid enum value."),
+      ).toBeTruthy();
     }
   });
 

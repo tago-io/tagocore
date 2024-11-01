@@ -25,6 +25,10 @@ export const zLiveInspectorMessageCreate = z.object({
   title: z.string(),
 });
 
-export type ILiveInspectorMessageCreate = z.infer<typeof zLiveInspectorMessageCreate>;
+export type ILiveInspectorMessageCreate = z.infer<
+  typeof zLiveInspectorMessageCreate
+>;
 export type ILiveInspectorMessage = z.infer<typeof zLiveInspectorMessage>;
-export type TLiveInspectorConnectionID = z.infer<typeof zLiveInspectorConnectionID>;
+export type TLiveInspectorConnectionID = z.infer<
+  typeof zLiveInspectorConnectionID
+>;

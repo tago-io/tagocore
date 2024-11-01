@@ -159,7 +159,9 @@ async function getInstalledInsidePlugins(
     const isInstalledDatabasePlugin =
       settings.database_plugin?.split(":")[0] === md5(getPackage.name);
     const isDatabase = getPackage?.tcore?.types?.includes("database");
-    const isDefaultFilesystemPlugin = getPackage?.tcore?.types?.includes("filesystem") && getPackage?.tcore?.types?.includes("default");
+    const isDefaultFilesystemPlugin =
+      getPackage?.tcore?.types?.includes("filesystem") &&
+      getPackage?.tcore?.types?.includes("default");
     const isStore = getPackage?.tcore?.store;
 
     if (

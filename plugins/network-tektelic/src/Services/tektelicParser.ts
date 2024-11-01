@@ -26,7 +26,7 @@ export default async function parser(payload: any) {
     payload.payloadMetaData.gatewayMetaDataList[0].id = undefined;
     payload.payloadMetaData.gatewayMetaDataList[0].name = undefined;
     payload.payloadMetaData.gatewayMetaDataList[0].gtw_id =
-    payload.payloadMetaData.gatewayMetaDataList[0].mac;
+      payload.payloadMetaData.gatewayMetaDataList[0].mac;
     payload.payloadMetaData.gatewayMetaDataList[0].mac = undefined;
 
     payload.payloadMetaData.gatewayMetaDataList[0].gtw = {
@@ -71,7 +71,13 @@ export default async function parser(payload: any) {
     toTago = toTago.concat(toTagoFormat(payload.payload, serie));
   }
   toTago = toTago.filter(
-    (x) => !x.location || (x.location && x.location.lat !== 0 && x.location.lng !== 0 && !Number.isNaN(x.location.lat) && !Number.isNaN(x.location.lng)),
+    (x) =>
+      !x.location ||
+      (x.location &&
+        x.location.lat !== 0 &&
+        x.location.lng !== 0 &&
+        !Number.isNaN(x.location.lat) &&
+        !Number.isNaN(x.location.lng)),
   );
 
   return toTago;

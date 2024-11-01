@@ -4,9 +4,9 @@ import FormDivision from "../../../FormDivision/FormDivision.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import Input from "../../../Input/Input.tsx";
+import ResourceLinkField from "../../../ResourceLinkField/ResourceLinkField.tsx";
 import Row from "../../../Row/Row.tsx";
 import DataRetention from "../../Common/DataRetention/DataRetention.tsx";
-import ResourceLinkField from "../../../ResourceLinkField/ResourceLinkField.tsx";
 
 /**
  * Props.

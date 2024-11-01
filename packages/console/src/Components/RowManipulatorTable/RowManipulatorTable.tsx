@@ -1,8 +1,8 @@
 import React, { type UIEvent, useRef } from "react";
 import RowManipulator from "../RowManipulator/RowManipulator.tsx";
 import TooltipText from "../TooltipText/TooltipText.tsx";
-import type { IRowManipulatorTableColumn } from "./RowManipulatorTable.types";
 import * as Style from "./RowManipulatorTable.style";
+import type { IRowManipulatorTableColumn } from "./RowManipulatorTable.types";
 
 /**
  * Props.
@@ -56,7 +56,11 @@ function RowManipulatorTable<T>(props: IRowManipulatorTableProps<T>) {
   /**
    * Renders a single body/row cell.
    */
-  const renderRowCell = (item: T, column: IRowManipulatorTableColumn<T>, rowIndex: number) => {
+  const renderRowCell = (
+    item: T,
+    column: IRowManipulatorTableColumn<T>,
+    rowIndex: number,
+  ) => {
     const flex = column.flex || "1";
     const width = column.width || "auto";
     return (

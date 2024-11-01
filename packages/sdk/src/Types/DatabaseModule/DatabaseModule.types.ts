@@ -2,25 +2,25 @@ import type { z } from "zod";
 import type {
   ILog,
   IStatisticCreate,
+  zAccountCreate,
+  zAccountListQuery,
+  zAccountTokenCreate,
   zActionCreate,
   zActionEdit,
   zActionListQuery,
   zAnalysisCreate,
   zAnalysisEdit,
   zAnalysisListQuery,
+  zDeviceCreate,
   zDeviceDataCreate,
   zDeviceDataQuery,
-  zDeviceCreate,
+  zDeviceDataUpdate,
   zDeviceEdit,
   zDeviceListQuery,
   zDeviceParameterCreate,
   zDeviceTokenCreate,
   zDeviceTokenListQuery,
   zPluginStorageItemSet,
-  zDeviceDataUpdate,
-  zAccountTokenCreate,
-  zAccountCreate,
-  zAccountListQuery,
 } from "../index.ts";
 
 /**
@@ -39,7 +39,10 @@ export type IDatabaseDeviceDataEdit = z.output<typeof zDeviceDataUpdate>;
 /**
  * Data parameter of the `getDeviceData` functions.
  */
-export type IDatabaseGetDeviceDataQuery = Omit<z.output<typeof zDeviceDataQuery>, "details">;
+export type IDatabaseGetDeviceDataQuery = Omit<
+  z.output<typeof zDeviceDataQuery>,
+  "details"
+>;
 
 /**
  * Data parameter of the `addStatistic` function.
@@ -49,7 +52,9 @@ export type IDatabaseAddStatisticData = IStatisticCreate;
 /**
  * Data parameter of the `setPluginStorageItem` function.
  */
-export type IDatabaseSetPluginStorageData = z.output<typeof zPluginStorageItemSet>;
+export type IDatabaseSetPluginStorageData = z.output<
+  typeof zPluginStorageItemSet
+>;
 
 /**
  * Data parameter of the `addAnalysisLog` function.
@@ -104,17 +109,24 @@ export type IDatabaseDeviceListQuery = z.infer<typeof zDeviceListQuery>;
 /**
  * Data parameter of the `setDeviceParams` function.
  */
-export type IDatabaseSetDeviceParamsData = z.infer<typeof zDeviceParameterCreate>;
+export type IDatabaseSetDeviceParamsData = z.infer<
+  typeof zDeviceParameterCreate
+>;
 
 /**
  * Query parameter of the `getDeviceTokenList` function.
  */
-export type IDatabaseGetDeviceTokenListQuery = z.infer<typeof zDeviceTokenListQuery>;
+export type IDatabaseGetDeviceTokenListQuery = z.infer<
+  typeof zDeviceTokenListQuery
+>;
 
 /**
  * Data parameter of the `createDeviceToken` function.
  */
-export type IDatabaseCreateDeviceTokenData = Omit<z.infer<typeof zDeviceTokenCreate>, "device_id">;
+export type IDatabaseCreateDeviceTokenData = Omit<
+  z.infer<typeof zDeviceTokenCreate>,
+  "device_id"
+>;
 
 /**
  * Type parameter of the `getTagKeys` function.
@@ -124,7 +136,9 @@ export type TDatabaseGetTagKeysType = "action" | "analysis" | "device";
 /**
  * Data parameter of the `createAccountToken` function.
  */
-export type IDatabaseAccountCreateTokenData = z.infer<typeof zAccountTokenCreate>;
+export type IDatabaseAccountCreateTokenData = z.infer<
+  typeof zAccountTokenCreate
+>;
 
 /**
  * Data parameter of the `createAccount` function.

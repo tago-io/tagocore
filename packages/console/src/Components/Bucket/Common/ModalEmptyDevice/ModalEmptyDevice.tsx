@@ -32,8 +32,8 @@ function ModalEmptyDevice(props: IModalEmptyDeviceProps) {
       width="550px"
     >
       <FormGroup>
-        Do you really want to empty this bucket? This will permanently erase all data currently in
-        the bucket.
+        Do you really want to empty this bucket? This will permanently erase all
+        data currently in the bucket.
       </FormGroup>
 
       <FormGroup

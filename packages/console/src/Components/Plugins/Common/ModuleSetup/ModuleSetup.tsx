@@ -1,11 +1,14 @@
 import type { IPlugin, IPluginModule } from "@tago-io/tcore-sdk/types";
 import { useCallback, useState } from "react";
+import {
+  getLocalStorageAsBoolean,
+  setLocalStorage,
+} from "../../../../Helpers/localStorage.ts";
+import { FormGroup } from "../../../../index.ts";
 import Accordion from "../../../Accordion/Accordion.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
-import PluginConfigFields from "../PluginConfigFields/PluginConfigFields.tsx";
 import ModuleStatus from "../ModuleStatus/ModuleStatus.tsx";
-import { getLocalStorageAsBoolean, setLocalStorage } from "../../../../Helpers/localStorage.ts";
-import { FormGroup } from "../../../../index.ts";
+import PluginConfigFields from "../PluginConfigFields/PluginConfigFields.tsx";
 import Status from "../Status/Status.tsx";
 import * as Style from "./ModuleSetup.style";
 
@@ -44,8 +47,11 @@ interface ISetupConfigProps {
 /**
  */
 function ModuleSetup(props: ISetupConfigProps) {
-  const { module, data, errors, values, onStart, onStop, onChangeValues } = props;
-  const [open, setOpen] = useState(() => getLocalStorageAsBoolean(module.id, true));
+  const { module, data, errors, values, onStart, onStop, onChangeValues } =
+    props;
+  const [open, setOpen] = useState(() =>
+    getLocalStorageAsBoolean(module.id, true),
+  );
 
   /**
    */
@@ -53,7 +59,7 @@ function ModuleSetup(props: ISetupConfigProps) {
     (oldValues) => {
       onChangeValues({ [module.id]: { ...oldValues } });
     },
-    [onChangeValues, module.id]
+    [onChangeValues, module.id],
   );
 
   /**
@@ -63,7 +69,7 @@ function ModuleSetup(props: ISetupConfigProps) {
       setOpen(newOpen);
       setLocalStorage(module.id, String(newOpen));
     },
-    [module.id]
+    [module.id],
   );
 
   /**

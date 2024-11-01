@@ -1,8 +1,8 @@
 import type { IDevice, IDeviceData } from "@tago-io/tcore-sdk/types";
 import { useCallback, useState } from "react";
-import { EIcon } from "../../../Icon/Icon.types";
-import { Col, FormGroup, Input, Modal, Row } from "../../../../index.ts";
 import editDeviceData from "../../../../Requests/editDeviceData.ts";
+import { Col, FormGroup, Input, Modal, Row } from "../../../../index.ts";
+import { EIcon } from "../../../Icon/Icon.types";
 
 /**
  * Props.

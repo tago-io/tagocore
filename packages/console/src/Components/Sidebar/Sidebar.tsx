@@ -1,14 +1,17 @@
-import { useTheme } from "styled-components";
-import type { IPluginListItem, IPluginButtonModuleSetupOption } from "@tago-io/tcore-sdk/types";
-import { useEffect } from "react";
+import type {
+  IPluginButtonModuleSetupOption,
+  IPluginListItem,
+} from "@tago-io/tcore-sdk/types";
 import { observer } from "mobx-react";
-import { EIcon } from "../Icon/Icon.types";
-import store from "../../System/Store.ts";
+import { useEffect } from "react";
+import { useTheme } from "styled-components";
 import { getSocket } from "../../System/Socket.ts";
-import * as Style from "./Sidebar.style";
-import Item from "./Item.tsx";
+import store from "../../System/Store.ts";
+import { EIcon } from "../Icon/Icon.types";
 import InstallLocalPluginButton from "./InstalLocalPluginButton/InstalLocalPluginButton.tsx";
+import Item from "./Item.tsx";
 import PluginButton from "./PluginButton/PluginButton.tsx";
+import * as Style from "./Sidebar.style";
 
 /**
  * Props.
@@ -179,7 +182,9 @@ function Sidebar(props: ISidebarProps) {
         <>
           <div className="stretch">
             <div className="buttons">{buttons.map(renderButton)}</div>
-            <div style={{ marginTop: "6px" }}>{store.plugins?.map(renderPlugin)}</div>
+            <div style={{ marginTop: "6px" }}>
+              {store.plugins?.map(renderPlugin)}
+            </div>
           </div>
 
           <InstallLocalPluginButton />

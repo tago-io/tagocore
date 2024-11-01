@@ -1,8 +1,8 @@
 import type { InputHTMLAttributes } from "react";
-import Tooltip from "../Tooltip/Tooltip.tsx";
-import Input from "../Input/Input.tsx";
-import Icon from "../Icon/Icon.tsx";
 import { EIcon } from "../../index.ts";
+import Icon from "../Icon/Icon.tsx";
+import Input from "../Input/Input.tsx";
+import Tooltip from "../Tooltip/Tooltip.tsx";
 import * as Style from "./InputPassword.style";
 
 interface IInputPassword extends InputHTMLAttributes<HTMLInputElement> {

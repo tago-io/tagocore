@@ -1,12 +1,21 @@
 import { z } from "zod";
 import { generateResourceID } from "../../Shared/ResourceID.ts";
-import { type IPluginConfigField, zPluginModuleIDCombo } from "../Plugin/Plugin.types.ts";
-import { zQuery, zName, zObjectID, zActiveAutoGen, zTagsAutoGen } from "../Common/Common.types.ts";
-import { zTags } from "../Tag/Tag.types.ts";
+import {
+  zActiveAutoGen,
+  zName,
+  zObjectID,
+  zQuery,
+  zTagsAutoGen,
+} from "../Common/Common.types.ts";
+import createQueryOrderBy from "../Helpers/createQueryOrderBy.ts";
 import preprocessBoolean from "../Helpers/preprocessBoolean.ts";
 import preprocessObject from "../Helpers/preprocessObject.ts";
 import removeNullValues from "../Helpers/removeNullValues.ts";
-import createQueryOrderBy from "../Helpers/createQueryOrderBy.ts";
+import {
+  type IPluginConfigField,
+  zPluginModuleIDCombo,
+} from "../Plugin/Plugin.types.ts";
+import { zTags } from "../Tag/Tag.types.ts";
 
 /**
  * Validation for a "script" action type.
@@ -23,7 +32,11 @@ export const zActionTypePost = z.object({
   type: z.literal("post"),
   url: z.string().url(),
   headers: z.record(z.string()).optional(),
-  fallback_token: z.string().uuid("Invalid fallback token").nullable().optional(),
+  fallback_token: z
+    .string()
+    .uuid("Invalid fallback token")
+    .nullable()
+    .optional(),
 });
 
 /**
@@ -37,7 +50,9 @@ export const zActionTypeTagoIO = z.object({
 /**
  * Validation for an action type that uses a plugin module.
  */
-export const zActionTypePluginModule = z.object({ type: zPluginModuleIDCombo }).passthrough();
+export const zActionTypePluginModule = z
+  .object({ type: zPluginModuleIDCombo })
+  .passthrough();
 
 /**
  * Validation for the `action` object of an action.
@@ -45,11 +60,14 @@ export const zActionTypePluginModule = z.object({ type: zPluginModuleIDCombo }).
 const zActionType = z.any().transform((x) => {
   if (x?.type === "script") {
     return zActionTypeScript.parse(x);
-  }if (x?.type === "post") {
+  }
+  if (x?.type === "post") {
     return zActionTypePost.parse(x);
-  }if (x?.type === "tagoio") {
+  }
+  if (x?.type === "tagoio") {
     return zActionTypeTagoIO.parse(x);
-  }if (x) {
+  }
+  if (x) {
     return zActionTypePluginModule.parse(x);
   }
 });
@@ -86,7 +104,9 @@ export const zActionCreate = zAction
     updated_at: true,
   })
   .extend({
-    type: z.enum(["condition", "interval", "schedule"]).or(zPluginModuleIDCombo),
+    type: z
+      .enum(["condition", "interval", "schedule"])
+      .or(zPluginModuleIDCombo),
     action: zActionType,
     active: zActiveAutoGen,
     tags: zTagsAutoGen,
@@ -96,7 +116,7 @@ export const zActionCreate = zAction
       ...x,
       created_at: new Date(),
       id: generateResourceID(),
-    })
+    }),
   );
 
 /**
@@ -120,7 +140,7 @@ export const zActionList = z.array(
   zAction.partial().extend({
     id: zObjectID,
     tags: zTags,
-  })
+  }),
 );
 
 /**
@@ -157,7 +177,7 @@ export const zActionListQuery = zQuery.extend({
       })
       .partial()
       .nullish()
-      .transform((x) => x ?? {})
+      .transform((x) => x ?? {}),
   ),
   fields: z
     .array(zActionListQueryFields)

@@ -1,4 +1,4 @@
-import { useRef, type KeyboardEvent, useCallback } from "react";
+import { type KeyboardEvent, useCallback, useRef } from "react";
 import { Button, EIcon, FormGroup, Input } from "../../../index.ts";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage.tsx";
 import InputPassword from "../../InputPassword/InputPassword.tsx";
@@ -24,11 +24,14 @@ function LoginForm(props: ILoginFormProps) {
   /**
    * Called when the username input receives a keydown event.
    */
-  const onUsernameKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      passwordRef?.current?.focus();
-    }
-  }, []);
+  const onUsernameKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        passwordRef?.current?.focus();
+      }
+    },
+    [],
+  );
 
   /**
    * Called when the password input receives a keydown event.
@@ -39,7 +42,7 @@ function LoginForm(props: ILoginFormProps) {
         onSignIn();
       }
     },
-    [onSignIn]
+    [onSignIn],
   );
 
   /**
@@ -55,7 +58,9 @@ function LoginForm(props: ILoginFormProps) {
               autoFocus
               disabled={loading}
               error={error?.username}
-              onChange={(e) => onChangeData({ ...data, username: e.target.value })}
+              onChange={(e) =>
+                onChangeData({ ...data, username: e.target.value })
+              }
               value={data.username || ""}
               onKeyDown={onUsernameKeyDown}
             />
@@ -65,7 +70,9 @@ function LoginForm(props: ILoginFormProps) {
             <InputPassword
               disabled={loading}
               error={error?.password}
-              onChange={(e) => onChangeData({ ...data, password: e.target.value })}
+              onChange={(e) =>
+                onChangeData({ ...data, password: e.target.value })
+              }
               value={data.password || ""}
               onKeyDown={onPasswordKeyDown}
               inputRef={passwordRef}
@@ -74,7 +81,9 @@ function LoginForm(props: ILoginFormProps) {
 
           {error?.message && (
             <FormGroup>
-              <ErrorMessage style={{ textAlign: "left", display: "flex", marginTop: 0 }}>
+              <ErrorMessage
+                style={{ textAlign: "left", display: "flex", marginTop: 0 }}
+              >
                 {error?.message}
               </ErrorMessage>
             </FormGroup>

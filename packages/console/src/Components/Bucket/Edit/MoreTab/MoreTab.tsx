@@ -1,16 +1,16 @@
 import type { IDevice } from "@tago-io/tcore-sdk/types";
 import { useCallback, useState } from "react";
+import { formatDataAmount } from "../../../../Helpers/formatDataAmount.ts";
+import { EButton, Icon } from "../../../../index.ts";
+import Button from "../../../Button/Button.tsx";
 import Col from "../../../Col/Col.tsx";
 import FormDivision from "../../../FormDivision/FormDivision.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import Input from "../../../Input/Input.tsx";
-import Button from "../../../Button/Button.tsx";
 import RelativeDate from "../../../RelativeDate/RelativeDate.tsx";
 import Row from "../../../Row/Row.tsx";
-import { EButton, Icon } from "../../../../index.ts";
 import ModalEmptyDevice from "../../Common/ModalEmptyDevice/ModalEmptyDevice.tsx";
-import { formatDataAmount } from "../../../../Helpers/formatDataAmount.ts";
 
 /**
  * Props.
@@ -53,7 +53,10 @@ function MoreTab(props: IMoreTabProps) {
 
   return (
     <div>
-      <FormDivision icon={EIcon["plus-circle"]} title="More about this Bucket" />
+      <FormDivision
+        icon={EIcon["plus-circle"]}
+        title="More about this Bucket"
+      />
 
       <Row>
         <Col size="6">
@@ -72,7 +75,11 @@ function MoreTab(props: IMoreTabProps) {
       <Row>
         <Col size="6">
           <FormGroup icon={EIcon.hashtag} label="Amount of data records">
-            <Input disabled readOnly value={formatDataAmount(dataAmount || 0)} />
+            <Input
+              disabled
+              readOnly
+              value={formatDataAmount(dataAmount || 0)}
+            />
           </FormGroup>
         </Col>
 
@@ -98,7 +105,12 @@ function MoreTab(props: IMoreTabProps) {
         </Col>
       </Row>
 
-      {modalEmpty && <ModalEmptyDevice onClose={deactivateModalEmpty} onConfirm={onEmptyBucket} />}
+      {modalEmpty && (
+        <ModalEmptyDevice
+          onClose={deactivateModalEmpty}
+          onConfirm={onEmptyBucket}
+        />
+      )}
     </div>
   );
 }

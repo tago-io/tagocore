@@ -1,6 +1,8 @@
-import { useTheme } from "styled-components";
 import type { IDevice } from "@tago-io/tcore-sdk/types";
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useTheme } from "styled-components";
+import getDeviceTypeName from "../../../Helpers/getDeviceTypeName.ts";
+import getDeviceList from "../../../Requests/getDeviceList.ts";
 import BooleanStatus from "../../BooleanStatus/BooleanStatus.tsx";
 import Button from "../../Button/Button.tsx";
 import { EButton } from "../../Button/Button.types";
@@ -9,9 +11,7 @@ import { EIcon } from "../../Icon/Icon.types";
 import ListPage from "../../ListPage/ListPage.tsx";
 import RelativeDate from "../../RelativeDate/RelativeDate.tsx";
 import DeviceInputOutput from "../Common/DeviceInputOutput.tsx";
-import getDeviceList from "../../../Requests/getDeviceList.ts";
 import ModalAddDevice from "../Common/ModalAddDevice/ModalAddDevice.tsx";
-import getDeviceTypeName from "../../../Helpers/getDeviceTypeName.ts";
 
 /**
  * The device's list page.

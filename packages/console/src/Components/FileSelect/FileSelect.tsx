@@ -56,8 +56,17 @@ interface IFileSelectProps {
  */
 function FileSelect(props: IFileSelectProps) {
   const [modalFile, setModalFile] = useState(false);
-  const { value, error, disabled, accept, modalMessage, onlyFolders, onChange } = props;
-  const placeholder = props.placeholder || `Select a ${onlyFolders ? "folder" : "file"}`;
+  const {
+    value,
+    error,
+    disabled,
+    accept,
+    modalMessage,
+    onlyFolders,
+    onChange,
+  } = props;
+  const placeholder =
+    props.placeholder || `Select a ${onlyFolders ? "folder" : "file"}`;
 
   /**
    * Opens the file selector modal.
@@ -103,7 +112,11 @@ function FileSelect(props: IFileSelectProps) {
           {!disabled && renderInputIcon()}
         </div>
 
-        <Button disabled={disabled} onClick={activateModalFile} type={EButton.primary}>
+        <Button
+          disabled={disabled}
+          onClick={activateModalFile}
+          type={EButton.primary}
+        >
           Select {onlyFolders ? "folder" : "file"}
         </Button>
 

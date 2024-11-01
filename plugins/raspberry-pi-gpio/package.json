@@ -9,15 +9,8 @@
     "short_description": "Read and Activate GPIO Pins of Raspberry Pi",
     "full_description": "./README.md",
     "icon": "./assets/icon.png",
-    "types": [
-      "action-type",
-      "action-trigger",
-      "service"
-    ],
-    "permissions": [
-      "device",
-      "device-data"
-    ],
+    "types": ["action-type", "action-trigger", "service"],
+    "permissions": ["device", "device-data"],
     "publisher": {
       "name": "TagoIO",
       "domain": "tago.io"

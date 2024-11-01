@@ -1,15 +1,22 @@
-import React, { memo, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  memo,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useTheme } from "styled-components";
 import useApiRequest from "../../Helpers/useApiRequest.ts";
+import { EmptyMessage } from "../../index.ts";
 import FormGroup from "../FormGroup/FormGroup.tsx";
 import Icon from "../Icon/Icon.tsx";
 import { EIcon } from "../Icon/Icon.types";
 import Input from "../Input/Input.tsx";
 import Loading from "../Loading/Loading.tsx";
 import Modal from "../Modal/Modal.tsx";
-import { EmptyMessage } from "../../index.ts";
-import type { IFile } from "./ModalFileSelect.types";
 import * as Style from "./ModalFileSelect.style";
+import type { IFile } from "./ModalFileSelect.types";
 
 /**
  * Props.
@@ -66,7 +73,7 @@ function ModalFileSelect(props: IModalFileSelect) {
   const [selected, setSelected] = useState("");
   const [isSelectedFolder, setIsSelectedFolder] = useState(false);
   const { data, error } = useApiRequest<IFile[]>(
-    `/file?local_fs=${props.useLocalFs ? "true" : ""}&path=${path}`
+    `/file?local_fs=${props.useLocalFs ? "true" : ""}&path=${path}`,
   );
   const theme = useTheme();
   const focused = useRef(false);
@@ -132,7 +139,9 @@ function ModalFileSelect(props: IModalFileSelect) {
             onBlur={() => (focused.current = false)}
             onChange={(e) => setValue(e.target.value)}
             onFocus={() => (focused.current = true)}
-            placeholder={placeholder || "enter a path or select one in the list"}
+            placeholder={
+              placeholder || "enter a path or select one in the list"
+            }
             value={value}
           />
         </FormGroup>
@@ -174,7 +183,10 @@ function ModalFileSelect(props: IModalFileSelect) {
     }
 
     const showEmptyWarning =
-      (!file.children || file.children.length === 0) && file.is_folder && isSelected && !loading;
+      (!file.children || file.children.length === 0) &&
+      file.is_folder &&
+      isSelected &&
+      !loading;
 
     return (
       <React.Fragment key={file.path}>
@@ -203,11 +215,17 @@ function ModalFileSelect(props: IModalFileSelect) {
     return (
       <Style.Files ref={refFilesContainer}>
         {error ? (
-          <EmptyMessage icon={EIcon["exclamation-triangle"]} message={errorMessage} />
+          <EmptyMessage
+            icon={EIcon["exclamation-triangle"]}
+            message={errorMessage}
+          />
         ) : loading && files.length === 0 ? (
           <Loading />
         ) : !loading && files.length === 0 ? (
-          <EmptyMessage icon={EIcon["file-alt"]} message="Something went wrong" />
+          <EmptyMessage
+            icon={EIcon["file-alt"]}
+            message="Something went wrong"
+          />
         ) : (
           files.map((file) => renderSingleFile(file, 0))
         )}

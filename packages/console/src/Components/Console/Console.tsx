@@ -37,7 +37,8 @@ interface IConsoleProps {
  */
 function Console(props: IConsoleProps) {
   const container = useRef<HTMLDivElement>(null);
-  const { data, scrollToBottom, emptyMessage, emptyMessageIcon, showDate } = props;
+  const { data, scrollToBottom, emptyMessage, emptyMessageIcon, showDate } =
+    props;
 
   /**
    * Renders a single line.
@@ -60,7 +61,9 @@ function Console(props: IConsoleProps) {
     if (!emptyMessage) {
       return null;
     }
-    return <EmptyMessage icon={emptyMessageIcon as EIcon} message={emptyMessage} />;
+    return (
+      <EmptyMessage icon={emptyMessageIcon as EIcon} message={emptyMessage} />
+    );
   };
 
   /**
@@ -70,7 +73,9 @@ function Console(props: IConsoleProps) {
     if (scrollToBottom) {
       const div = container.current as HTMLDivElement;
       if (div && data.length > 0) {
-        const diff = Math.abs(div.scrollTop - div.scrollHeight + div.clientHeight);
+        const diff = Math.abs(
+          div.scrollTop - div.scrollHeight + div.clientHeight,
+        );
         if (diff < 70) {
           div.scrollTop = div.scrollHeight;
         }
@@ -83,7 +88,9 @@ function Console(props: IConsoleProps) {
     return renderEmptyMessage();
   }
 
-  return <Style.Container ref={container}>{data.map(renderLog)}</Style.Container>;
+  return (
+    <Style.Container ref={container}>{data.map(renderLog)}</Style.Container>
+  );
 }
 
 export default memo(Console);

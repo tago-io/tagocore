@@ -1,11 +1,11 @@
-import { useTheme } from "styled-components";
 import type { IDevice } from "@tago-io/tcore-sdk/types";
+import { useTheme } from "styled-components";
+import getDeviceTypeName from "../../../Helpers/getDeviceTypeName.ts";
+import getDeviceList from "../../../Requests/getDeviceList.ts";
+import Capitalize from "../../Capitalize/Capitalize.tsx";
 import { EIcon } from "../../Icon/Icon.types";
 import ListPage from "../../ListPage/ListPage.tsx";
 import RelativeDate from "../../RelativeDate/RelativeDate.tsx";
-import Capitalize from "../../Capitalize/Capitalize.tsx";
-import getDeviceList from "../../../Requests/getDeviceList.ts";
-import getDeviceTypeName from "../../../Helpers/getDeviceTypeName.ts";
 import ButtonDataAmount from "./ButtonDataAmount/ButtonDataAmount.tsx";
 
 /**
@@ -40,7 +40,10 @@ function BucketList() {
   function renderStorageType(data: IDevice) {
     const { type } = data;
     const name = getDeviceTypeName(type);
-    const color = type === "immutable" ? theme.dataStorageImmutable : theme.dataStorageMutable;
+    const color =
+      type === "immutable"
+        ? theme.dataStorageImmutable
+        : theme.dataStorageMutable;
     return <span style={{ color }}>{name}</span>;
   }
 

@@ -5,7 +5,9 @@ import store from "../../System/Store.ts";
 
 /**
  */
-async function createAction(data: Omit<IActionCreate, "id" | "created_at">): Promise<TGenericID> {
+async function createAction(
+  data: Omit<IActionCreate, "id" | "created_at">,
+): Promise<TGenericID> {
   const account = new Account({ token: store.token });
   const result = await account.actions.create(data as ActionCreateInfo);
   return result.action;

@@ -3,11 +3,21 @@ import type { IScheduleData } from "../../Action.interface";
 
 function getCronFromScheduleData(scheduleData: IScheduleData) {
   const cron = ["*", "*", "*", "*", "*"];
-  const { repeat_weekdays, repeat_unit, repeat_date, repeat_type, repeat_hour } = scheduleData;
+  const {
+    repeat_weekdays,
+    repeat_unit,
+    repeat_date,
+    repeat_type,
+    repeat_hour,
+  } = scheduleData;
 
   const day = repeat_date;
-  const hour = DateTime.fromFormat(repeat_hour as string, "HH:mm").toFormat("HH");
-  const minute = DateTime.fromFormat(repeat_hour as string, "HH:mm").toFormat("mm");
+  const hour = DateTime.fromFormat(repeat_hour as string, "HH:mm").toFormat(
+    "HH",
+  );
+  const minute = DateTime.fromFormat(repeat_hour as string, "HH:mm").toFormat(
+    "mm",
+  );
   let showWeekdays = true;
 
   cron[0] = minute;

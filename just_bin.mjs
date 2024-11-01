@@ -1,5 +1,5 @@
-import * as os from "os";
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
+import * as os from "node:os";
 
 const isMusl = () => {
   try {
@@ -35,13 +35,14 @@ function resolveOS() {
 
   if (platform === "darwin") {
     return "apple-darwin";
-  } else if (platform === "win32") {
-    return "pc-windows-msvc";
-  } else if (platform === "linux") {
-    return !isMusl() ? "unknown-linux-musl" : "unknown-linux-musleabihf";
-  } else {
-    throw new Error(`Unsupported OS: ${platform}`);
   }
+  if (platform === "win32") {
+    return "pc-windows-msvc";
+  }
+  if (platform === "linux") {
+    return !isMusl() ? "unknown-linux-musl" : "unknown-linux-musleabihf";
+  }
+  throw new Error(`Unsupported OS: ${platform}`);
 }
 
 // Function to generate the filename

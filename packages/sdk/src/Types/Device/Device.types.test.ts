@@ -1,15 +1,18 @@
-import { generateResourceID, validateResourceID } from "../../Shared/ResourceID.ts";
+import { describe, expect, test } from "vitest";
 import {
-  type IDeviceEdit,
+  generateResourceID,
+  validateResourceID,
+} from "../../Shared/ResourceID.ts";
+import {
   type IDeviceCreate,
-  zDeviceEdit,
-  zDeviceCreate,
+  type IDeviceEdit,
   type IDeviceListQuery,
+  type IDeviceParameter,
+  zDeviceCreate,
+  zDeviceEdit,
   zDeviceListQuery,
   zDeviceParameter,
-  type IDeviceParameter,
 } from "./Device.types.ts";
-import { test, expect, describe } from "vitest";
 
 describe("zDeviceParameter", () => {
   test("parses simple object", () => {
@@ -57,8 +60,12 @@ describe("zDeviceCreate", () => {
   });
 
   test("throws error if active is not boolean", () => {
-    expect(() => zDeviceCreate.parse({ name: "ABC", active: "abc" })).toThrowError();
-    expect(() => zDeviceCreate.parse({ name: "ABC", active: 123 })).toThrowError();
+    expect(() =>
+      zDeviceCreate.parse({ name: "ABC", active: "abc" }),
+    ).toThrowError();
+    expect(() =>
+      zDeviceCreate.parse({ name: "ABC", active: 123 }),
+    ).toThrowError();
   });
 
   test("ignores created_at", () => {
@@ -77,7 +84,10 @@ describe("zDeviceCreate", () => {
   });
 
   test("parses tags", () => {
-    const data: IDeviceCreate = { name: "Device #1", tags: [{ key: "hello", value: "world" }] };
+    const data: IDeviceCreate = {
+      name: "Device #1",
+      tags: [{ key: "hello", value: "world" }],
+    };
     const parsed = zDeviceCreate.parse(data);
     expect(parsed.tags).toEqual([{ key: "hello", value: "world" }]);
   });
@@ -95,13 +105,21 @@ describe("zDeviceCreate", () => {
   });
 
   test("parses payload_parser", () => {
-    const data: IDeviceCreate = { name: "Device #1", payload_parser: "/parser.js" };
+    const data: IDeviceCreate = {
+      name: "Device #1",
+      payload_parser: "/parser.js",
+    };
     const parsed = zDeviceCreate.parse(data);
     expect(parsed.payload_parser).toEqual("/parser.js");
   });
 
   test("doesn't parse chunk variables if type is mutable", () => {
-    const data: IDeviceCreate = { name: "Device #1", type: "mutable", chunk_period: "day", chunk_retention: 1 };
+    const data: IDeviceCreate = {
+      name: "Device #1",
+      type: "mutable",
+      chunk_period: "day",
+      chunk_retention: 1,
+    };
     const parsed = zDeviceCreate.parse(data);
     expect(parsed.chunk_period).toBeFalsy();
     expect(parsed.chunk_retention).toBeFalsy();
@@ -110,7 +128,11 @@ describe("zDeviceCreate", () => {
   test("parses different types of retentions", () => {
     const retentions: any = ["0", "12", "36", 0, 12, 36];
     for (const chunk_retention of retentions) {
-      const data: IDeviceCreate = { name: "Device #1", chunk_period: "week", chunk_retention };
+      const data: IDeviceCreate = {
+        name: "Device #1",
+        chunk_period: "week",
+        chunk_retention,
+      };
       const parsed = zDeviceCreate.parse(data);
       expect(parsed.chunk_retention).toEqual(Number(chunk_retention));
     }
@@ -185,7 +207,10 @@ describe("zDeviceEdit", () => {
   });
 
   test("parses payload_parser", () => {
-    const data: IDeviceEdit = { name: "Device #1", payload_parser: "/parser.js" };
+    const data: IDeviceEdit = {
+      name: "Device #1",
+      payload_parser: "/parser.js",
+    };
     const parsed = zDeviceEdit.parse(data);
     expect(parsed.payload_parser).toEqual("/parser.js");
   });
@@ -304,12 +329,18 @@ describe("zDeviceListQuery", () => {
 
   test("throws error if filter fields are invalid", () => {
     expect(() => zDeviceListQuery.parse({ fields: ["temp"] })).toThrowError();
-    expect(() => zDeviceListQuery.parse({ fields: ["abc", "hello"] })).toThrowError();
+    expect(() =>
+      zDeviceListQuery.parse({ fields: ["abc", "hello"] }),
+    ).toThrowError();
     expect(() => zDeviceListQuery.parse({ fields: [123] })).toThrowError();
     expect(() => zDeviceListQuery.parse({ fields: [null] })).toThrowError();
-    expect(() => zDeviceListQuery.parse({ fields: [undefined] })).toThrowError();
+    expect(() =>
+      zDeviceListQuery.parse({ fields: [undefined] }),
+    ).toThrowError();
     expect(() => zDeviceListQuery.parse({ fields: [{}] })).toThrowError();
-    expect(() => zDeviceListQuery.parse({ fields: [1, "name"] })).toThrowError();
+    expect(() =>
+      zDeviceListQuery.parse({ fields: [1, "name"] }),
+    ).toThrowError();
   });
 
   test("parses orderBy", () => {
@@ -319,15 +350,34 @@ describe("zDeviceListQuery", () => {
   });
 
   test("parses all orderBy available", () => {
-    expect(zDeviceListQuery.parse({ orderBy: ["id", "asc"] }).orderBy).toEqual(["id", "asc"]);
-    expect(zDeviceListQuery.parse({ orderBy: ["name", "asc"] }).orderBy).toEqual(["name", "asc"]);
-    expect(zDeviceListQuery.parse({ orderBy: ["active", "asc"] }).orderBy).toEqual(["active", "asc"]);
-    expect(zDeviceListQuery.parse({ orderBy: ["payload_parser", "desc"] }).orderBy).toEqual(["payload_parser", "desc"]);
-    expect(zDeviceListQuery.parse({ orderBy: ["last_output", "desc"] }).orderBy).toEqual(["last_output", "desc"]);
-    expect(zDeviceListQuery.parse({ orderBy: ["last_input", "desc"] }).orderBy).toEqual(["last_input", "desc"]);
-    expect(zDeviceListQuery.parse({ orderBy: ["created_at", "desc"] }).orderBy).toEqual(["created_at", "desc"]);
-    expect(zDeviceListQuery.parse({ orderBy: ["updated_at", "desc"] }).orderBy).toEqual(["updated_at", "desc"]);
-    expect(zDeviceListQuery.parse({ orderBy: ["tags", "desc"] }).orderBy).toEqual(["tags", "desc"]);
+    expect(zDeviceListQuery.parse({ orderBy: ["id", "asc"] }).orderBy).toEqual([
+      "id",
+      "asc",
+    ]);
+    expect(
+      zDeviceListQuery.parse({ orderBy: ["name", "asc"] }).orderBy,
+    ).toEqual(["name", "asc"]);
+    expect(
+      zDeviceListQuery.parse({ orderBy: ["active", "asc"] }).orderBy,
+    ).toEqual(["active", "asc"]);
+    expect(
+      zDeviceListQuery.parse({ orderBy: ["payload_parser", "desc"] }).orderBy,
+    ).toEqual(["payload_parser", "desc"]);
+    expect(
+      zDeviceListQuery.parse({ orderBy: ["last_output", "desc"] }).orderBy,
+    ).toEqual(["last_output", "desc"]);
+    expect(
+      zDeviceListQuery.parse({ orderBy: ["last_input", "desc"] }).orderBy,
+    ).toEqual(["last_input", "desc"]);
+    expect(
+      zDeviceListQuery.parse({ orderBy: ["created_at", "desc"] }).orderBy,
+    ).toEqual(["created_at", "desc"]);
+    expect(
+      zDeviceListQuery.parse({ orderBy: ["updated_at", "desc"] }).orderBy,
+    ).toEqual(["updated_at", "desc"]);
+    expect(
+      zDeviceListQuery.parse({ orderBy: ["tags", "desc"] }).orderBy,
+    ).toEqual(["tags", "desc"]);
   });
 
   test("parses orderBy as null", () => {
@@ -352,10 +402,18 @@ describe("zDeviceListQuery", () => {
   });
 
   test("throws error if orderBy configuration is incorrect", () => {
-    expect(() => zDeviceListQuery.parse({ orderBy: [123, "asc"] })).toThrowError();
-    expect(() => zDeviceListQuery.parse({ orderBy: ["name", "ASC"] })).toThrowError();
-    expect(() => zDeviceListQuery.parse({ orderBy: ["name", "DESC"] })).toThrowError();
-    expect(() => zDeviceListQuery.parse({ orderBy: [true, "asc"] })).toThrowError();
+    expect(() =>
+      zDeviceListQuery.parse({ orderBy: [123, "asc"] }),
+    ).toThrowError();
+    expect(() =>
+      zDeviceListQuery.parse({ orderBy: ["name", "ASC"] }),
+    ).toThrowError();
+    expect(() =>
+      zDeviceListQuery.parse({ orderBy: ["name", "DESC"] }),
+    ).toThrowError();
+    expect(() =>
+      zDeviceListQuery.parse({ orderBy: [true, "asc"] }),
+    ).toThrowError();
     expect(() => zDeviceListQuery.parse({ orderBy: ["name"] })).toThrowError();
   });
 });

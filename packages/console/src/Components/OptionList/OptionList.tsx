@@ -62,7 +62,10 @@ function OptionList(props: IOptionList) {
           value={item?.key}
           style={{ marginRight: "5px" }}
           error={errors?.[index]?.key}
-          options={[{ label: "Select an option", value: "", disabled: true }, ...props.optionsKey]}
+          options={[
+            { label: "Select an option", value: "", disabled: true },
+            ...props.optionsKey,
+          ]}
         />
         <Select
           onChange={(e) => onChangeItem(index, "value", e.target.value)}
@@ -93,7 +96,13 @@ function OptionList(props: IOptionList) {
   }
 
   return (
-    <Accordion isAlwaysOpen icon={icon} description={description} title={title} open>
+    <Accordion
+      isAlwaysOpen
+      icon={icon}
+      description={description}
+      title={title}
+      open
+    >
       {content}
     </Accordion>
   );

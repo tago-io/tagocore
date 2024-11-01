@@ -40,10 +40,7 @@ const httpServer = createServer(app);
 const __filename = fileURLToPath(import.meta.url);
 const dirname_ = dirname(__filename);
 
-const consolePath = path.join(
-  dirname_,
-  "../../build/console",
-);
+const consolePath = path.join(dirname_, "../../build/console");
 
 /**
  * Sets up express and its configuration.

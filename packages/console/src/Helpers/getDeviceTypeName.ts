@@ -7,7 +7,7 @@ function getDeviceTypeName(type?: TDeviceType | null) {
   if (type === "mutable") {
     return "Managed Data Optimized (Mutable)";
   }
-    return "Device Data Optimized (Immutable)";
+  return "Device Data Optimized (Immutable)";
 }
 
 export default getDeviceTypeName;

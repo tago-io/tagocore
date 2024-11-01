@@ -7,7 +7,7 @@ import isNumber from "./isNumber.ts";
 function isConfigFieldVisible(
   rootConfigs: IPluginConfigField[],
   fieldToCheck: IPluginConfigField,
-  values: any
+  values: any,
 ) {
   const conditions = fieldToCheck.visibility_conditions || [];
   if (conditions.length === 0) {
@@ -29,17 +29,25 @@ function isConfigFieldVisible(
     }
 
     const fieldValue = values[data.field];
-    const fieldValueParsed = isNumber(fieldValue) ? Number.parseFloat(fieldValue) : String(fieldValue);
+    const fieldValueParsed = isNumber(fieldValue)
+      ? Number.parseFloat(fieldValue)
+      : String(fieldValue);
     const fieldValueArray = [fieldValue].flat();
 
-    const valueCondition = isNumber(value) ? Number.parseFloat(value) : String(value);
-    const valueConditionTwo = isNumber(valueTwo) ? Number.parseFloat(valueTwo) : String(valueTwo);
+    const valueCondition = isNumber(value)
+      ? Number.parseFloat(value)
+      : String(value);
+    const valueConditionTwo = isNumber(valueTwo)
+      ? Number.parseFloat(valueTwo)
+      : String(valueTwo);
 
     if (condition === "<" && fieldValueParsed < valueCondition) {
       return true;
-    }if (condition === ">" && fieldValueParsed > valueCondition) {
+    }
+    if (condition === ">" && fieldValueParsed > valueCondition) {
       return true;
-    }if (condition === "=") {
+    }
+    if (condition === "=") {
       if (field.type === "string-list") {
         return fieldValueArray.some((x) => x === valueCondition);
       }
@@ -70,7 +78,10 @@ function isConfigFieldVisible(
         return true;
       }
     } else if (condition === "><") {
-      if (fieldValueParsed >= valueCondition && fieldValueParsed <= valueConditionTwo) {
+      if (
+        fieldValueParsed >= valueCondition &&
+        fieldValueParsed <= valueConditionTwo
+      ) {
         return true;
       }
     }

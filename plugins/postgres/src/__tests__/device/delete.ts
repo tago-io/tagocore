@@ -1,6 +1,6 @@
 import type { IDeviceCreate } from "@tago-io/tcore-sdk/types";
-import { describe, beforeEach, afterEach, it } from "vitest";
 import axios from "axios";
+import { afterEach, beforeEach, describe, it } from "vitest";
 
 let deviceID: string | undefined;
 

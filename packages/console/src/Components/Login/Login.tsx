@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useEffect, useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
 import { setLocalStorage } from "../../Helpers/localStorage.ts";
+import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
 import getAccountByToken from "../../Requests/getAccountByToken.ts";
 import store from "../../System/Store.ts";
 import SetupBackground from "../Setup/SetupBackground/SetupBackground.tsx";

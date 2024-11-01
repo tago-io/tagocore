@@ -1,18 +1,18 @@
 import { z } from "zod";
 import {
-  zDateAutoGen,
   zActiveAutoGen,
+  zDateAutoGen,
   zName,
   zObjectID,
-  zTagsAutoGen,
-  zQuery,
   zObjectIDAutoGen,
+  zQuery,
+  zTagsAutoGen,
 } from "../Common/Common.types.ts";
-import { zTags } from "../Tag/Tag.types.ts";
-import { zLog } from "../Log/Log.types.ts";
+import createQueryOrderBy from "../Helpers/createQueryOrderBy.ts";
 import preprocessBoolean from "../Helpers/preprocessBoolean.ts";
 import preprocessObject from "../Helpers/preprocessObject.ts";
-import createQueryOrderBy from "../Helpers/createQueryOrderBy.ts";
+import { zLog } from "../Log/Log.types.ts";
+import { zTags } from "../Tag/Tag.types.ts";
 
 export interface IAnalysisVariable {
   key: string;
@@ -85,13 +85,15 @@ export const zAnalysisList = z.array(
   zAnalysis.partial().extend({
     id: zObjectID,
     tags: zTags,
-  })
+  }),
 );
 
 /**
  * Configuration of the analysis log list.
  */
-export const zAnalysisLogList = z.array(zLog.extend({ analysis_id: zObjectID }));
+export const zAnalysisLogList = z.array(
+  zLog.extend({ analysis_id: zObjectID }),
+);
 
 /**
  * Allowed fields in an analysis list query.
@@ -127,7 +129,7 @@ export const zAnalysisListQuery = zQuery.extend({
       })
       .partial()
       .nullish()
-      .transform((x) => x ?? {})
+      .transform((x) => x ?? {}),
   ),
   fields: z
     .array(zAnalysisListQueryFields)

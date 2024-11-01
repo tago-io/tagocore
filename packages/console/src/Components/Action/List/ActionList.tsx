@@ -1,6 +1,8 @@
-import { useTheme } from "styled-components";
-import { useState } from "react";
 import type { IAction, IPluginModuleList } from "@tago-io/tcore-sdk/types";
+import { useState } from "react";
+import { useTheme } from "styled-components";
+import useApiRequest from "../../../Helpers/useApiRequest.ts";
+import getActionList from "../../../Requests/getActionList.ts";
 import BooleanStatus from "../../BooleanStatus/BooleanStatus.tsx";
 import Button from "../../Button/Button.tsx";
 import { EButton } from "../../Button/Button.types";
@@ -9,23 +11,30 @@ import { EIcon } from "../../Icon/Icon.types";
 import ListPage from "../../ListPage/ListPage.tsx";
 import RelativeDate from "../../RelativeDate/RelativeDate.tsx";
 import ModalAddAction from "../Common/ModalAddAction/ModalAddAction.tsx";
-import useApiRequest from "../../../Helpers/useApiRequest.ts";
-import getActionList from "../../../Requests/getActionList.ts";
 import * as Style from "./ActionList.style";
 
 /**
  * The device edit page.
  */
 function ActionList() {
-  const { data: types } = useApiRequest<IPluginModuleList>("/module?type-action-type");
-  const { data: triggers } = useApiRequest<IPluginModuleList>("/module?type-action-trigger");
+  const { data: types } = useApiRequest<IPluginModuleList>(
+    "/module?type-action-type",
+  );
+  const { data: triggers } = useApiRequest<IPluginModuleList>(
+    "/module?type-action-trigger",
+  );
   const [modal, setModal] = useState(false);
   const theme = useTheme();
 
   /**
    * Renders an icon and a text.
    */
-  const renderIcon = (iconColor: string, textColor: string, icon: EIcon, text: string) => {
+  const renderIcon = (
+    iconColor: string,
+    textColor: string,
+    icon: EIcon,
+    text: string,
+  ) => {
     return (
       <Style.Icon>
         <Icon color={iconColor} icon={icon} />
@@ -40,19 +49,23 @@ function ActionList() {
   const renderTriggerType = (item: IAction) => {
     const isCustom = String(item.type).includes(":");
     if (isCustom) {
-      const type = triggers?.find((x) => `${x.pluginID}:${x.setup.id}` === item.type);
+      const type = triggers?.find(
+        (x) => `${x.pluginID}:${x.setup.id}` === item.type,
+      );
       return renderIcon(
         theme.extension,
         theme.extension,
         EIcon["puzzle-piece"],
-        type?.setup?.name || "Unknown"
+        type?.setup?.name || "Unknown",
       );
-    }if (item.type === "condition") {
+    }
+    if (item.type === "condition") {
       return renderIcon(theme.bucket, theme.bucket, EIcon.database, "Variable");
-    }if (item.type === "interval" || item.type === "schedule") {
+    }
+    if (item.type === "interval" || item.type === "schedule") {
       return renderIcon(theme.action, theme.action, EIcon.clock, "Schedule");
     }
-      return "Unknown";
+    return "Unknown";
   };
 
   /**
@@ -61,16 +74,21 @@ function ActionList() {
   const renderActionType = (item: IAction) => {
     const isCustom = String(item.action?.type).includes(":");
     if (isCustom) {
-      const type = types?.find((x) => `${x.pluginID}:${x.setup.id}` === item.action?.type);
+      const type = types?.find(
+        (x) => `${x.pluginID}:${x.setup.id}` === item.action?.type,
+      );
       return type?.setup?.name || "Unknown";
-    }if (item.action?.type === "script") {
+    }
+    if (item.action?.type === "script") {
       return "Run Analysis";
-    }if (item.action?.type === "post") {
+    }
+    if (item.action?.type === "post") {
       return "Post data to endpoint using HTTP";
-    }if (item.action?.type === "tagoio") {
+    }
+    if (item.action?.type === "tagoio") {
       return "Insert data into TagoIO";
     }
-      return "Unknown";
+    return "Unknown";
   };
 
   /**
@@ -80,7 +98,7 @@ function ActionList() {
     if (item.lock) {
       return renderIcon(theme.buttonDanger, "", EIcon.lock, "Locked");
     }
-      return renderIcon("green", "", EIcon["lock-open"], "Unlocked");
+    return renderIcon("green", "", EIcon["lock-open"], "Unlocked");
   };
 
   return (

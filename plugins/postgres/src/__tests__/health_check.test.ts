@@ -1,5 +1,5 @@
 import axios from "axios";
-import { it, expect, describe } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("Test", () => {
   it("should pass", async () => {

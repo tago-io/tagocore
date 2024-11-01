@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { DatabaseModule } from "@tago-io/tcore-sdk";
 import knex, { type Knex } from "knex";
 import type { Config } from "../types.ts";
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
 const dirname__ = dirname(__filename);

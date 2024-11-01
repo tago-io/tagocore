@@ -50,8 +50,8 @@ async function validateCredentials(data: ISetupValues) {
  */
 async function onLoad(data: ISetupValues) {
   if (data.type === "env") {
-      data.access_key = process.env.AWS_ACCESS_KEY_ID || "";
-      data.secret_access_key = process.env.AWS_SECRET_ACCESS_KEY || "";
+    data.access_key = process.env.AWS_ACCESS_KEY_ID || "";
+    data.secret_access_key = process.env.AWS_SECRET_ACCESS_KEY || "";
   }
 
   if (!data.access_key) {
@@ -97,7 +97,8 @@ const filesystem = new FileSystemModule({
             },
             {
               label: "From Settings",
-              description: "Manually set AWS Credentials via this settings page",
+              description:
+                "Manually set AWS Credentials via this settings page",
               color: "#e15243",
               value: "config",
               icon: "cog",
@@ -111,7 +112,9 @@ const filesystem = new FileSystemModule({
           type: "password",
           icon: "key",
           required: true,
-          visibility_conditions: [{ condition: "=", field: "type", value: "config" }],
+          visibility_conditions: [
+            { condition: "=", field: "type", value: "config" },
+          ],
         },
         {
           name: "AWS Secret Access Key",
@@ -119,7 +122,9 @@ const filesystem = new FileSystemModule({
           type: "password",
           icon: "key",
           required: true,
-          visibility_conditions: [{ condition: "=", field: "type", value: "config" }],
+          visibility_conditions: [
+            { condition: "=", field: "type", value: "config" },
+          ],
         },
       ],
     },

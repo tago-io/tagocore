@@ -1,8 +1,8 @@
 import type { IDevice, IDeviceData } from "@tago-io/tcore-sdk/types";
 import { useCallback, useState } from "react";
-import { EIcon } from "../../../Icon/Icon.types";
-import { FormGroup, Modal } from "../../../../index.ts";
 import editDeviceData from "../../../../Requests/editDeviceData.ts";
+import { FormGroup, Modal } from "../../../../index.ts";
+import { EIcon } from "../../../Icon/Icon.types";
 import * as Style from "./ModalEditMetadata.style";
 
 /**
@@ -28,7 +28,7 @@ interface IModalEditMetadataProps {
 function ModalEditMetadata(props: IModalEditMetadataProps) {
   const { data, device, onClose } = props;
   const [value, setValue] = useState(() =>
-    data.metadata ? JSON.stringify(data.metadata, null, 2) : ""
+    data.metadata ? JSON.stringify(data.metadata, null, 2) : "",
   );
 
   /**

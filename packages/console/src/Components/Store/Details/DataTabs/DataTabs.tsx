@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Screenshots from "../Screenshots/Screenshots.tsx";
-import Loading from "../../../Loading/Loading.tsx";
-import Markdown from "../../../Markdown/Markdown.tsx";
 import EmptyMessage from "../../../EmptyMessage/EmptyMessage.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
+import Loading from "../../../Loading/Loading.tsx";
+import Markdown from "../../../Markdown/Markdown.tsx";
 import Tabs from "../../../Tabs/Tabs.tsx";
+import Screenshots from "../Screenshots/Screenshots.tsx";
 
 /**
  * Props.
@@ -36,7 +36,10 @@ function DataTabs(props: IDataTabsProps) {
     }
 
     return markdownDescription ? (
-      <Markdown localImgPrefix={`/images2/${pluginID}`} value={markdownDescription} />
+      <Markdown
+        localImgPrefix={`/images2/${pluginID}`}
+        value={markdownDescription}
+      />
     ) : (
       <EmptyMessage icon={EIcon.list} message="No description available." />
     );

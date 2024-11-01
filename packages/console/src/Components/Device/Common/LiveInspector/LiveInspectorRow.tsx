@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
-import Icon from "../../../Icon/Icon.tsx";
 import getDateTimeObject from "../../../../Helpers/getDateTimeObject.ts";
+import Icon from "../../../Icon/Icon.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import * as Style from "./LiveInspector.style";
 
@@ -49,7 +49,9 @@ function LiveInspectorRow(props: ILiveInspectorRow) {
     <>
       <Style.Row onClick={() => setExpand((stateMemory[id] = !expand))}>
         <Icon icon={EIcon[expand ? "caret-down" : "caret-right"]} />
-        <div className="time">[{getDateTimeObject(timestamp)?.toFormat("HH:mm:ss")}] </div>
+        <div className="time">
+          [{getDateTimeObject(timestamp)?.toFormat("HH:mm:ss")}]{" "}
+        </div>
         <div className="title">{title}:</div>
         <div className="code-preview">{code}</div>
       </Style.Row>

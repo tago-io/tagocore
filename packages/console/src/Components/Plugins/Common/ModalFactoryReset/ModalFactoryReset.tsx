@@ -1,6 +1,6 @@
 import { getSystemName } from "@tago-io/tcore-shared";
 import axios from "axios";
-import { useEffect, type MouseEvent, useCallback, useState } from "react";
+import { type MouseEvent, useCallback, useEffect, useState } from "react";
 import { setLocalStorage } from "../../../../Helpers/localStorage.ts";
 import store from "../../../../System/Store.ts";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
@@ -35,13 +35,15 @@ function ModalFactoryReset(props: IModalFactoryResetProps) {
       setButtonDisabled(true);
 
       const masterPassword = store.masterPassword;
-      await axios.post("/settings/reset", null, { headers: { masterPassword } });
+      await axios.post("/settings/reset", null, {
+        headers: { masterPassword },
+      });
 
       setLocalStorage("token", "");
 
       window.location.reload();
     },
-    [timer]
+    [timer],
   );
 
   /**
@@ -62,7 +64,9 @@ function ModalFactoryReset(props: IModalFactoryResetProps) {
 
   return (
     <Modal
-      confirmButtonText={timer ? `Please wait (${timer}s)` : "Yes, perform a factory reset"}
+      confirmButtonText={
+        timer ? `Please wait (${timer}s)` : "Yes, perform a factory reset"
+      }
       isCancelButtonDisabled={buttonDisabled}
       isConfirmButtonDisabled={buttonDisabled || timer > 0}
       onCancel={close}
@@ -72,18 +76,22 @@ function ModalFactoryReset(props: IModalFactoryResetProps) {
       width="600px"
     >
       <FormGroup>
-        A Factory reset will remove all <b>settings</b>, <b>plugins</b>, and <b>plugin files</b>{" "}
-        from your {getSystemName()}.
+        A Factory reset will remove all <b>settings</b>, <b>plugins</b>, and{" "}
+        <b>plugin files</b> from your {getSystemName()}.
       </FormGroup>
 
-      <FormGroup>Here is a summary of what will happen if you proceed:</FormGroup>
+      <FormGroup>
+        Here is a summary of what will happen if you proceed:
+      </FormGroup>
 
       <FormGroup addMarginBottom={false}>
         <Style.Point>
-          All non built-in Plugins in the default <b>Plugins folder</b> will be deleted.
+          All non built-in Plugins in the default <b>Plugins folder</b> will be
+          deleted.
         </Style.Point>
         <Style.Point>
-          All {getSystemName()} settings will be restored to their default values;
+          All {getSystemName()} settings will be restored to their default
+          values;
         </Style.Point>
         <Style.Point>You will need to set a new master password;</Style.Point>
         <Style.Point>You will need to reinstall a database plugin;</Style.Point>

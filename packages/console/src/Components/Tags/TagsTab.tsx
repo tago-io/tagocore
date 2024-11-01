@@ -43,7 +43,12 @@ function TagsTab(props: ITagsTabProps) {
         title="Tags"
         description={`Tags are a way of organizing your ${name}, they appear as custom columns in the list.`}
       />
-      <Tags disabled={disabled} errors={errors} data={data || []} onChange={props.onChange} />
+      <Tags
+        disabled={disabled}
+        errors={errors}
+        data={data || []}
+        onChange={props.onChange}
+      />
     </div>
   );
 }

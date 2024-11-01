@@ -1,10 +1,10 @@
-import path from "node:path";
 import fs from "node:fs";
-import csv from "csv-parser";
-import type { IDeviceDataCreate, IDevice } from "@tago-io/tcore-sdk/types";
+import path from "node:path";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { core } from "@tago-io/tcore-sdk";
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
+import type { IDevice, IDeviceDataCreate } from "@tago-io/tcore-sdk/types";
+import csv from "csv-parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const dirname__ = dirname(__filename);
@@ -44,7 +44,11 @@ async function loadCsvData() {
 /**
  * Sends data as the freezer.
  */
-async function sendData(device: IDevice, freezerType: string, temperatureUnit: string) {
+async function sendData(
+  device: IDevice,
+  freezerType: string,
+  temperatureUnit: string,
+) {
   if (csvIndex === csvData.length) {
     csvIndex = 0;
   }
@@ -88,7 +92,7 @@ async function sendData(device: IDevice, freezerType: string, temperatureUnit: s
   }
 
   console.log(
-    `Sending simulated Freezer data for device "${device.name}": (${data[0].value}, ${data[1].value}, ${data[2].value})`
+    `Sending simulated Freezer data for device "${device.name}": (${data[0].value}, ${data[1].value}, ${data[2].value})`,
   );
 
   try {
@@ -107,7 +111,12 @@ async function sendData(device: IDevice, freezerType: string, temperatureUnit: s
  * This function populates the CSV data if it's not yet loaded, fetches the device, and
  * creates an interval with the desired frequency to keep sending data.
  */
-export async function startSendingData(id: string, freezerType: string, temperatureUnit: string, frequency: number) {
+export async function startSendingData(
+  id: string,
+  freezerType: string,
+  temperatureUnit: string,
+  frequency: number,
+) {
   if (csvData.length === 0) {
     await loadCsvData();
   }

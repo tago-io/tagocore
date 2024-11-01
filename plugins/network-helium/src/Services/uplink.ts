@@ -93,7 +93,8 @@ async function uplinkService(
     if (!downlinkString) {
       deviceParams.push({
         key: "downlink_string",
-        value: data.downlink_string as string || data.downlink_url as string,
+        value:
+          (data.downlink_string as string) || (data.downlink_url as string),
         sent: false,
         id: helpers.generateResourceID(),
       });

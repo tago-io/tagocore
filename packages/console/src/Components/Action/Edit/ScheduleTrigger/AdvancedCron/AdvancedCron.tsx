@@ -33,7 +33,7 @@ function AdvancedCron(props: IAdvancedCron) {
       spreadCronToScheduleData(cronString, scheduleData);
       onChangeScheduleData({ ...scheduleData, cron: cronString });
     },
-    [onChangeScheduleData, scheduleData]
+    [onChangeScheduleData, scheduleData],
   );
 
   const changeHighlight = useCallback(() => {
@@ -80,7 +80,11 @@ function AdvancedCron(props: IAdvancedCron) {
   return (
     <div style={{ margin: "0px -15px" }}>
       <Style.CronInputContainer>
-        <FormGroup icon={EIcon.clock} label="Enter the cron schedule" style={{ marginBottom: 0 }}>
+        <FormGroup
+          icon={EIcon.clock}
+          label="Enter the cron schedule"
+          style={{ marginBottom: 0 }}
+        >
           <Style.CronInput
             value={cron}
             ref={inputRef}
@@ -95,11 +99,21 @@ function AdvancedCron(props: IAdvancedCron) {
           />
         </FormGroup>
         <Style.CronFieldsContainer>
-          <Style.CronField highlighted={highlight === "minute"}>minute</Style.CronField>
-          <Style.CronField highlighted={highlight === "hour"}>hour</Style.CronField>
-          <Style.CronField highlighted={highlight === "day-month"}>day (month)</Style.CronField>
-          <Style.CronField highlighted={highlight === "month"}>month</Style.CronField>
-          <Style.CronField highlighted={highlight === "day-week"}>day (week)</Style.CronField>
+          <Style.CronField highlighted={highlight === "minute"}>
+            minute
+          </Style.CronField>
+          <Style.CronField highlighted={highlight === "hour"}>
+            hour
+          </Style.CronField>
+          <Style.CronField highlighted={highlight === "day-month"}>
+            day (month)
+          </Style.CronField>
+          <Style.CronField highlighted={highlight === "month"}>
+            month
+          </Style.CronField>
+          <Style.CronField highlighted={highlight === "day-week"}>
+            day (week)
+          </Style.CronField>
         </Style.CronFieldsContainer>
       </Style.CronInputContainer>
     </div>

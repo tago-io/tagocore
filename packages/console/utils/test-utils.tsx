@@ -1,12 +1,12 @@
 vi.mock("../src/Helpers/useApiRequest.ts");
 vi.mock("../src/System/Socket.ts");
 
-import type { ReactElement, PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 import "@testing-library/jest-dom";
-import { render, type RenderOptions } from "@testing-library/react";
+import { type RenderOptions, render } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { ThemeProvider } from "styled-components";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
 import { lightTheme } from "../src/theme.ts";
 
 function AllTheProviders({ children }: PropsWithChildren) {
@@ -14,7 +14,7 @@ function AllTheProviders({ children }: PropsWithChildren) {
     <ThemeProvider theme={lightTheme as any}>
       <MemoryRouter initialEntries={["/"]} initialIndex={0}>
         <Routes>
-          <Route path="/" element={<>{children}</>} />
+          <Route path="/" element={children} />
         </Routes>
       </MemoryRouter>
     </ThemeProvider>

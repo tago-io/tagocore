@@ -1,7 +1,10 @@
 import type { IPluginList } from "@tago-io/tcore-sdk/types";
+import { SQLITE_PLUGIN_ID } from "@tago-io/tcore-shared";
 import { observer } from "mobx-react";
 import { useCallback, useEffect, useState } from "react";
-import { SQLITE_PLUGIN_ID } from "@tago-io/tcore-shared";
+import selectPluginFile from "../../../Helpers/selectPluginFile.ts";
+import getPluginStoreInstallURLs from "../../../Requests/getPluginStoreInstallURLs.ts";
+import store from "../../../System/Store.ts";
 import {
   Button,
   EButton,
@@ -14,9 +17,6 @@ import {
   Tooltip,
   useApiRequest,
 } from "../../../index.ts";
-import selectPluginFile from "../../../Helpers/selectPluginFile.ts";
-import getPluginStoreInstallURLs from "../../../Requests/getPluginStoreInstallURLs.ts";
-import store from "../../../System/Store.ts";
 import ModalDownloadFromURL from "../../Plugins/Common/ModalDownloadFromURL/ModalDownloadFromURL.tsx";
 import ModalInstallPlugin from "../../Plugins/Common/ModalInstallPlugin/ModalInstallPlugin.tsx";
 import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalMasterPassword.tsx";
@@ -103,12 +103,19 @@ function StepDatabaseWithStore(props: any) {
   /**
    */
   const confirm = useCallback(async () => {
-    const installed = installedListFiltered?.some((x) => x.id === selectedItem?.id);
+    const installed = installedListFiltered?.some(
+      (x) => x.id === selectedItem?.id,
+    );
     if (!installed) {
       try {
         setButtonsDisabled(true);
-        const urls = await getPluginStoreInstallURLs(selectedItem?.id, selectedItem?.version);
-        const item = urls?.find((x) => x.platform === platform || x.platform === "any");
+        const urls = await getPluginStoreInstallURLs(
+          selectedItem?.id,
+          selectedItem?.version,
+        );
+        const item = urls?.find(
+          (x) => x.platform === platform || x.platform === "any",
+        );
         if (item) {
           activateModalInstall(item.url);
         }
@@ -135,7 +142,11 @@ function StepDatabaseWithStore(props: any) {
             {installed && <span className="installed">✓ Installed </span>}
           </div>
           <div className="desc">
-            <Publisher clickable domain={item.publisher?.domain} name={item.publisher?.name} />
+            <Publisher
+              clickable
+              domain={item.publisher?.domain}
+              name={item.publisher?.name}
+            />
             <span> • {item.version}</span>
             <span> • {item.description}.</span>
           </div>
@@ -155,7 +166,9 @@ function StepDatabaseWithStore(props: any) {
   /**
    */
   const filterPlugins = () => {
-    const installedDatabases = installedListFiltered?.filter((x) => x?.types?.includes("database"));
+    const installedDatabases = installedListFiltered?.filter((x) =>
+      x?.types?.includes("database"),
+    );
     const result = [];
 
     for (const plugin of installedDatabases) {
@@ -173,13 +186,22 @@ function StepDatabaseWithStore(props: any) {
       if (a.id === SQLITE_PLUGIN_ID && b.id !== SQLITE_PLUGIN_ID) {
         // priority for sqlite plugin
         return -1;
-      } if (a.id !== SQLITE_PLUGIN_ID && b.id === SQLITE_PLUGIN_ID) {
+      }
+      if (a.id !== SQLITE_PLUGIN_ID && b.id === SQLITE_PLUGIN_ID) {
         // priority for sqlite plugin
         return 1;
-      } if (a.publisher?.domain === "tago.io" && b.publisher?.domain !== "tago.io") {
+      }
+      if (
+        a.publisher?.domain === "tago.io" &&
+        b.publisher?.domain !== "tago.io"
+      ) {
         // then, all TagoIO plugins
         return -1;
-      } if (a.publisher?.domain !== "tago.io" && b.publisher?.domain === "tago.io") {
+      }
+      if (
+        a.publisher?.domain !== "tago.io" &&
+        b.publisher?.domain === "tago.io"
+      ) {
         // then, all TagoIO plugins
         return 1;
       }
@@ -189,7 +211,7 @@ function StepDatabaseWithStore(props: any) {
     const filtered = result.filter(
       (x) =>
         String(x.name).toLowerCase().includes(filter.toLowerCase()) ||
-        String(x.description).toLowerCase().includes(filter.toLowerCase())
+        String(x.description).toLowerCase().includes(filter.toLowerCase()),
     );
 
     setStorePluginList(filtered);
@@ -269,7 +291,9 @@ function StepDatabaseWithStore(props: any) {
         />
       )}
 
-      {action && !store.masterPassword && <ModalMasterPassword onClose={() => setAction("")} />}
+      {action && !store.masterPassword && (
+        <ModalMasterPassword onClose={() => setAction("")} />
+      )}
     </>
   );
 }

@@ -1,4 +1,4 @@
-import type { IDeviceToken, IDevice } from "@tago-io/tcore-sdk/types";
+import type { IDevice, IDeviceToken } from "@tago-io/tcore-sdk/types";
 import { useCallback } from "react";
 import Col from "../../../Col/Col.tsx";
 import FormDivision from "../../../FormDivision/FormDivision.tsx";
@@ -59,7 +59,7 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
     (value: string[]) => {
       onChange("encoder_stack", value);
     },
-    [onChange]
+    [onChange],
   );
 
   return (

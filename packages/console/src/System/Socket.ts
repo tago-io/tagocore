@@ -1,6 +1,6 @@
-import { io, Socket } from "socket.io-client";
 import { runInAction } from "mobx";
-import store from "./Store";
+import { type Socket, io } from "socket.io-client";
+import store from "./Store.ts";
 
 /**
  * the realtime socket.

@@ -10,11 +10,11 @@ import type {
   IAnalysisEdit,
   IAnalysisList,
   IAnalysisListQuery,
-  IDeviceData,
-  IDeviceDataQuery,
   ICreateDeviceResponse,
   IDevice,
   IDeviceCreate,
+  IDeviceData,
+  IDeviceDataQuery,
   IDeviceEdit,
   IDeviceList,
   IDeviceListQuery,
@@ -24,10 +24,10 @@ import type {
   IDeviceTokenCreate,
   IDeviceTokenCreateResponse,
   IDeviceTokenListQuery,
+  ILiveInspectorMessageCreate,
   ISummary,
   TGenericID,
   TGenericToken,
-  ILiveInspectorMessageCreate,
   TLiveInspectorConnectionID,
 } from "../../Types.ts";
 import APIBridge from "../APIBridge/APIBridge.ts";
@@ -78,7 +78,9 @@ class Core extends APIBridge {
   /**
    * Creates a new device.
    */
-  public async createDevice(params: Omit<IDeviceCreate, "id" | "created_at">): Promise<ICreateDeviceResponse> {
+  public async createDevice(
+    params: Omit<IDeviceCreate, "id" | "created_at">,
+  ): Promise<ICreateDeviceResponse> {
     const response = await this.invokeApiMethod("createDevice", params);
     return response;
   }
@@ -88,9 +90,13 @@ class Core extends APIBridge {
    */
   public async createDeviceToken(
     deviceID: TGenericID,
-    token: Omit<IDeviceTokenCreate, "token" | "created_at">
+    token: Omit<IDeviceTokenCreate, "token" | "created_at">,
   ): Promise<IDeviceTokenCreateResponse> {
-    const response = await this.invokeApiMethod("createDeviceToken", deviceID, token);
+    const response = await this.invokeApiMethod(
+      "createDeviceToken",
+      deviceID,
+      token,
+    );
     return response;
   }
 
@@ -98,8 +104,15 @@ class Core extends APIBridge {
    * Retrieves a list of device tokens.
    * Additional filters can be passed via the query argument.
    */
-  public async getDeviceTokenList(deviceID: TGenericID, query?: IDeviceTokenListQuery): Promise<IDeviceToken[]> {
-    const response = await this.invokeApiMethod("getDeviceTokenList", deviceID, query);
+  public async getDeviceTokenList(
+    deviceID: TGenericID,
+    query?: IDeviceTokenListQuery,
+  ): Promise<IDeviceToken[]> {
+    const response = await this.invokeApiMethod(
+      "getDeviceTokenList",
+      deviceID,
+      query,
+    );
     return response;
   }
 
@@ -113,8 +126,15 @@ class Core extends APIBridge {
   /**
    * Gets all the parameters of a device.
    */
-  public async getDeviceParamList(deviceID: TGenericID, sentStatus?: boolean): Promise<IDeviceParameter[]> {
-    const response = await this.invokeApiMethod("getDeviceParamList", deviceID, sentStatus);
+  public async getDeviceParamList(
+    deviceID: TGenericID,
+    sentStatus?: boolean,
+  ): Promise<IDeviceParameter[]> {
+    const response = await this.invokeApiMethod(
+      "getDeviceParamList",
+      deviceID,
+      sentStatus,
+    );
     return response;
   }
 
@@ -129,7 +149,10 @@ class Core extends APIBridge {
    * Overrides or edits device parameters. If you want to edit a device parameter, pass the ID
    * property inside of an object in the array.
    */
-  public async setDeviceParams(deviceID: TGenericID, parameters: IDeviceParameterCreate[]): Promise<void> {
+  public async setDeviceParams(
+    deviceID: TGenericID,
+    parameters: IDeviceParameterCreate[],
+  ): Promise<void> {
     await this.invokeApiMethod("setDeviceParams", deviceID, parameters);
   }
 
@@ -184,7 +207,9 @@ class Core extends APIBridge {
   /**
    * Creates a new action.
    */
-  public async createAction(params: Omit<IActionCreate, "id" | "created_at">): Promise<TGenericID> {
+  public async createAction(
+    params: Omit<IActionCreate, "id" | "created_at">,
+  ): Promise<TGenericID> {
     const response = await this.invokeApiMethod("createAction", params);
     return response;
   }
@@ -201,7 +226,9 @@ class Core extends APIBridge {
    * Retrieves a list of analyses.
    * Additional filters can be passed via the query argument.
    */
-  public async getAnalysisList(query?: IAnalysisListQuery): Promise<IAnalysisList> {
+  public async getAnalysisList(
+    query?: IAnalysisListQuery,
+  ): Promise<IAnalysisList> {
     const response = await this.invokeApiMethod("getAnalysisList", query);
     return response;
   }
@@ -217,7 +244,10 @@ class Core extends APIBridge {
   /**
    * Edits the information of a single analysis.
    */
-  public async editAnalysis(id: TGenericID, analysis: IAnalysisEdit): Promise<void> {
+  public async editAnalysis(
+    id: TGenericID,
+    analysis: IAnalysisEdit,
+  ): Promise<void> {
     const response = await this.invokeApiMethod("editAnalysis", id, analysis);
     return response;
   }
@@ -232,7 +262,9 @@ class Core extends APIBridge {
   /**
    * Creates a new analysis.
    */
-  public async createAnalysis(params: Omit<IAnalysisCreate, "id" | "created_at">): Promise<TGenericID> {
+  public async createAnalysis(
+    params: Omit<IAnalysisCreate, "id" | "created_at">,
+  ): Promise<TGenericID> {
     const response = await this.invokeApiMethod("createAnalysis", params);
     return response;
   }
@@ -248,7 +280,11 @@ class Core extends APIBridge {
   /**
    * Adds a data item into a device.
    */
-  public async addDeviceData(deviceID: TGenericID, data: any, options?: { forceDBInsert: boolean }): Promise<void> {
+  public async addDeviceData(
+    deviceID: TGenericID,
+    data: any,
+    options?: { forceDBInsert: boolean },
+  ): Promise<void> {
     await this.invokeApiMethod("addDeviceData", deviceID, data, options);
   }
 
@@ -256,15 +292,24 @@ class Core extends APIBridge {
    * Retrieves data from a device.
    * Additional filters can be passed via the query argument.
    */
-  public async getDeviceData(deviceID: TGenericID, query?: IDeviceDataQuery): Promise<IDeviceData[]> {
-    const response = await this.invokeApiMethod("getDeviceData", deviceID, query);
+  public async getDeviceData(
+    deviceID: TGenericID,
+    query?: IDeviceDataQuery,
+  ): Promise<IDeviceData[]> {
+    const response = await this.invokeApiMethod(
+      "getDeviceData",
+      deviceID,
+      query,
+    );
     return response;
   }
 
   /**
    * Retrieves all the tag keys of a resource type.
    */
-  public async getTagKeys(type: "device" | "analysis" | "action"): Promise<string[]> {
+  public async getTagKeys(
+    type: "device" | "analysis" | "action",
+  ): Promise<string[]> {
     const response = await this.invokeApiMethod("getTagKeys", type);
     return response;
   }
@@ -275,9 +320,14 @@ class Core extends APIBridge {
   public async emitToLiveInspector(
     deviceID: TGenericID,
     msg: ILiveInspectorMessageCreate | ILiveInspectorMessageCreate[],
-    liveInspectorID?: TLiveInspectorConnectionID
+    liveInspectorID?: TLiveInspectorConnectionID,
   ): Promise<void> {
-    await this.invokeApiMethod("emitToLiveInspector", deviceID, msg, liveInspectorID);
+    await this.invokeApiMethod(
+      "emitToLiveInspector",
+      deviceID,
+      msg,
+      liveInspectorID,
+    );
   }
 }
 

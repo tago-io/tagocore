@@ -1,8 +1,8 @@
 import { type UIEvent, useRef } from "react";
 import EmptyMessage from "../EmptyMessage/EmptyMessage.tsx";
 import type { EIcon } from "../Icon/Icon.types";
-import type { ISimpleTableColumn } from "./SimpleTable.types";
 import * as Style from "./SimpleTable.style";
+import type { ISimpleTableColumn } from "./SimpleTable.types";
 
 /**
  * Props.
@@ -70,7 +70,11 @@ function SimpleTable<T>(props: ISimpleTableProps<T>) {
   /**
    * Renders a single body/row cell.
    */
-  const renderRowCell = (item: T, column: ISimpleTableColumn<T>, rowIndex: number) => {
+  const renderRowCell = (
+    item: T,
+    column: ISimpleTableColumn<T>,
+    rowIndex: number,
+  ) => {
     const flex = column.flex || "1";
     const width = column.width || "auto";
     const key = column.key || String(column.label);
@@ -99,15 +103,15 @@ function SimpleTable<T>(props: ISimpleTableProps<T>) {
         </Style.LinkRow>
       );
     }
-      return (
-        <Style.DivRow
-          key={rowIndex}
-          $useAlternateRowColor={useAlternateRowColor}
-          $highlightColor={highlightColor}
-        >
-          {props.columns.map((column) => renderRowCell(item, column, rowIndex))}
-        </Style.DivRow>
-      );
+    return (
+      <Style.DivRow
+        key={rowIndex}
+        $useAlternateRowColor={useAlternateRowColor}
+        $highlightColor={highlightColor}
+      >
+        {props.columns.map((column) => renderRowCell(item, column, rowIndex))}
+      </Style.DivRow>
+    );
   };
 
   /**
@@ -117,7 +121,9 @@ function SimpleTable<T>(props: ISimpleTableProps<T>) {
     if (!emptyMessage) {
       return null;
     }
-    return <EmptyMessage icon={emptyMessageIcon as EIcon} message={emptyMessage} />;
+    return (
+      <EmptyMessage icon={emptyMessageIcon as EIcon} message={emptyMessage} />
+    );
   };
 
   /**

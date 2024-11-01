@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import { ModalUninstallPlugin } from "../../index.ts";
 import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
 import uninstallPlugin from "../../Requests/uninstallPlugin.ts";
+import { ModalUninstallPlugin } from "../../index.ts";
 import ModalInstallPlugin from "../Plugins/Common/ModalInstallPlugin/ModalInstallPlugin.tsx";
 
 /**
