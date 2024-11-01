@@ -37,6 +37,8 @@ interface IPluginPackage {
   full_description_url: string;
   fullPath: string;
   icon: string;
+  permissions: string[];
+  types: TPluginType[];
   publisher: {
     name: string;
     domain: string;
@@ -140,12 +142,12 @@ async function getInstalledInsidePlugins(
   settings: ISettings,
 ) {
   const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
+  const dirname___ = dirname(__filename);
   const insidePlugins = await fs.promises.readdir(
-    path.join(__dirname, "../../..", "plugins"),
+    path.join(dirname___, "../../..", "plugins"),
   );
   for (const folder of insidePlugins) {
-    const fullPath = path.join(__dirname, "../../..", "plugins", folder);
+    const fullPath = path.join(dirname___, "../../..", "plugins", folder);
     const getPackage = await Plugin.getPackageAsync(fullPath).catch(() => null);
 
     if (!getPackage) {
@@ -157,13 +159,15 @@ async function getInstalledInsidePlugins(
     const isInstalledDatabasePlugin =
       settings.database_plugin?.split(":")[0] === md5(getPackage.name);
     const isDatabase = getPackage?.tcore?.types?.includes("database");
+    const isDefaultFilesystemPlugin = getPackage?.tcore?.types?.includes("filesystem") && getPackage?.tcore?.types?.includes("default");
     const isStore = getPackage?.tcore?.store;
 
     if (
       isInstalled ||
       isInstalledDatabasePlugin ||
       (isDatabase && !settings.database_plugin) ||
-      isStore
+      isStore ||
+      isDefaultFilesystemPlugin
     ) {
       plugins.push(fullPath);
     }
@@ -200,13 +204,13 @@ export async function getPluginList(): Promise<any> {
  */
 export async function getAllInsidePlugins() {
   const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
+  const dirname___ = dirname(__filename);
   const insidePlugins = await fs.promises.readdir(
-    path.join(__dirname, "../../..", "plugins"),
+    path.join(dirname___, "../../..", "plugins"),
   );
   const list: IPluginPackage[] = [];
   for (const folder of insidePlugins) {
-    const fullPath = path.join(__dirname, "../../..", "plugins", folder);
+    const fullPath = path.join(dirname___, "../../..", "plugins", folder);
     const pluginPackage = await Plugin.getPackageAsync(fullPath).catch(
       () => null,
     );
@@ -226,6 +230,8 @@ export async function getAllInsidePlugins() {
           logo_url: `/images/${md5(pluginPackage.name)}/icon`,
           fullPath: fullPath,
           icon: pluginPackage.tcore.icon,
+          permissions: pluginPackage.tcore.permissions,
+          types: pluginPackage.tcore.types,
           publisher: {
             name: pluginPackage.tcore.publisher?.name,
             domain: pluginPackage.tcore.publisher?.domain,

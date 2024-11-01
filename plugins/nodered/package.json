@@ -11,7 +11,11 @@
     "icon": "./assets/icon.png",
     "cluster": true,
     "types": ["service", "encoder", "action-type"],
-    "permissions": ["device", "action", "device-data"]
+    "permissions": ["device", "action", "device-data"],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
   "dependencies": {},
   "devDependencies": {}

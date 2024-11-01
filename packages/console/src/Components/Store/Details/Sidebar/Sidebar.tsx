@@ -30,7 +30,6 @@ function Sidebar(props: ISidebarProps) {
     categories,
     classTypes,
     permissions,
-    platforms,
     publishDate,
     publisherName,
     publisherDomain,
@@ -47,11 +46,6 @@ function Sidebar(props: ISidebarProps) {
           publisherDomain={publisherDomain}
           version={version}
         />
-      </section>
-
-      <section>
-        <h4>Runs on</h4>
-        <Platforms value={platforms || []} />
       </section>
 
       {classTypes.length > 0 && (

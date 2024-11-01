@@ -14,7 +14,11 @@
       "action"
     ],
     "types": ["action-type", "action-trigger", "service"],
-    "permissions": ["device", "device-data"]
+    "permissions": ["device", "device-data"],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
   "dependencies": {
     "csv-parser": "3.0.0"

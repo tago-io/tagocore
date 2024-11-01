@@ -17,7 +17,11 @@
     "permissions": [
       "device",
       "device-data"
-    ]
+    ],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
   "optionalDependencies": {
     "rpio": "2.4.2"
