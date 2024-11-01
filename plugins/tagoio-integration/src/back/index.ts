@@ -1,7 +1,12 @@
-
-import { HookModule, NavbarButtonModule, PageModule, pluginStorage, SystemModule } from "@tago-io/tcore-sdk";
-import { closeServer, initServer } from "./Server.ts";
+import {
+  HookModule,
+  NavbarButtonModule,
+  PageModule,
+  SystemModule,
+  pluginStorage,
+} from "@tago-io/tcore-sdk";
 import { startRealtimeCommunication } from "./RealtimeConnection.ts";
+import { closeServer, initServer } from "./Server.ts";
 
 let started = false;
 

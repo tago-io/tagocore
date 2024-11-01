@@ -17,8 +17,8 @@ import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { useTheme } from "styled-components";
-import * as Style from "./Details.style";
 import imgDesert from "../../../assets/desert.png";
+import * as Style from "./Details.style";
 
 /**
  * Props.

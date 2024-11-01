@@ -1,11 +1,10 @@
 import os from "node:os";
 import { URLSearchParams } from "node:url";
 import { core, helpers, pluginStorage } from "@tago-io/tcore-sdk";
-import { getMachineID } from "./Helpers.ts";
 import EventSource from "eventsource";
-import { sendDataToTagoio } from "./Request.ts";
 import { cache } from "./Global.ts";
-
+import { getMachineID } from "./Helpers.ts";
+import { sendDataToTagoio } from "./Request.ts";
 
 let events: EventSource | null = null;
 const pingInterval = 240000;
@@ -46,9 +45,20 @@ function startRealtimeCommunication(token: string) {
             core.getSummary(),
             helpers.getComputerUsage(),
           ]);
-          const response = await sendDataToTagoio(token, { summary: data[0], computer_usage: data[1] }, connID, "summary-computer-usage-tcore");
+          const response = await sendDataToTagoio(
+            token,
+            { summary: data[0], computer_usage: data[1] },
+            connID,
+            "summary-computer-usage-tcore",
+          );
           if (response) {
-            cache.serverIO?.emit("event", "summary-computer-usage", "sse::summary-computer-usage", Date.now(), response);
+            cache.serverIO?.emit(
+              "event",
+              "summary-computer-usage",
+              "sse::summary-computer-usage",
+              Date.now(),
+              response,
+            );
           }
           break;
         }
@@ -58,7 +68,6 @@ function startRealtimeCommunication(token: string) {
         default:
           console.error("Unknown event payload", messageData.payload);
       }
-
     };
 
     events.onerror = (error: any) => {
@@ -105,12 +114,28 @@ async function emitStartData(token: string, connID: string) {
     computer_usage: data[1],
     last_ping: Date.now(),
   };
-  const response = await sendDataToTagoio(token, startData, connID, "update-tcore");
+  const response = await sendDataToTagoio(
+    token,
+    startData,
+    connID,
+    "update-tcore",
+  );
   if (response) {
-    const tcore = await sendDataToTagoio(token, { summary: true }, connID, "get-tcore");
+    const tcore = await sendDataToTagoio(
+      token,
+      { summary: true },
+      connID,
+      "get-tcore",
+    );
     if (tcore) {
       await pluginStorage.set("tcore", tcore);
-      cache.serverIO?.emit("event", "connected", "sse::commands", Date.now(), tcore);
+      cache.serverIO?.emit(
+        "event",
+        "connected",
+        "sse::commands",
+        Date.now(),
+        tcore,
+      );
     }
   }
 }
@@ -133,6 +158,5 @@ function getLocalIPs() {
 
   return addresses;
 }
-
 
 export { closeRealtimeConnection, startRealtimeCommunication };

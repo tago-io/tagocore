@@ -20,7 +20,12 @@ async function createTCore(token: string, data: any) {
 /**
  * Send data to Tagoio.
  */
-async function sendDataToTagoio(token: string, data: any, connId: string, operation: string) {
+async function sendDataToTagoio(
+  token: string,
+  data: any,
+  connId: string,
+  operation: string,
+) {
   try {
     const response = await axios({
       url: `${process.env.TAGOIO_API}/tcore/sse/${connId}`,

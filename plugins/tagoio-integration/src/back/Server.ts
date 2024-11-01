@@ -4,12 +4,15 @@ import { helpers, pluginStorage } from "@tago-io/tcore-sdk";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { type Request, type Response } from "express";
+import { Server } from "socket.io";
 import pkg from "../../package.json" with { type: "json" };
 import { cache } from "./Global.ts";
 import { getMachineID } from "./Helpers.ts";
+import {
+  closeRealtimeConnection,
+  startRealtimeCommunication,
+} from "./RealtimeConnection.ts";
 import { createTCore, sendDataToTagoio } from "./Request.ts";
-import { closeRealtimeConnection, startRealtimeCommunication } from "./RealtimeConnection.ts";
-import { Server } from "socket.io";
 
 let server: http.Server | null = null;
 
@@ -83,7 +86,12 @@ async function routeStartTCore(req: Request, res: Response) {
   const item = await pluginStorage.get("tcore").catch(() => null);
 
   if (item?.token) {
-    await sendDataToTagoio(profileToken, { name: req.body.name }, item.id, "update-tcore-connect");
+    await sendDataToTagoio(
+      profileToken,
+      { name: req.body.name },
+      item.id,
+      "update-tcore-connect",
+    );
     await pluginStorage.set("token", item?.token);
     await startRealtimeCommunication(item?.token);
     res.sendStatus(200);
@@ -103,7 +111,12 @@ async function routeStartTCore(req: Request, res: Response) {
   });
 
   if (data) {
-    const tcore = await sendDataToTagoio(profileToken, { summary: true }, data.id, "get-tcore");
+    const tcore = await sendDataToTagoio(
+      profileToken,
+      { summary: true },
+      data.id,
+      "get-tcore",
+    );
     if (tcore) {
       await pluginStorage.set("token", data?.token);
       await pluginStorage.set("tcore", tcore);

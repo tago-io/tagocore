@@ -12,18 +12,8 @@
     "priority": "highest",
     "cluster": true,
     "hidden": true,
-    "permissions": [
-      "device",
-      "device-data",
-      "plugin",
-      "action"
-    ],
-    "types": [
-      "navbar-button",
-      "page",
-      "system-override",
-      "hook"
-    ],
+    "permissions": ["device", "device-data", "plugin", "action"],
+    "types": ["navbar-button", "page", "system-override", "hook"],
     "publisher": {
       "name": "TagoIO",
       "domain": "tago.io"

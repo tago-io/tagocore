@@ -1,12 +1,21 @@
-
 import type { SystemModule } from "@tago-io/tcore-sdk";
 import type { Server } from "socket.io";
 
 interface ICommandQueueItem {
-  type: "install" | "settings" | "uninstall" | "disable" | "enable" | "startModule" | "stopModule" | "setMasterPassword" | "factoryReset" | "setDatabasePlugin";
+  type:
+    | "install"
+    | "settings"
+    | "uninstall"
+    | "disable"
+    | "enable"
+    | "startModule"
+    | "stopModule"
+    | "setMasterPassword"
+    | "factoryReset"
+    | "setDatabasePlugin";
   promise: {
-    resolve: Function;
-    reject: Function;
+    resolve: any;
+    reject: any;
   };
 }
 

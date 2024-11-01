@@ -34,6 +34,7 @@ function Banner() {
       <div className="block">
         <Icon icon={EIcon.tcore} color="white" size="130px" />
       </div>
+      {/* biome-ignore lint/a11y/useHeadingContent: <explanation> */}
       <h2 />
     </Style.Container>
   );
