@@ -2,7 +2,7 @@ function generateFileName(version, platform) {
   let arch = "";
 
   if (platform === "linux/amd64") {
-    arch = "x86_64-unknown-linux-musleabihf";
+    arch = "x86_64-unknown-linux-musl";
   } else if (platform === "linux/arm64/v8") {
     arch = "aarch64-unknown-linux-musl";
   } else if (platform === "linux/arm/v7") {
