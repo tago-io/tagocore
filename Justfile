@@ -19,6 +19,8 @@ build-console:
   @rm -rf build/console
   @cd packages/console && npm run build
 
+install:
+  @npm ci
 
 ########################### INFRA
 
