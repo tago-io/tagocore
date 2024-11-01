@@ -6,7 +6,11 @@ import store from "../System/Store.ts";
 /**
  * Retrieves a list of analyses.
  */
-async function getAnalysisList(page: number, amount: number, filter: any): Promise<IAnalysis[]> {
+async function getAnalysisList(
+  page: number,
+  amount: number,
+  filter: any,
+): Promise<IAnalysis[]> {
   const query = {
     page,
     amount,

@@ -1,5 +1,5 @@
-import styled, { css, type DefaultTheme } from "styled-components";
 import { darken } from "polished";
+import styled, { css, type DefaultTheme } from "styled-components";
 import * as IconStyle from "../Icon/Icon.style";
 import { EButton } from "./Button.types";
 

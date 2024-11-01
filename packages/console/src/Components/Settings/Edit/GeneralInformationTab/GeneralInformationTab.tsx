@@ -2,9 +2,9 @@ import type { ISettings, ISettingsMetadata } from "@tago-io/tcore-sdk/types";
 import { getSystemName } from "@tago-io/tcore-shared";
 import { observer } from "mobx-react";
 import { useState } from "react";
-import { Button, EButton, Icon } from "../../../../index.ts";
 import useApiRequest from "../../../../Helpers/useApiRequest.ts";
 import store from "../../../../System/Store.ts";
+import { Button, EButton, Icon } from "../../../../index.ts";
 import Col from "../../../Col/Col.tsx";
 import FormDivision from "../../../FormDivision/FormDivision.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
@@ -44,16 +44,23 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
   const [resetting, setResetting] = useState(false);
   const { data: databaseList } = useApiRequest<any[]>("/module?type=database");
   const { data: queueList } = useApiRequest<any[]>("/module?type=queue");
-  const { data: filesystemList } = useApiRequest<any[]>("/module?type=filesystem");
+  const { data: filesystemList } = useApiRequest<any[]>(
+    "/module?type=filesystem",
+  );
   const { data, metadata, errors } = props;
 
   /**
    * Gets a list of database options based on the backend list.
    */
   const getDatabaseOptions = () => {
-    const options: ISelectOption[] = [{ label: "Default (first one loaded)", value: "" }];
+    const options: ISelectOption[] = [
+      { label: "Default (first one loaded)", value: "" },
+    ];
     for (const item of databaseList || []) {
-      options.push({ label: item.setupName, value: `${item.pluginID}:${item.setupID}` });
+      options.push({
+        label: item.setupName,
+        value: `${item.pluginID}:${item.setupID}`,
+      });
     }
     return options;
   };
@@ -64,7 +71,10 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
   const getQueueOptions = () => {
     const options: ISelectOption[] = [{ label: "None", value: "" }];
     for (const item of queueList || []) {
-      options.push({ label: item.setupName, value: `${item.pluginID}:${item.setupID}` });
+      options.push({
+        label: item.setupName,
+        value: `${item.pluginID}:${item.setupID}`,
+      });
     }
     return options;
   };
@@ -75,7 +85,10 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
   const getFilesystemOptions = () => {
     const options: ISelectOption[] = [];
     for (const item of filesystemList || []) {
-      options.push({ label: item.setupName, value: `${item.pluginID}:${item.setupID}` });
+      options.push({
+        label: item.setupName,
+        value: `${item.pluginID}:${item.setupID}`,
+      });
     }
     if (!filesystemList) {
       options.unshift({ label: "-", value: "-" });
@@ -122,10 +135,16 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
               <Style.DangerZone>
                 <div className="info">
                   <b>Perform a factory reset</b>
-                  <span>A Factory reset will remove settings, plugins, and plugin files.</span>
+                  <span>
+                    A Factory reset will remove settings, plugins, and plugin
+                    files.
+                  </span>
                 </div>
 
-                <Button onClick={() => setResetting(true)} type={EButton.danger}>
+                <Button
+                  onClick={() => setResetting(true)}
+                  type={EButton.danger}
+                >
                   Factory reset
                 </Button>
               </Style.DangerZone>
@@ -141,7 +160,9 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
             label="Database plugin"
           >
             <Select
-              onChange={(e) => props.onChange("database_plugin", e.target.value)}
+              onChange={(e) =>
+                props.onChange("database_plugin", e.target.value)
+              }
               placeholder="Select the default database plugin"
               value={data.database_plugin}
               error={errors?.database_plugin}
@@ -172,7 +193,9 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
             label="Filesystem plugin"
           >
             <Select
-              onChange={(e) => props.onChange("filesystem_plugin", e.target.value)}
+              onChange={(e) =>
+                props.onChange("filesystem_plugin", e.target.value)
+              }
               placeholder="Select the default filesystem plugin"
               value={data.filesystem_plugin}
               error={errors?.filesystem_plugin}

@@ -6,7 +6,7 @@ import store from "../System/Store.ts";
 /**
  */
 async function createAnalysis(
-  data: Omit<IAnalysisCreate, "id" | "created_at">
+  data: Omit<IAnalysisCreate, "id" | "created_at">,
 ): Promise<TGenericID> {
   const account = new Account({ token: store.token });
   const result = await account.analysis.create(data as AnalysisCreateInfo);

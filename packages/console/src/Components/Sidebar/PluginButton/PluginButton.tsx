@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
-import { useTheme } from "styled-components";
-import { useLocation } from "react-router";
 import type { IPluginListItem } from "@tago-io/tcore-sdk/types";
+import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import { useTheme } from "styled-components";
 import disablePlugin from "../../../Requests/disablePlugin.ts";
 import enablePlugin from "../../../Requests/enablePlugin.ts";
+import uninstallPlugin from "../../../Requests/uninstallPlugin.ts";
+import { ModalUninstallPlugin } from "../../../index.ts";
 import Icon from "../../Icon/Icon.tsx";
 import { EIcon } from "../../Icon/Icon.types";
 import PluginImage from "../../PluginImage/PluginImage.tsx";
-import { ModalUninstallPlugin } from "../../../index.ts";
-import uninstallPlugin from "../../../Requests/uninstallPlugin.ts";
 import * as Style from "./PluginButton.style";
 
 /**
@@ -46,7 +46,7 @@ function PluginButton(props: IPluginButtonProps) {
       e.preventDefault();
       enablePlugin(id);
     },
-    [id]
+    [id],
   );
 
   /**
@@ -57,7 +57,7 @@ function PluginButton(props: IPluginButtonProps) {
       e.preventDefault();
       disablePlugin(id);
     },
-    [id]
+    [id],
   );
 
   /**
@@ -91,7 +91,11 @@ function PluginButton(props: IPluginButtonProps) {
             <span>{name}</span>
             {error && !disabled && (
               <div className="error">
-                <Icon icon={EIcon["exclamation-triangle"]} size="9px" color={theme.buttonDanger} />
+                <Icon
+                  icon={EIcon["exclamation-triangle"]}
+                  size="9px"
+                  color={theme.buttonDanger}
+                />
               </div>
             )}
           </div>
@@ -109,7 +113,10 @@ function PluginButton(props: IPluginButtonProps) {
         </Style.Options>
       )}
 
-      <Style.Dropdown visible={dropdown} onMouseDown={(e) => e.stopPropagation()}>
+      <Style.Dropdown
+        visible={dropdown}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
         {item.allow_disable &&
           (disabled ? (
             <div className="item" onClick={enable}>

@@ -125,7 +125,9 @@ function ModalInstallPlugin(props: IModalInstallPlugin) {
       isConfirmButtonDisabled={!done}
     >
       <Style.Container>
-        {pluginName && <Style.Message>Installing Plugin: {pluginName}</Style.Message>}
+        {pluginName && (
+          <Style.Message>Installing Plugin: {pluginName}</Style.Message>
+        )}
 
         <Style.Progress done={done} error={error} value={progress}>
           <div className="value">

@@ -30,7 +30,8 @@ function OperatingSystem(props: IOperatingSystemProps) {
   const getHardwareIcon = () => {
     if (os.hardware === "raspberry-pi") {
       return EIcon["raspberry-pi"];
-    }if (os.hardware === "rock-pi") {
+    }
+    if (os.hardware === "rock-pi") {
       return EIcon["rock-pi"];
     }
   };
@@ -41,12 +42,14 @@ function OperatingSystem(props: IOperatingSystemProps) {
   const getIcon = () => {
     if (os.code === "windows") {
       return EIcon.windows;
-    }if (os.code === "linux") {
+    }
+    if (os.code === "linux") {
       return EIcon.linux;
-    }if (os.code === "mac") {
+    }
+    if (os.code === "mac") {
       return EIcon.apple;
     }
-      return null;
+    return null;
   };
 
   const osIcon = getIcon();

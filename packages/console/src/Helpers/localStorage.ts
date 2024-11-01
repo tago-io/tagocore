@@ -25,12 +25,16 @@ export function getLocalStorage(key: string, fallback?: string) {
 /**
  * Gets a key in local storage as a boolean.
  */
-export function getLocalStorageAsBoolean(key: string, fallback = false): boolean {
+export function getLocalStorageAsBoolean(
+  key: string,
+  fallback = false,
+): boolean {
   try {
     const value = localStorage.getItem(key);
     if (value === "false") {
       return false;
-    }if (value === "true") {
+    }
+    if (value === "true") {
       return true;
     }
     return fallback as boolean;

@@ -1,5 +1,9 @@
 import { within } from "@testing-library/react";
-import { render, renderWithEvents, screen } from "../../../utils/test-utils";
+import {
+  render,
+  renderWithEvents,
+  screen,
+} from "../../../utils/test-utils.tsx";
 import { EIcon } from "../Icon/Icon.types";
 import FormGroup from "./FormGroup.tsx";
 

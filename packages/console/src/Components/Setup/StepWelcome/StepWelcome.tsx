@@ -1,6 +1,6 @@
 import { getSystemName } from "@tago-io/tcore-shared";
-import { EButton } from "../../../index.ts";
 import Logo from "../../../../assets/images/logo-black.svg";
+import { EButton } from "../../../index.ts";
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import * as Style from "./StepWelcome.style";
 

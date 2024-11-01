@@ -1,6 +1,6 @@
 import { getSystemName } from "@tago-io/tcore-shared";
 import axios from "axios";
-import { type KeyboardEvent, useRef, useState, useCallback } from "react";
+import { type KeyboardEvent, useCallback, useRef, useState } from "react";
 import { EButton, EIcon, FormGroup, Icon } from "../../../index.ts";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage.tsx";
 import InputPassword from "../../InputPassword/InputPassword.tsx";
@@ -47,11 +47,14 @@ function StepMasterPassword(props: any) {
   /**
    * Called when the password input receives a keydown event.
    */
-  const onPasswordKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      confirmationRef?.current?.focus();
-    }
-  }, []);
+  const onPasswordKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        confirmationRef?.current?.focus();
+      }
+    },
+    [],
+  );
 
   /**
    * Called when the confirmation input receives a keydown event.
@@ -62,7 +65,7 @@ function StepMasterPassword(props: any) {
         next();
       }
     },
-    [next]
+    [next],
   );
 
   const nextDisabled = !value || !confirmation || loading;
@@ -73,15 +76,21 @@ function StepMasterPassword(props: any) {
       description={`Add a layer of security to your ${getSystemName()}`}
       buttons={[
         { label: "Back", onClick: onBack },
-        { label: "Next", onClick: next, disabled: nextDisabled, type: EButton.primary },
+        {
+          label: "Next",
+          onClick: next,
+          disabled: nextDisabled,
+          type: EButton.primary,
+        },
       ]}
     >
       <Style.Content>
         <Icon icon={EIcon.lock} size="50px" color="rgba(0, 0, 0, 0.2)" />
 
         <span className="info">
-          To perform sensitive actions, such as resetting to factory settings or creating new
-          accounts, you will need to provide the master password defined here.
+          To perform sensitive actions, such as resetting to factory settings or
+          creating new accounts, you will need to provide the master password
+          defined here.
         </span>
 
         <FormGroup label="Master Password" icon={EIcon.key}>
@@ -110,7 +119,9 @@ function StepMasterPassword(props: any) {
 
         {errorMsg && (
           <FormGroup>
-            <ErrorMessage style={{ textAlign: "left", display: "flex", marginTop: 0 }}>
+            <ErrorMessage
+              style={{ textAlign: "left", display: "flex", marginTop: 0 }}
+            >
               {errorMsg}
             </ErrorMessage>
           </FormGroup>

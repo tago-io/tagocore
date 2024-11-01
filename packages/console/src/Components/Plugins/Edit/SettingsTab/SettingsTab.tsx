@@ -1,14 +1,18 @@
-import type { IModuleSetup, IPlugin, IPluginModule } from "@tago-io/tcore-sdk/types";
+import type {
+  IModuleSetup,
+  IPlugin,
+  IPluginModule,
+} from "@tago-io/tcore-sdk/types";
 import { useTheme } from "styled-components";
+import { Button, Icon } from "../../../../index.ts";
+import EmptyMessage from "../../../EmptyMessage/EmptyMessage.tsx";
 import FormDivision from "../../../FormDivision/FormDivision.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import Markdown from "../../../Markdown/Markdown.tsx";
-import Buttons from "../Buttons/Buttons.tsx";
-import EmptyMessage from "../../../EmptyMessage/EmptyMessage.tsx";
 import MainInformation from "../../Common/MainInformation/MainInformation.tsx";
 import ModuleSetup from "../../Common/ModuleSetup/ModuleSetup.tsx";
-import { Button, Icon } from "../../../../index.ts";
 import Status from "../../Common/Status/Status.tsx";
+import Buttons from "../Buttons/Buttons.tsx";
 import * as Style from "./SettingsTab.style";
 
 /**
@@ -164,11 +168,7 @@ function SettingsTab(props: ISettingsTab) {
           </div>
 
           <div className="buttons-container">
-            <Buttons
-              data={data}
-              onDisable={onDisable}
-              onEnable={onEnable}
-            />
+            <Buttons data={data} onDisable={onDisable} onEnable={onEnable} />
           </div>
         </div>
 
@@ -178,9 +178,15 @@ function SettingsTab(props: ISettingsTab) {
 
         <div className="markdown-container">
           {data?.full_description ? (
-            <Markdown localImgPrefix={`/images2/${data.id}`} value={data?.full_description} />
+            <Markdown
+              localImgPrefix={`/images2/${data.id}`}
+              value={data?.full_description}
+            />
           ) : (
-            <EmptyMessage icon={EIcon.list} message="No information available." />
+            <EmptyMessage
+              icon={EIcon.list}
+              message="No information available."
+            />
           )}
         </div>
       </>
@@ -214,7 +220,9 @@ function SettingsTab(props: ISettingsTab) {
       <div className="content">
         <div className="horizontal">
           <Style.LeftSection>{renderLeftSectionContent()}</Style.LeftSection>
-          {data.modules.length > 0 && <Style.RightSection>{renderConfigs()}</Style.RightSection>}
+          {data.modules.length > 0 && (
+            <Style.RightSection>{renderConfigs()}</Style.RightSection>
+          )}
         </div>
       </div>
     </Style.Container>

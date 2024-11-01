@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import EmptyMessage from "../EmptyMessage/EmptyMessage.tsx";
 import Icon from "../Icon/Icon.tsx";
 import { EIcon } from "../Icon/Icon.types";
@@ -6,8 +6,8 @@ import Input from "../Input/Input.tsx";
 import Pagination from "../Pagination/Pagination.tsx";
 import Select from "../Select/Select.tsx";
 import TooltipText from "../TooltipText/TooltipText.tsx";
-import type { IColumn, IFilter } from "./PaginatedTable.types";
 import * as Style from "./PaginatedTable.style";
+import type { IColumn, IFilter } from "./PaginatedTable.types";
 
 /**
  * Props.
@@ -33,7 +33,11 @@ interface IPaginatedTableProps<T> {
   /**
    * Called to fetch the data for the page.
    */
-  onGetData: (page: number, idealAmountOfRows: number, filter: IFilter) => Promise<T[]> | T[];
+  onGetData: (
+    page: number,
+    idealAmountOfRows: number,
+    filter: IFilter,
+  ) => Promise<T[]> | T[];
   /**
    * Called when the page was changed.
    */
@@ -119,7 +123,11 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     const filterVisible = column.filterVisible !== false;
 
     return (
-      <div key={column.id || column.label} className="cell" style={{ width, flex }}>
+      <div
+        key={column.id || column.label}
+        className="cell"
+        style={{ width, flex }}
+      >
         <TooltipText tooltip={column.tooltip}>
           <h2>
             {column.icon && <Icon icon={column.icon} />}
@@ -147,7 +155,10 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
               { label: "No", value: "false" },
             ]}
             onChange={(e) =>
-              onChangeFilter(column, e.target.value === "" ? undefined : e.target.value === "true")
+              onChangeFilter(
+                column,
+                e.target.value === "" ? undefined : e.target.value === "true",
+              )
             }
             value={String(filter[column.id] ?? "")}
           />
@@ -172,7 +183,9 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
 
     return (
       <div key={column.id + rowIndex} className="cell" style={{ width, flex }}>
-        <div className={`inner-cell ${type}`}>{column.onRender(item, rowIndex, column)}</div>
+        <div className={`inner-cell ${type}`}>
+          {column.onRender(item, rowIndex, column)}
+        </div>
       </div>
     );
   };
@@ -185,16 +198,20 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
 
     if (link) {
       return (
-        <Style.LinkRow key={rowIndex} to={link} $highlightColor={highlightColor}>
+        <Style.LinkRow
+          key={rowIndex}
+          to={link}
+          $highlightColor={highlightColor}
+        >
           {columns.map((column) => renderRowCell(item, column, rowIndex))}
         </Style.LinkRow>
       );
     }
-      return (
-        <Style.DivRow key={rowIndex} $highlightColor={highlightColor}>
-          {columns.map((column) => renderRowCell(item, column, rowIndex))}
-        </Style.DivRow>
-      );
+    return (
+      <Style.DivRow key={rowIndex} $highlightColor={highlightColor}>
+        {columns.map((column) => renderRowCell(item, column, rowIndex))}
+      </Style.DivRow>
+    );
   };
 
   /**
@@ -204,7 +221,9 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     if (!emptyMessage) {
       return null;
     }
-    return <EmptyMessage icon={emptyMessageIcon as EIcon} message={emptyMessage} />;
+    return (
+      <EmptyMessage icon={emptyMessageIcon as EIcon} message={emptyMessage} />
+    );
   };
 
   /**
@@ -302,7 +321,10 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
           <Style.Header>{columns.map(renderHeaderCell)}</Style.Header>
           <Style.Body>
             {error ? (
-              <EmptyMessage icon={EIcon["exclamation-triangle"]} message={error} />
+              <EmptyMessage
+                icon={EIcon["exclamation-triangle"]}
+                message={error}
+              />
             ) : amountOfRecords === 0 ? (
               renderEmptyMessage()
             ) : (

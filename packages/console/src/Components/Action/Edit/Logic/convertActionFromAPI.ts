@@ -1,7 +1,11 @@
 import type { IAction } from "@tago-io/tcore-sdk/types";
 import cloneDeep from "lodash.clonedeep";
 import { DateTime } from "luxon";
-import type { IConditionData, IScheduleData, TScheduleDataIntervalUnit } from "../../Action.interface";
+import type {
+  IConditionData,
+  IScheduleData,
+  TScheduleDataIntervalUnit,
+} from "../../Action.interface";
 import { spreadCronToScheduleData } from "./spreadCronToScheduleData.ts";
 
 interface IResult {
@@ -40,7 +44,11 @@ function convertActionFromAPI(action: IAction): IResult {
         if (interval) {
           // this will transform the data_retention to something we can understand
           // '12 Weeks' will become '12 week'
-          const split = String(interval).trim().toLowerCase().replace("s", "").split(" ");
+          const split = String(interval)
+            .trim()
+            .toLowerCase()
+            .replace("s", "")
+            .split(" ");
           const value = split[0];
           const unit = split[1];
           scheduleData.interval = Number(value);
@@ -49,17 +57,22 @@ function convertActionFromAPI(action: IAction): IResult {
       } else if (action.type === "schedule") {
         const firstTrigger = action?.trigger?.[0];
         if (firstTrigger) {
-          scheduleData.timezone = firstTrigger.timezone || DateTime.now().zoneName;
+          scheduleData.timezone =
+            firstTrigger.timezone || DateTime.now().zoneName;
           scheduleData.cron = firstTrigger.cron || "";
           spreadCronToScheduleData(firstTrigger.cron, scheduleData);
         }
       }
 
-      scheduleData.recurrenceType = scheduleData.canRender ? "basic" : "advanced";
+      scheduleData.recurrenceType = scheduleData.canRender
+        ? "basic"
+        : "advanced";
     }
   } else if (action.type === "condition") {
     const first = action.trigger?.[0];
-    const trigger = cloneDeep(Array.isArray(action.trigger) ? action.trigger : []);
+    const trigger = cloneDeep(
+      Array.isArray(action.trigger) ? action.trigger : [],
+    );
     conditionData.conditions = [];
     conditionData.unlockConditions = [];
     conditionData.lock = action.lock || false;
@@ -75,7 +88,10 @@ function convertActionFromAPI(action: IAction): IResult {
     if (first && "tag_key" in first) {
       conditionData.type = "multiple";
       conditionData.type = first?.tag_key ? "multiple" : "single";
-      conditionData.tag = { key: first?.tag_key || "", value: first?.tag_value || "" };
+      conditionData.tag = {
+        key: first?.tag_key || "",
+        value: first?.tag_value || "",
+      };
     } else {
       conditionData.type = "single";
       conditionData.device = first?.device;
@@ -90,7 +106,10 @@ function convertActionFromAPI(action: IAction): IResult {
     actionObject.headers = [];
     for (const key in action.action.headers || {}) {
       if (action.action.headers[key]) {
-        actionObject.headers.push({ name: key, value: action.action.headers[key] });
+        actionObject.headers.push({
+          name: key,
+          value: action.action.headers[key],
+        });
       }
     }
   }

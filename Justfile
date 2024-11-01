@@ -12,7 +12,10 @@ linter:
   @npx @biomejs/biome check
 
 test *args="":
-  @npx vitest {{args}}
+  @npx vitest run {{args}}
+
+test-watch *args="":
+  @npx vitest watch {{args}}
 
 build-console:
   just _pre-build
@@ -23,6 +26,8 @@ build-integration:
   @rm -rf plugins/tagoio-integration/build
   @cd plugins/tagoio-integration && npm run build
 
+install:
+  @npm ci
 
 ########################### INFRA
 

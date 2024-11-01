@@ -23,7 +23,9 @@ function MessageTriggerNotFound(props: IMessageTriggerNotFound) {
               Trigger <b>{triggerName}</b> was not found.
             </span>
             <br />
-            <span>This action cannot be edited and it will never be triggered.</span>
+            <span>
+              This action cannot be edited and it will never be triggered.
+            </span>
           </>
         }
       />

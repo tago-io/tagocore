@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Select from "../Select/Select.tsx";
 import * as Style from "./InputTime.style";
 
@@ -14,19 +14,25 @@ function InputTime(props: IInputTime) {
   const usesAmPmFormat = props.timeFormat === "12";
   const defaultValue = `2010-01-01 ${props.value || ""}`;
   const [hour, setHour] = useState(() =>
-    DateTime.fromFormat(defaultValue, "yyyy-LL-dd HH:mm").toFormat(usesAmPmFormat ? "hh" : "HH")
+    DateTime.fromFormat(defaultValue, "yyyy-LL-dd HH:mm").toFormat(
+      usesAmPmFormat ? "hh" : "HH",
+    ),
   );
   const [minute, setMinute] = useState(() =>
-    DateTime.fromFormat(defaultValue, "yyyy-LL-dd HH:mm").toFormat("mm")
+    DateTime.fromFormat(defaultValue, "yyyy-LL-dd HH:mm").toFormat("mm"),
   );
   const [format, setFormat] = useState(() =>
-    DateTime.fromFormat(defaultValue, "yyyy-LL-dd HH:mm").toFormat("a").toLowerCase()
+    DateTime.fromFormat(defaultValue, "yyyy-LL-dd HH:mm")
+      .toFormat("a")
+      .toLowerCase(),
   );
 
   function getOptionsOfSelect(amount: number) {
     const hideZero = amount === 12;
     return new Array(amount).fill("").map((x, i) => {
-      const value = hideZero ? String(i + 1).padStart(2, "0") : String(i).padStart(2, "0");
+      const value = hideZero
+        ? String(i + 1).padStart(2, "0")
+        : String(i).padStart(2, "0");
       return { label: value, value };
     });
   }

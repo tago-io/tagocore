@@ -1,16 +1,22 @@
+import type { IPlugin } from "@tago-io/tcore-sdk/types";
 import { flattenConfigFields } from "@tago-io/tcore-shared";
 import { useCallback, useEffect, useState } from "react";
-import type { IPlugin } from "@tago-io/tcore-sdk/types";
-import { EButton, EIcon, EmptyMessage, FormGroup, Loading } from "../../../index.ts";
+import { promiseDelay } from "../../../Helpers/promiseDelay.ts";
+import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
 import editPluginSettings from "../../../Requests/editPluginSettings.ts";
 import editSettings from "../../../Requests/editSettings.ts";
-import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
+import getPluginInfo from "../../../Requests/getPluginInfo.ts";
+import {
+  EButton,
+  EIcon,
+  EmptyMessage,
+  FormGroup,
+  Loading,
+} from "../../../index.ts";
 import PluginConfigFields from "../../Plugins/Common/PluginConfigFields/PluginConfigFields.tsx";
 import Status from "../../Plugins/Common/Status/Status.tsx";
 import SetupForm from "../SetupForm/SetupForm.tsx";
-import { promiseDelay } from "../../../Helpers/promiseDelay.ts";
-import getPluginInfo from "../../../Requests/getPluginInfo.ts";
-import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
+import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
 
 /**
  */
@@ -27,16 +33,27 @@ interface IStepPluginConfigProps {
 /**
  */
 function StepPluginConfig(props: IStepPluginConfigProps) {
-  const { mustBeDatabasePlugin, pluginID, onBack, title, backButton, description } = props;
+  const {
+    mustBeDatabasePlugin,
+    pluginID,
+    onBack,
+    title,
+    backButton,
+    description,
+  } = props;
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [plugin, setPlugin] = useState<IPlugin | null>(() => props.plugin || null);
+  const [plugin, setPlugin] = useState<IPlugin | null>(
+    () => props.plugin || null,
+  );
   const [errors, setErrors] = useState<any>({});
   const [values, setValues] = useState<any>({});
 
-  const mod = plugin?.modules?.find?.((x) => x.type === "database") || plugin?.modules?.[0];
+  const mod =
+    plugin?.modules?.find?.((x) => x.type === "database") ||
+    plugin?.modules?.[0];
   const load = loading || !plugin;
 
   /**
@@ -160,13 +177,14 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pluginID]);
 
-  const hasDatabaseModule =
-    plugin?.modules?.some((x) => x.type === "database");
+  const hasDatabaseModule = plugin?.modules?.some((x) => x.type === "database");
 
   return (
     <SetupForm
       title={title ?? "Plugin Configuration"}
-      description={description ?? "Adjust the settings of your main Database Plugin"}
+      description={
+        description ?? "Adjust the settings of your main Database Plugin"
+      }
       loading={load}
       onRenderAfterFooter={renderSuccessMessage}
       buttons={[
@@ -175,7 +193,8 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
           : { label: "Back", disabled: load, onClick: onBack },
         {
           label: "Save",
-          disabled: load || (mustBeDatabasePlugin && plugin && !hasDatabaseModule),
+          disabled:
+            load || (mustBeDatabasePlugin && plugin && !hasDatabaseModule),
           onClick: save,
           type: EButton.primary,
         },

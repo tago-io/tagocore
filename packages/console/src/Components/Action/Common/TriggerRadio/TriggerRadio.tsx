@@ -1,9 +1,9 @@
-import { useTheme } from "styled-components";
 import type { IPluginModuleList } from "@tago-io/tcore-sdk/types";
+import { useTheme } from "styled-components";
+import useApiRequest from "../../../../Helpers/useApiRequest.ts";
+import Icon from "../../../Icon/Icon.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import IconRadio from "../../../IconRadio/IconRadio.tsx";
-import Icon from "../../../Icon/Icon.tsx";
-import useApiRequest from "../../../../Helpers/useApiRequest.ts";
 
 /**
  * Props.
@@ -24,7 +24,9 @@ interface ITriggerRadioProps {
  * This shows the default list and all the plugin options too.
  */
 function TriggerRadio(props: ITriggerRadioProps) {
-  const { data } = useApiRequest<IPluginModuleList>("/module?type=action-trigger");
+  const { data } = useApiRequest<IPluginModuleList>(
+    "/module?type=action-trigger",
+  );
   const { value, onChange } = props;
   const theme = useTheme();
 
@@ -35,7 +37,8 @@ function TriggerRadio(props: ITriggerRadioProps) {
     const options = [
       {
         color: value === "condition" ? theme.bucket : theme.font,
-        description: "Triggered when the selected variables meet certain conditions.",
+        description:
+          "Triggered when the selected variables meet certain conditions.",
         icon: EIcon.database,
         label: "Variable",
         value: "condition",

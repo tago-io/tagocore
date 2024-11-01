@@ -13,7 +13,9 @@ function MinimumScheduleMessage(props: any) {
 
   return (
     <FormGroup>
-      <div style={containerStyle}>Note: The action can take up to 1 minute to be executed.</div>
+      <div style={containerStyle}>
+        Note: The action can take up to 1 minute to be executed.
+      </div>
     </FormGroup>
   );
 }

@@ -10,16 +10,8 @@
     "node": ">=20.0.0"
   },
   "type": "module",
-  "workspaces": [
-    "packages/*",
-    "plugins/*"
-  ],
-  "keywords": [
-    "platform",
-    "iot",
-    "tagoio",
-    "tcore"
-  ],
+  "workspaces": ["packages/*", "plugins/*"],
+  "keywords": ["platform", "iot", "tagoio", "tcore"],
   "bugs": {
     "url": "https://github.com/tago-io/tcore/issues"
   },

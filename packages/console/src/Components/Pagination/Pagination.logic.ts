@@ -29,7 +29,7 @@ const getPageAmount = (paginationWidth: number): number => {
   if (pageAmount === MAX_PAGES || pageAmount === MIN_PAGES) {
     return pageAmount;
   }
-    return MID_PAGES;
+  return MID_PAGES;
 };
 
 /**
@@ -43,17 +43,22 @@ const getPageAmount = (paginationWidth: number): number => {
 const getPageList = (
   amountOfPages: number,
   paginationWidth: number,
-  page: number
+  page: number,
 ): Array<"..." | number> => {
   // we need to round them out because floating numbers can break the Array() call:
   let amountOfPagesRounded = Math.round(amountOfPages) || 1;
 
-  if (Number.isNaN(amountOfPagesRounded) || amountOfPagesRounded === Number.POSITIVE_INFINITY) {
+  if (
+    Number.isNaN(amountOfPagesRounded) ||
+    amountOfPagesRounded === Number.POSITIVE_INFINITY
+  ) {
     // extreme cases we will use at least one page
     amountOfPagesRounded = 1;
   }
 
-  const pageNumbers = Array.from(Array(amountOfPagesRounded).keys()).map((pageIdx) => pageIdx + 1);
+  const pageNumbers = Array.from(Array(amountOfPagesRounded).keys()).map(
+    (pageIdx) => pageIdx + 1,
+  );
 
   const maxPages = getPageAmount(paginationWidth);
 
@@ -71,18 +76,24 @@ const getPageList = (
 
     if (pageInLowerBound) {
       return [...pageNumbers.slice(0, lowerBound), "...", amountOfPagesRounded];
-    }if (pageInUpperBound) {
-      return [1, "...", ...pageNumbers.slice(upperBound - 1, amountOfPagesRounded)];
-    }if (maxPages === MIN_PAGES) {
-      return ["...", page, "..."];
     }
+    if (pageInUpperBound) {
       return [
         1,
         "...",
-        ...pageNumbers.slice(page - (1 + siblings), page + siblings),
-        "...",
-        amountOfPagesRounded,
+        ...pageNumbers.slice(upperBound - 1, amountOfPagesRounded),
       ];
+    }
+    if (maxPages === MIN_PAGES) {
+      return ["...", page, "..."];
+    }
+    return [
+      1,
+      "...",
+      ...pageNumbers.slice(page - (1 + siblings), page + siblings),
+      "...",
+      amountOfPagesRounded,
+    ];
   }
 
   return pageNumbers;

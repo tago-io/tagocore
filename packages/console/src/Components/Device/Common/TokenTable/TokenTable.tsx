@@ -1,5 +1,5 @@
 import type { IDevice, IDeviceToken } from "@tago-io/tcore-sdk/types";
-import { useCallback, useEffect, useState, memo } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import copyToClipboard from "../../../../Helpers/copyToClipboard.ts";
 import Button from "../../../Button/Button.tsx";
 import { EButton } from "../../../Button/Button.types";
@@ -70,7 +70,11 @@ function TokenTable(props: ITokenTableProps) {
   const renderButtonsLabel = () => {
     return (
       <FormGroup label={<>&nbsp;</>}>
-        <Button disabled={loading} onClick={generateToken} type={EButton.primary}>
+        <Button
+          disabled={loading}
+          onClick={generateToken}
+          type={EButton.primary}
+        >
           Generate
         </Button>
       </FormGroup>

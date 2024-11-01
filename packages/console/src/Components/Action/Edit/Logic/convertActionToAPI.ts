@@ -3,9 +3,9 @@ import normalizeTags from "../../../../Helpers/normalizeTags.ts";
 import {
   type IConditionData,
   type IScheduleData,
+  zFrontActionPost,
   zFrontActionScript,
   zFrontActionTagoIO,
-  zFrontActionPost,
 } from "../../Action.interface";
 
 /**
@@ -17,7 +17,7 @@ function convertActionToAPI(
   action: any,
   scheduleData: IScheduleData,
   conditionData: IConditionData,
-  pluginTriggerData: any
+  pluginTriggerData: any,
 ): IAction {
   const result: Partial<IAction> = {
     active: data.active,

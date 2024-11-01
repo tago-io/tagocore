@@ -54,7 +54,10 @@ function CopyButton(props: ICopyButtonProps) {
   return (
     <Tooltip text={tooltip || "Copy"}>
       <Button {...props} type={EButton.icon} onClick={click}>
-        <Icon size={iconSize || "15px"} icon={clicked ? EIcon.check : EIcon.copy} />
+        <Icon
+          size={iconSize || "15px"}
+          icon={clicked ? EIcon.check : EIcon.copy}
+        />
       </Button>
     </Tooltip>
   );

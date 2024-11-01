@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Accordion, EIcon, Switch } from "../../../../index.ts";
-import VariableCondition from "../../../VariableCondition/VariableCondition.tsx";
 import TooltipText from "../../../TooltipText/TooltipText.tsx";
+import VariableCondition from "../../../VariableCondition/VariableCondition.tsx";
 import type { IConditionData } from "../../Action.interface";
 import DeviceRadio from "./DeviceRadio/DeviceRadio.tsx";
 

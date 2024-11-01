@@ -1,4 +1,9 @@
-import { type KeyboardEvent, type MouseEvent, useCallback, useState } from "react";
+import {
+  type KeyboardEvent,
+  type MouseEvent,
+  useCallback,
+  useState,
+} from "react";
 import { z } from "zod";
 import { EIcon } from "../../../../index.ts";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
@@ -38,7 +43,7 @@ function ModalDownloadFromURL(props: IModalMasterPasswordProps) {
         onConfirm(value);
       }
     },
-    [value, onConfirm, valid]
+    [value, onConfirm, valid],
   );
 
   /**
@@ -50,7 +55,7 @@ function ModalDownloadFromURL(props: IModalMasterPasswordProps) {
         confirm();
       }
     },
-    [confirm]
+    [confirm],
   );
 
   return (

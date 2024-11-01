@@ -33,7 +33,7 @@ function PayloadParser(props: IPayloadParserProps) {
     (filePath: string) => {
       onChange("payload_parser", filePath);
     },
-    [onChange]
+    [onChange],
   );
 
   return (
@@ -44,8 +44,8 @@ function PayloadParser(props: IPayloadParserProps) {
       </legend>
 
       <Style.Description>
-        Payload Parser is a code which will run when your device makes a POST request. You can post
-        process your data by adding a javascript file.
+        Payload Parser is a code which will run when your device makes a POST
+        request. You can post process your data by adding a javascript file.
       </Style.Description>
 
       <FormGroup>

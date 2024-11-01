@@ -1,12 +1,16 @@
+import {
+  type ISettings,
+  type ISettingsMetadata,
+  zSettings,
+} from "@tago-io/tcore-sdk/types";
+import cloneDeep from "lodash.clonedeep";
 import { useCallback, useRef, useState } from "react";
 import { useTheme } from "styled-components";
-import { type ISettings, type ISettingsMetadata, zSettings } from "@tago-io/tcore-sdk/types";
-import cloneDeep from "lodash.clonedeep";
+import editSettings from "../../../Requests/editSettings.ts";
+import buildZodError from "../../../Validation/buildZodError.ts";
 import EditPage from "../../EditPage/EditPage.tsx";
 import { EIcon } from "../../Icon/Icon.types";
-import buildZodError from "../../../Validation/buildZodError.ts";
 import ModalChanges from "../Common/ModalChanges/ModalChanges.tsx";
-import editSettings from "../../../Requests/editSettings.ts";
 import GeneralInformationTab from "./GeneralInformationTab/GeneralInformationTab.tsx";
 
 /**
@@ -91,7 +95,7 @@ function Settings() {
     (field: keyof ISettings, value) => {
       setData({ ...data, [field]: value });
     },
-    [data]
+    [data],
   );
 
   /**

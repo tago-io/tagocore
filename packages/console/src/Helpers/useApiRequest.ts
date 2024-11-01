@@ -33,7 +33,7 @@ const fetcher = async (url: string, options?: IApiRequestOptions) => {
  */
 function useApiRequest<T>(
   url: string,
-  options?: IApiRequestOptions
+  options?: IApiRequestOptions,
 ): {
   data: T;
   error?: AxiosError;
@@ -49,7 +49,7 @@ function useApiRequest<T>(
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       shouldRetryOnError: false,
-    }
+    },
   );
 
   if ((data as any)?.result !== undefined) {

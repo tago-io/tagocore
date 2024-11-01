@@ -11,7 +11,7 @@ import store from "../System/Store.ts";
  */
 async function createDeviceToken(
   deviceID: TGenericID,
-  data: Omit<IDeviceTokenCreate, "token" | "created_at">
+  data: Omit<IDeviceTokenCreate, "token" | "created_at">,
 ): Promise<IDeviceTokenCreateResponse> {
   const account = new Account({ token: store.token });
   const result = await account.devices.tokenCreate(deviceID, data as TokenData);

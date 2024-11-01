@@ -22,7 +22,11 @@ function EnvVarsTab(props: IEnvVarsTabProps) {
   /**
    * Called when a field gets modified.
    */
-  const onChangeField = (field: keyof IAnalysisVariable, value: string, rowIndex: number) => {
+  const onChangeField = (
+    field: keyof IAnalysisVariable,
+    value: string,
+    rowIndex: number,
+  ) => {
     if (!parameters[rowIndex]) {
       parameters[rowIndex] = { key: "", value: "" }; // create the item if it doesn't exist
     }

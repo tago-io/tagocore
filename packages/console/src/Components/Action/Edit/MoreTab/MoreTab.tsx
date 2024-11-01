@@ -1,6 +1,6 @@
+import type { IAction } from "@tago-io/tcore-sdk/types";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import type { IAction } from "@tago-io/tcore-sdk/types";
 import Button from "../../../Button/Button.tsx";
 import { EButton } from "../../../Button/Button.types";
 import Col from "../../../Col/Col.tsx";

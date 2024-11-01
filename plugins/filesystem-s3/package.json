@@ -11,7 +11,11 @@
     "full_description": "./README.md",
     "cluster": true,
     "types": ["filesystem"],
-    "permissions": []
+    "permissions": [],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
   "dependencies": {
     "aws-sdk": "2.1691.0"

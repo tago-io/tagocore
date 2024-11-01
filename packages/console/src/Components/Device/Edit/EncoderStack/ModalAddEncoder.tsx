@@ -49,7 +49,7 @@ function ModalAddEncoder(props: IModalAddEncoder) {
       }
       setItems([...items]);
     },
-    [items]
+    [items],
   );
 
   /**
@@ -74,11 +74,16 @@ function ModalAddEncoder(props: IModalAddEncoder) {
         </Style.Item>
       );
     },
-    [toggle, items]
+    [toggle, items],
   );
 
   return (
-    <Modal onClose={onClose} onConfirm={confirm} width="500px" title="Add Encoder to Stack">
+    <Modal
+      onClose={onClose}
+      onConfirm={confirm}
+      width="500px"
+      title="Add Encoder to Stack"
+    >
       <Style.Container>{list.map(renderItem)}</Style.Container>
     </Modal>
   );

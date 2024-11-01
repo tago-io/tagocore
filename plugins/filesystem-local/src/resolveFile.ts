@@ -3,6 +3,6 @@
  */
 async function resolveFile(filePath: string) {
   return filePath;
-};
+}
 
 export { resolveFile };

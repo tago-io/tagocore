@@ -1,23 +1,23 @@
-import { memo, useEffect } from "react";
 import type {
-  IOSInfo,
-  INetworkInfo,
   IComputerUsage,
+  INetworkInfo,
+  IOSInfo,
   ISummary,
 } from "@tago-io/tcore-sdk/types";
+import { memo, useEffect } from "react";
 import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
-import TooltipText from "../TooltipText/TooltipText.tsx";
-import Tooltip from "../Tooltip/Tooltip.tsx";
+import useApiRequest from "../../Helpers/useApiRequest.ts";
 import Button from "../Button/Button.tsx";
 import Icon from "../Icon/Icon.tsx";
 import { EIcon } from "../Icon/Icon.types";
-import useApiRequest from "../../Helpers/useApiRequest.ts";
+import Tooltip from "../Tooltip/Tooltip.tsx";
+import TooltipText from "../TooltipText/TooltipText.tsx";
 import ComputerUsage from "./ComputerUsage/ComputerUsage.tsx";
 import * as Style from "./Home.style";
-import OperatingSystem from "./OperatingSystem/OperatingSystem.tsx";
-import Summary from "./Summary/Summary.tsx";
 import Network from "./Network/Network.tsx";
+import OperatingSystem from "./OperatingSystem/OperatingSystem.tsx";
 import { Statistics } from "./Statistics/Statistics.tsx";
+import Summary from "./Summary/Summary.tsx";
 
 /**
  * This is the home page.

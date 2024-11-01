@@ -1,19 +1,19 @@
-import { useEffect, useState, useCallback } from "react";
 import type { IPlugin } from "@tago-io/tcore-sdk/types";
 import { observer } from "mobx-react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import SetupBackground from "../SetupBackground/SetupBackground.tsx";
-import setDocumentTitle from "../../../Helpers/setDocumentTitle.ts";
-import SetupForm from "../SetupForm/SetupForm.tsx";
-import { Button, EButton, EIcon, Icon } from "../../../index.ts";
-import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalMasterPassword.tsx";
-import ModalFactoryReset from "../../Plugins/Common/ModalFactoryReset/ModalFactoryReset.tsx";
-import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
-import StepPluginConfig from "../StepPluginConfig/StepPluginConfig.tsx";
-import getPluginDatabaseInfo from "../../../Requests/getPluginDatabaseInfo.ts";
 import { promiseDelay } from "../../../Helpers/promiseDelay.ts";
+import setDocumentTitle from "../../../Helpers/setDocumentTitle.ts";
+import getPluginDatabaseInfo from "../../../Requests/getPluginDatabaseInfo.ts";
 import reloadPlugin from "../../../Requests/reloadPlugin.ts";
 import store from "../../../System/Store.ts";
+import { Button, EButton, EIcon, Icon } from "../../../index.ts";
+import ModalFactoryReset from "../../Plugins/Common/ModalFactoryReset/ModalFactoryReset.tsx";
+import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalMasterPassword.tsx";
+import SetupBackground from "../SetupBackground/SetupBackground.tsx";
+import SetupForm from "../SetupForm/SetupForm.tsx";
+import StepPluginConfig from "../StepPluginConfig/StepPluginConfig.tsx";
+import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
 import * as Style from "./StepDatabaseError.style";
 
 /**

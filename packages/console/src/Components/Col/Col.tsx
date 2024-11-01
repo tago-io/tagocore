@@ -5,7 +5,20 @@ import * as Style from "./Col.style";
  * Props.
  */
 interface IColProps {
-  size?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12" | "auto";
+  size?:
+    | "1"
+    | "2"
+    | "3"
+    | "4"
+    | "5"
+    | "6"
+    | "7"
+    | "8"
+    | "9"
+    | "10"
+    | "11"
+    | "12"
+    | "auto";
   style?: CSSProperties;
   children?: ReactNode;
 }

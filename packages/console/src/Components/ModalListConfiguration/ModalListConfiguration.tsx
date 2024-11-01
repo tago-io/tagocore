@@ -1,7 +1,10 @@
 import type { TGenericID } from "@tago-io/tcore-sdk/types";
 import { useEffect, useState } from "react";
+import {
+  getLocalStorageAsJSON,
+  setLocalStorageAsJSON,
+} from "../../Helpers/localStorage.ts";
 import { Switch } from "../../index.ts";
-import { getLocalStorageAsJSON, setLocalStorageAsJSON } from "../../Helpers/localStorage.ts";
 import Modal from "../Modal/Modal.tsx";
 import Select from "../Select/Select.tsx";
 import * as Style from "./ModalListConfiguration.style";
@@ -39,7 +42,10 @@ function ModalListConfiguration(props: IModalListConfigurationProps) {
     const enabled = enabledColumns[id] ?? true;
     return (
       <div className="item">
-        <Switch value={enabled} onChange={(e) => setEnabledColumns({ ...enabledColumns, [id]: e })}>
+        <Switch
+          value={enabled}
+          onChange={(e) => setEnabledColumns({ ...enabledColumns, [id]: e })}
+        >
           {text}
         </Switch>
       </div>
@@ -82,9 +88,18 @@ function ModalListConfiguration(props: IModalListConfigurationProps) {
             onChange={(e) => setDateFormat(e.target.value)}
             options={[
               { label: "Relative", value: "relative" },
-              { label: "MM-DD-YYYY hh:mm:ss.SSS a", value: "yyyy-MM-dd hh:mm:ss.SSS a" },
-              { label: "DD/MM/YYYY HH:mm:ss.SSS", value: "dd/MM/yyyy HH:mm:ss.SSS" },
-              { label: "YYYY-MM-DD HH:mm:ss.SSS", value: "yyyy-MM-dd HH:mm:ss.SSS" },
+              {
+                label: "MM-DD-YYYY hh:mm:ss.SSS a",
+                value: "yyyy-MM-dd hh:mm:ss.SSS a",
+              },
+              {
+                label: "DD/MM/YYYY HH:mm:ss.SSS",
+                value: "dd/MM/yyyy HH:mm:ss.SSS",
+              },
+              {
+                label: "YYYY-MM-DD HH:mm:ss.SSS",
+                value: "yyyy-MM-dd HH:mm:ss.SSS",
+              },
             ]}
           />
         </section>

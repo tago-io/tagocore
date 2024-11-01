@@ -5,7 +5,11 @@ import store from "../System/Store.ts";
 /**
  */
 async function enablePlugin(id: TGenericID) {
-  await axios.post(`/plugin/${id}/enable`, {}, { headers: { token: store.token } });
+  await axios.post(
+    `/plugin/${id}/enable`,
+    {},
+    { headers: { token: store.token } },
+  );
 }
 
 export default enablePlugin;

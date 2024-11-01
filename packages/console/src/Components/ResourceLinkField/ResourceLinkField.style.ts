@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import * as OptionsPickerStyle from "../OptionsPicker/OptionsPicker.style";
 import * as ButtonStyle from "../Button/Button.style";
 import * as InputStyle from "../Input/Input.style";
+import * as OptionsPickerStyle from "../OptionsPicker/OptionsPicker.style";
 
 /**
  * Main style container.

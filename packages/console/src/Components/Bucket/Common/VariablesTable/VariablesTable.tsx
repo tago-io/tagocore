@@ -1,22 +1,22 @@
+import type { IDevice, IDeviceData } from "@tago-io/tcore-sdk/types";
 import { useCallback, useEffect, useState } from "react";
-import type { IDeviceData, IDevice } from "@tago-io/tcore-sdk/types";
-import RelativeDate from "../../../RelativeDate/RelativeDate.tsx";
-import CopyButton from "../../../CopyButton/CopyButton.tsx";
-import TooltipText from "../../../TooltipText/TooltipText.tsx";
-import Checkbox from "../../../Checkbox/Checkbox.tsx";
-import { EIcon } from "../../../Icon/Icon.types";
-import type { IFilter } from "../../../PaginatedTable/PaginatedTable.types";
-import PaginatedTable from "../../../PaginatedTable/PaginatedTable.tsx";
-import getDeviceData from "../../../../Requests/getDeviceData.ts";
-import ModalListConfiguration from "../../../ModalListConfiguration/ModalListConfiguration.tsx";
+import copyToClipboard from "../../../../Helpers/copyToClipboard.ts";
 import getDateTimeObject from "../../../../Helpers/getDateTimeObject.ts";
 import { getLocalStorageAsJSON } from "../../../../Helpers/localStorage.ts";
+import getDeviceData from "../../../../Requests/getDeviceData.ts";
 import { Icon } from "../../../../index.ts";
-import copyToClipboard from "../../../../Helpers/copyToClipboard.ts";
-import ModalEditValue from "../../Edit/ModalEditValue/ModalEditValue.tsx";
+import Checkbox from "../../../Checkbox/Checkbox.tsx";
+import CopyButton from "../../../CopyButton/CopyButton.tsx";
+import { EIcon } from "../../../Icon/Icon.types";
+import ModalListConfiguration from "../../../ModalListConfiguration/ModalListConfiguration.tsx";
+import PaginatedTable from "../../../PaginatedTable/PaginatedTable.tsx";
+import type { IFilter } from "../../../PaginatedTable/PaginatedTable.types";
+import RelativeDate from "../../../RelativeDate/RelativeDate.tsx";
+import TooltipText from "../../../TooltipText/TooltipText.tsx";
 import ModalEditGroup from "../../Edit/ModalEditGroup/ModalEditGroup.tsx";
-import ModalEditMetadata from "../../Edit/ModalEditMetadata/ModalEditMetadata.tsx";
 import ModalEditLocation from "../../Edit/ModalEditLocation/ModalEditLocation.tsx";
+import ModalEditMetadata from "../../Edit/ModalEditMetadata/ModalEditMetadata.tsx";
+import ModalEditValue from "../../Edit/ModalEditValue/ModalEditValue.tsx";
 import * as Style from "./VariablesTable.style";
 
 /**

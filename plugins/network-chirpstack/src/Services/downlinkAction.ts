@@ -5,7 +5,7 @@ import downlinkService, { type IDownlinkParams } from "./downlink.ts";
 
 class ResMockup {
   _status = 200;
-  json(body: {}) {
+  json(body: any) {
     if (this._status >= 400) {
       console.error(body);
     }
@@ -32,18 +32,29 @@ async function downlinkAction(
   pluginConfig: IConfigParam,
   actionID: string,
   actionSettings: IDownlinkParams,
-  dataList: IDeviceData
+  dataList: IDeviceData,
 ) {
   const action = await core.getActionInfo(actionID);
 
   if (Array.isArray(dataList) && dataList[0].variable) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const variables = action.trigger.conditions.map((condition: any) => condition.variable);
+    const variables = action.trigger.conditions.map(
+      (condition: any) => condition.variable,
+    );
     const data = dataList.find((item) => variables.includes(item.variable));
 
-    actionSettings.payload = actionSettings.payload.replace(/\$VALUE\$/g, data.value);
-    actionSettings.payload = actionSettings.payload.replace(/\$VARIABLE\$/g, data.variable);
-    actionSettings.payload = actionSettings.payload.replace(/\$SERIE\$/g, data.serie);
+    actionSettings.payload = actionSettings.payload.replace(
+      /\$VALUE\$/g,
+      data.value,
+    );
+    actionSettings.payload = actionSettings.payload.replace(
+      /\$VARIABLE\$/g,
+      data.variable,
+    );
+    actionSettings.payload = actionSettings.payload.replace(
+      /\$SERIE\$/g,
+      data.serie,
+    );
 
     if (actionSettings.device.toLowerCase() === "$device_id$") {
       const deviceInfo = await core.getDeviceInfo(data.origin);

@@ -1,15 +1,15 @@
-import { useCallback, useMemo, useState } from "react";
+import type { ISettings } from "@tago-io/tcore-sdk/types";
 import { getSystemName } from "@tago-io/tcore-shared";
 import axios from "axios";
-import type { ISettings } from "@tago-io/tcore-sdk/types";
+import { useCallback, useMemo, useState } from "react";
+import { getLocalStorage } from "../../../Helpers/localStorage.ts";
+import useApiRequest from "../../../Helpers/useApiRequest.ts";
+import store from "../../../System/Store.ts";
 import Button from "../../Button/Button.tsx";
 import Icon from "../../Icon/Icon.tsx";
 import { EIcon } from "../../Icon/Icon.types";
-import Tooltip from "../../Tooltip/Tooltip.tsx";
-import useApiRequest from "../../../Helpers/useApiRequest.ts";
-import store from "../../../System/Store.ts";
-import { getLocalStorage } from "../../../Helpers/localStorage.ts";
 import ModalFileSelect from "../../ModalFileSelect/ModalFileSelect.tsx";
+import Tooltip from "../../Tooltip/Tooltip.tsx";
 import * as Style from "./InstalLocalPluginButton.style";
 /**
  * This component handles the installation of a plugin.
@@ -19,7 +19,10 @@ function InstallLocalPluginButton() {
   const { data: settings } = useApiRequest<ISettings>("/mainsettings");
   const token = getLocalStorage("token", "") as string;
   const masterPassword = store.masterPassword;
-  const headers = useMemo(() => ({ token, masterPassword }), [token, masterPassword]);
+  const headers = useMemo(
+    () => ({ token, masterPassword }),
+    [token, masterPassword],
+  );
 
   /**
    * Opens the folder selector modal.
@@ -42,7 +45,7 @@ function InstallLocalPluginButton() {
     (folder) => {
       axios.post("/plugin/addexternalplugin", { folder }, { headers });
     },
-    [headers]
+    [headers],
   );
 
   return (

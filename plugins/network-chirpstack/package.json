@@ -10,19 +10,13 @@
     "full_description": "./README.md",
     "icon": "./assets/icon.png",
     "cluster": true,
-    "types": [
-      "service",
-      "encoder",
-      "action-type"
-    ],
-    "permissions": [
-      "device",
-      "action",
-      "device-data"
-    ]
+    "types": ["service", "encoder", "action-type"],
+    "permissions": ["device", "action", "device-data"],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
-  "dependencies": {
-  },
-  "devDependencies": {
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

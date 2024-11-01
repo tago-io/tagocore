@@ -34,7 +34,8 @@ function ModalChanges(props: IModalChangesProps) {
       onConfirm={onConfirm}
       title="Confirm changes"
     >
-      Some changes that were made will only take effect when the application restarts.
+      Some changes that were made will only take effect when the application
+      restarts.
     </Modal>
   );
 }

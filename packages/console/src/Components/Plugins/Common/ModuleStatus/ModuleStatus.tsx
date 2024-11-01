@@ -82,10 +82,16 @@ function ModuleStatus(props: IModuleStatusProps) {
         {data.allow_disable && (
           <div className="buttons-container">
             <div className="buttons-inner">
-              <Button onClick={start} disabled={loading || started || !pluginRunning}>
+              <Button
+                onClick={start}
+                disabled={loading || started || !pluginRunning}
+              >
                 Start
               </Button>
-              <Button onClick={stop} disabled={loading || !started || !pluginRunning}>
+              <Button
+                onClick={stop}
+                disabled={loading || !started || !pluginRunning}
+              >
                 Stop
               </Button>
             </div>
@@ -95,7 +101,10 @@ function ModuleStatus(props: IModuleStatusProps) {
 
       {error && !loading && pluginRunning && (
         <div className="error">
-          <Icon color={theme.buttonDanger} icon={EIcon["exclamation-triangle"]} />
+          <Icon
+            color={theme.buttonDanger}
+            icon={EIcon["exclamation-triangle"]}
+          />
           <span>{error}</span>
         </div>
       )}

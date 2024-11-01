@@ -1,5 +1,9 @@
 import { createRef, useState } from "react";
-import { render, renderWithEvents, screen } from "../../../utils/test-utils";
+import {
+  render,
+  renderWithEvents,
+  screen,
+} from "../../../utils/test-utils.tsx";
 import Input, { type IInput } from "./Input.tsx";
 
 function StatefulInput(props: IInput) {

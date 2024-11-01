@@ -10,7 +10,7 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t server-${{ github.sha }} .
+        docker build --build-arg BUILD_PLATFORM="linux/amd64" -t server-${{ github.sha }} .
         docker save -o server-${{ github.sha }}.tar server-${{ github.sha }}
 
     - name: Cache Docker Image
@@ -37,7 +37,7 @@ jobs:
       run: docker load -i server-${{ github.sha }}.tar
 
     - name: Run Linter
-      run: docker run server-${{ github.sha }} linter
+      run: docker run server-${{ github.sha }} just linter
 
   tests:
     runs-on: ubuntu-latest
@@ -55,4 +55,4 @@ jobs:
       run: docker load -i server-${{ github.sha }}.tar
 
     - name: Run Tests
-      run: docker run server-${{ github.sha }} test
+      run: docker run server-${{ github.sha }} just test

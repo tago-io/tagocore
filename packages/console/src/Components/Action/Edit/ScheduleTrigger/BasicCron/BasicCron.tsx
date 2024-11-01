@@ -1,14 +1,14 @@
-import { useCallback } from "react";
 import { DateTime } from "luxon";
+import { useCallback } from "react";
 import { EIcon, FormGroup, Input } from "../../../../../index.ts";
-import Select from "../../../../Select/Select.tsx";
 import FlexRow from "../../../../FlexRow/FlexRow.tsx";
 import InputTime from "../../../../InputTime/InputTime.tsx";
-import * as Style from "../RecurrenceOptions.style";
-import WeekdayButton from "../WeekdayButton/WeekdayButton.tsx";
+import Select from "../../../../Select/Select.tsx";
+import type { IScheduleData } from "../../../Action.interface";
 import { getCronFromScheduleData } from "../../Logic/getCronFromScheduleData.ts";
 import CronTooComplexMessage from "../MessageCronTooComplex/MessageCronTooComplex.tsx";
-import type { IScheduleData } from "../../../Action.interface";
+import * as Style from "../RecurrenceOptions.style";
+import WeekdayButton from "../WeekdayButton/WeekdayButton.tsx";
 
 /**
  * Props.
@@ -39,7 +39,7 @@ function BasicCron(props: IBasicCron) {
       scheduleData.cron = getCronFromScheduleData(scheduleData);
       onChangeScheduleData({ ...scheduleData });
     },
-    [scheduleData, onChangeScheduleData]
+    [scheduleData, onChangeScheduleData],
   );
 
   /**
@@ -62,9 +62,12 @@ function BasicCron(props: IBasicCron) {
   };
 
   const showWeekDays =
-    (repeat_type === "day" && Number(repeat_unit) <= 1) || repeat_type === "week";
+    (repeat_type === "day" && Number(repeat_unit) <= 1) ||
+    repeat_type === "week";
 
-  const hastAtLeastOneWeekday = Object.keys(repeatWeekdays || {}).find((x) => repeatWeekdays[x]);
+  const hastAtLeastOneWeekday = Object.keys(repeatWeekdays || {}).find(
+    (x) => repeatWeekdays[x],
+  );
   if (showWeekDays && !hastAtLeastOneWeekday) {
     // we are showing the weekdays but none are selected. In this case we need
     // to select by default the current one we are in.
@@ -84,7 +87,9 @@ function BasicCron(props: IBasicCron) {
             <Input
               value={repeat_unit || ""}
               error={errors?.repeat_unit}
-              onChange={(e) => onChange("repeat_unit", Number(e.target.value) || 0)}
+              onChange={(e) =>
+                onChange("repeat_unit", Number(e.target.value) || 0)
+              }
               style={{
                 width: "50%",
                 marginRight: "-1px",
@@ -103,9 +108,18 @@ function BasicCron(props: IBasicCron) {
                 borderBottomLeftRadius: 0,
               }}
               options={[
-                { value: "day", label: `Day${Number(repeat_unit) === 1 ? "" : "s"}` },
-                { value: "week", label: `Week${Number(repeat_unit) === 1 ? "" : "s"}` },
-                { value: "month", label: `Month${Number(repeat_unit) === 1 ? "" : "s"}` },
+                {
+                  value: "day",
+                  label: `Day${Number(repeat_unit) === 1 ? "" : "s"}`,
+                },
+                {
+                  value: "week",
+                  label: `Week${Number(repeat_unit) === 1 ? "" : "s"}`,
+                },
+                {
+                  value: "month",
+                  label: `Month${Number(repeat_unit) === 1 ? "" : "s"}`,
+                },
               ]}
             />
           </FlexRow>
@@ -161,7 +175,10 @@ function BasicCron(props: IBasicCron) {
         <FormGroup icon={EIcon.clock} label="Repeat at">
           <InputTime
             onChange={(e) => {
-              onChange("repeat_hour", DateTime.fromFormat(e, "hh:mm a").toFormat("HH:mm"));
+              onChange(
+                "repeat_hour",
+                DateTime.fromFormat(e, "hh:mm a").toFormat("HH:mm"),
+              );
             }}
             value={repeat_hour || ""}
             timeFormat="12"

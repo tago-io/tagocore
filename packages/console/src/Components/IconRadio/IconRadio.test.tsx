@@ -1,5 +1,10 @@
 import { within } from "@testing-library/react";
-import { render, renderWithEvents, screen } from "../../../utils/test-utils";
+import { vi } from "vitest";
+import {
+  render,
+  renderWithEvents,
+  screen,
+} from "../../../utils/test-utils.tsx";
 import { EIcon } from "../Icon/Icon.types";
 import IconRadio from "./IconRadio.tsx";
 

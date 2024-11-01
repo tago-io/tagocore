@@ -10,7 +10,7 @@ async function getDeviceData(
   page: number,
   amount: number,
   filter: any,
-  endDate: any
+  endDate: any,
 ): Promise<IDeviceData[]> {
   const params: any = {
     qty: amount,

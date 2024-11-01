@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Icon, EIcon } from "../../index.ts";
+import { EIcon, Icon } from "../../index.ts";
 import * as Style from "./PluginImage.style";
 
 /**

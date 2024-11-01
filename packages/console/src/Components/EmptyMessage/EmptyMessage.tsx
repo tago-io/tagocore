@@ -1,4 +1,4 @@
-import { memo, type ReactNode } from "react";
+import { type ReactNode, memo } from "react";
 import Icon from "../Icon/Icon.tsx";
 import type { EIcon } from "../Icon/Icon.types";
 import * as Style from "./EmptyMessage.style";

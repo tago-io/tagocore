@@ -34,8 +34,8 @@ export const zPluginType = z.enum([
   "service",
   "sidebar-button",
   "sidebar-footer-button",
-  "sqlite",
   "system-override",
+  "default",
 ]);
 
 /**

@@ -7,7 +7,11 @@ import validateStringListField from "./validateStringListField.ts";
  * Helper to validate all the config fields of a plugin and
  * return all the errors of the required fields.
  */
-function validateConfigFields(configs: IPluginConfigField[], values: any, errors: any = {}) {
+function validateConfigFields(
+  configs: IPluginConfigField[],
+  values: any,
+  errors: any = {},
+) {
   let hasError = false;
 
   for (const field of configs) {

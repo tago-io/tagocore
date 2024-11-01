@@ -1,4 +1,4 @@
-import { type InputHTMLAttributes, memo, forwardRef } from "react";
+import { type InputHTMLAttributes, forwardRef, memo } from "react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.tsx";
 import * as Style from "./Input.style";
 

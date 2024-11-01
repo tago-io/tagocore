@@ -35,7 +35,10 @@ function SetupBackground() {
           </Style.Bucket2>
         </div>
 
-        <div className="col" style={{ marginLeft: "20px", marginTop: "-700px" }}>
+        <div
+          className="col"
+          style={{ marginLeft: "20px", marginTop: "-700px" }}
+        >
           <div className="row">
             <Style.Small>
               <Icon icon={EIcon.cube} size="100px" />

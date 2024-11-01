@@ -6,7 +6,11 @@ import store from "../System/Store.ts";
 /**
  * Retrieves a list of devices.
  */
-async function getDeviceList(page: number, amount: number, filter: any): Promise<IDevice[]> {
+async function getDeviceList(
+  page: number,
+  amount: number,
+  filter: any,
+): Promise<IDevice[]> {
   const query = {
     page,
     amount,

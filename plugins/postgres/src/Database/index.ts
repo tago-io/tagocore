@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { DatabaseModule } from "@tago-io/tcore-sdk";
 import knex, { type Knex } from "knex";
-import type { Config } from "../types.ts";
 import pg from "pg";
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
+import type { Config } from "../types.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const dirname__ = dirname(__filename);
@@ -21,7 +21,9 @@ const _INT8 = 1016;
 // ? Int8 in node is string, this workaround make it as Number.
 types.setTypeParser(types.builtins.INT8, int8Parser);
 // @ts-ignore
-types.setTypeParser(_INT8, (array) => arrayParser.create(array, int8Parser).parse());
+types.setTypeParser(_INT8, (array) =>
+  arrayParser.create(array, int8Parser).parse(),
+);
 
 export interface IDatabaseConnection {
   read: Knex;

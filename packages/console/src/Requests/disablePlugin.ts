@@ -5,7 +5,11 @@ import store from "../System/Store.ts";
 /**
  */
 async function disablePlugin(id: TGenericID) {
-  await axios.post(`/plugin/${id}/disable`, {}, { headers: { token: store.token } });
+  await axios.post(
+    `/plugin/${id}/disable`,
+    {},
+    { headers: { token: store.token } },
+  );
 }
 
 export default disablePlugin;

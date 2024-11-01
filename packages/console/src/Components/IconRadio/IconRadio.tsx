@@ -1,6 +1,6 @@
 import Icon from "../Icon/Icon.tsx";
-import type { IIconRadioOption } from "./IconRadio.types";
 import * as Style from "./IconRadio.style";
+import type { IIconRadioOption } from "./IconRadio.types";
 
 /**
  * Props.

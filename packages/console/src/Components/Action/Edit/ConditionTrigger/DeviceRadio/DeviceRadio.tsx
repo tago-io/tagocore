@@ -1,5 +1,5 @@
-import { useTheme } from "styled-components";
 import type { IDevice, ITag } from "@tago-io/tcore-sdk/types";
+import { useTheme } from "styled-components";
 import Col from "../../../../Col/Col.tsx";
 import DevicePicker from "../../../../Device/Common/DevicePicker/DevicePicker.tsx";
 import FlexRow from "../../../../FlexRow/FlexRow.tsx";
@@ -47,8 +47,15 @@ interface IDeviceRadioProps {
  * An input radio to select types of devices.
  */
 function DeviceRadio(props: IDeviceRadioProps) {
-  const { deviceType, errors, device, tag, onChangeDeviceType, onChangeTag, onChangeDevice } =
-    props;
+  const {
+    deviceType,
+    errors,
+    device,
+    tag,
+    onChangeDeviceType,
+    onChangeTag,
+    onChangeDevice,
+  } = props;
 
   const theme = useTheme();
 
@@ -86,7 +93,11 @@ function DeviceRadio(props: IDeviceRadioProps) {
             label="Select the device"
             tooltip="Only the variables of this device will be watched."
           >
-            <DevicePicker error={errors?.device} value={device} onChange={onChangeDevice} />
+            <DevicePicker
+              error={errors?.device}
+              value={device}
+              onChange={onChangeDevice}
+            />
           </FormGroup>
         ) : (
           <FormGroup
@@ -97,13 +108,17 @@ function DeviceRadio(props: IDeviceRadioProps) {
             <FlexRow>
               <Input
                 value={tag?.key || ""}
-                onChange={(e) => onChangeTag({ key: e.target.value, value: tag?.value || "" })}
+                onChange={(e) =>
+                  onChangeTag({ key: e.target.value, value: tag?.value || "" })
+                }
                 placeholder="Enter a tag key"
                 error={errors?.tag}
               />
               <Input
                 value={tag?.value || ""}
-                onChange={(e) => onChangeTag({ key: tag?.key || "", value: e.target.value })}
+                onChange={(e) =>
+                  onChangeTag({ key: tag?.key || "", value: e.target.value })
+                }
                 placeholder="Tag value"
                 error={errors?.tag}
               />

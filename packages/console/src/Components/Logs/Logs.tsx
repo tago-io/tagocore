@@ -1,18 +1,18 @@
 import type { ILog, IPluginLogChannel } from "@tago-io/tcore-sdk/types";
+import qs from "qs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "styled-components";
-import qs from "qs";
 import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
 import useApiRequest from "../../Helpers/useApiRequest.ts";
+import { getSocket } from "../../System/Socket.ts";
 import Console from "../Console/Console.tsx";
 import EmptyMessage from "../EmptyMessage/EmptyMessage.tsx";
 import FormGroup from "../FormGroup/FormGroup.tsx";
 import { EIcon } from "../Icon/Icon.types";
 import InnerNav from "../InnerNav/InnerNav.tsx";
-import Select, { type ISelectOption } from "../Select/Select.tsx";
 import Loading from "../Loading/Loading.tsx";
-import { getSocket } from "../../System/Socket.ts";
+import Select, { type ISelectOption } from "../Select/Select.tsx";
 import * as Style from "./Logs.style";
 
 /**

@@ -1,13 +1,13 @@
+import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { useMatch, useNavigate } from "react-router";
-import { observer } from "mobx-react";
 import useApiRequest from "../../../Helpers/useApiRequest.ts";
-import Loading from "../../Loading/Loading.tsx";
 import EmptyMessage from "../../EmptyMessage/EmptyMessage.tsx";
 import { EIcon } from "../../Icon/Icon.types";
+import Loading from "../../Loading/Loading.tsx";
 import Banner from "./Banner/Banner.tsx";
-import * as Style from "./PluginDetails.style";
 import DataTabs from "./DataTabs/DataTabs.tsx";
+import * as Style from "./PluginDetails.style";
 import Sidebar from "./Sidebar/Sidebar.tsx";
 
 /**
@@ -88,7 +88,6 @@ function PluginDetails() {
           categories={plugin.categories || []}
           classTypes={plugin.class_types || []}
           permissions={plugin.permissions || []}
-          platforms={plugin.platforms || []}
           publishDate={plugin.created_at}
           publisherName={plugin.publisher?.name}
           publisherDomain={plugin.publisher.domain}

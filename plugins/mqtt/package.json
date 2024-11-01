@@ -10,11 +10,14 @@
     "icon": "./assets/icon.png",
     "cluster": true,
     "types": ["service", "action-type", "action-trigger"],
-    "permissions": ["device", "action", "device-data"]
+    "permissions": ["device", "action", "device-data"],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
   },
   "dependencies": {
     "mqtt-connection": "4.1.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

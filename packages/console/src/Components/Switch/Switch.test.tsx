@@ -1,4 +1,8 @@
-import { render, renderWithEvents, screen } from "../../../utils/test-utils";
+import {
+  render,
+  renderWithEvents,
+  screen,
+} from "../../../utils/test-utils.tsx";
 import Switch from "./Switch.tsx";
 
 test("renders without crashing", () => {

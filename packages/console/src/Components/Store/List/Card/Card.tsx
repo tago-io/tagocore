@@ -40,7 +40,15 @@ interface ICardProps {
  * Card of the plugin list.
  */
 function Card(props: ICardProps) {
-  const { id, logoURL, name, description, version, publisherDomain, publisherName } = props;
+  const {
+    id,
+    logoURL,
+    name,
+    description,
+    version,
+    publisherDomain,
+    publisherName,
+  } = props;
 
   return (
     <Style.Container to={`/console/pluginstore/detail/${id}`}>

@@ -1,6 +1,6 @@
-import fs from "fs";
-import { fileURLToPath } from "node:url";
+import fs from "node:fs";
 import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const dirname_ = dirname(__filename);

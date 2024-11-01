@@ -1,27 +1,25 @@
-import { it, expect, vi, afterEach, describe } from "vitest";
 import os from "node:os";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("os", () => (
-  { default: {
+vi.mock("os", () => ({
+  default: {
     networkInterfaces: vi.fn(() => ({})),
     platform: vi.fn(() => ({})),
     hostname: vi.fn(() => ({})),
     version: vi.fn(() => ({})),
-  }
-  })
-);
+  },
+}));
 
 vi.mock("systeminformation", () => ({
-    system: vi.fn(() => ({})),
-    osInfo: vi.fn(() => ({})),
-    mem: vi.fn(() => ({})),
-    networkStats: vi.fn(() => ({})),
-    networkInterfaces: vi.fn(() => ({})),
-    get: vi.fn(() => ({})),
-    fsSize: vi.fn(() => ({})),
-    battery: vi.fn(() => ({})),
-  })
-);
+  system: vi.fn(() => ({})),
+  osInfo: vi.fn(() => ({})),
+  mem: vi.fn(() => ({})),
+  networkStats: vi.fn(() => ({})),
+  networkInterfaces: vi.fn(() => ({})),
+  get: vi.fn(() => ({})),
+  fsSize: vi.fn(() => ({})),
+  battery: vi.fn(() => ({})),
+}));
 
 import { getLocalIPs, getPlatformCode } from "./Hardware.ts";
 
