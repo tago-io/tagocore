@@ -24,13 +24,13 @@ RUN apt update && \
     tar -xzf just.tar.gz && \
     mv just /usr/local/bin/just && \
     chmod +x /usr/local/bin/just && \
-    rm -rf just.tar.gz
+    rm -rf just.tar.gz;
 
 # Install dependencies
-RUN npm install
+RUN just install;
 
 # Build the console
-RUN just build-console
+RUN just build-console;
 
 # Expose the necessary port
 EXPOSE 8888

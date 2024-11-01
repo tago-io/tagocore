@@ -9,6 +9,8 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Build Docker Image
+      env:
+        BUILD_PLATFORM="linux/amd64"
       run: |
         docker build -t server-${{ github.sha }} .
         docker save -o server-${{ github.sha }}.tar server-${{ github.sha }}
