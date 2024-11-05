@@ -113,6 +113,7 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
         moduleID: mod?.id,
         field: key,
         value: values[key],
+        setupDatabase: true,
       }));
 
       await editPluginSettings(plugin?.id || "", editValues);
