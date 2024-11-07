@@ -1,14 +1,23 @@
 import fs from "node:fs";
-import type { TDeviceType, TGenericID } from "@tago-io/tcore-sdk/types";
+import {
+  type TDeviceType,
+  type TGenericID,
+  generateResourceID,
+} from "@tago-io/tcore-sdk/types";
 import { parse } from "csv";
+import type { Knex } from "knex";
 import { getDeviceConnection } from "../../Helpers/DeviceDatabase.ts";
 
-async function _insertData(client: any, data: any[]) {
-  return new Promise((resolve, reject) => {
-    client.batchInsert("data", data, 1000).catch((error) => {
-      reject(error);
+async function _insertData(client: Knex, data: any[]) {
+  client
+    .batchInsert("data", data, 1000)
+    .then(() => {
+      return;
+    })
+    .catch((error) => {
+      console.log(error);
+      Promise.reject(error);
     });
-  });
 }
 
 /**
@@ -23,21 +32,23 @@ async function importDeviceData(
   return new Promise((resolve, reject) => {
     const data: any[] = [];
     fs.createReadStream(fileName)
-      .pipe(parse())
-      .on("data", async (row) => {
+      .pipe(parse({ columns: true, encoding: "utf8" }))
+      .on("data", (row) => {
+        row.id = generateResourceID();
         data.push(row);
         if (data.length === 1000) {
-          await _insertData(client, data);
+          _insertData(client, data);
           data.length = 0;
         }
       })
-      .on("end", async () => {
+      .on("end", () => {
         if (data.length > 0) {
-          await _insertData(client, data);
+          _insertData(client, data);
         }
         resolve("Data imported successfully");
       })
       .on("error", (error) => {
+        console.log(error);
         reject(error);
       });
   });

@@ -544,6 +544,7 @@ export const getDeviceDataByDevice = async (
     }
   }
 
+  removeNullValues(response);
   let items: any = await z.array(zDeviceData).parseAsync(response);
   items = await z.array(zDeviceData).parseAsync(items);
 
@@ -559,7 +560,8 @@ export const getDeviceData = async (
   query?: IDeviceDataQuery,
 ) => {
   const device = await getDeviceInfo(id);
-  return await getDeviceDataByDevice(device, query);
+  const data = await getDeviceDataByDevice(device, query);
+  return data;
 };
 
 /**
