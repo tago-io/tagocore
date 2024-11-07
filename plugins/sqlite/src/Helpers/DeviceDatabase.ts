@@ -47,7 +47,7 @@ export async function createDeviceConnection(
   const filename = await helpers.getFileURI(path.join("devices", `${id}.db`));
 
   const connection = knex({
-    client: "sqlite3",
+    client: "better-sqlite3",
     connection: { filename },
     useNullAsDefault: true,
   });

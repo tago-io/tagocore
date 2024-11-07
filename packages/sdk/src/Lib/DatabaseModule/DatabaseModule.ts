@@ -623,6 +623,28 @@ class DatabaseModule extends TCoreModule {
   public async getAccountAmount(): Promise<number> {
     throw new Error("Method not implemented");
   }
+
+  /**
+   * Export the Device data to a CSV file
+   */
+  public async exportDeviceData(
+    deviceID: TGenericID,
+    type: TDeviceType,
+    folder: string,
+  ): Promise<string> {
+    throw new Error("Method not implemented");
+  }
+
+  /**
+   * Import Device data from a CSV file
+   */
+  public async importDeviceData(
+    deviceID: TGenericID,
+    type: TDeviceType,
+    folder: string,
+  ): Promise<string> {
+    throw new Error("Method not implemented");
+  }
 }
 
 export default DatabaseModule;

@@ -38,6 +38,7 @@ import addDeviceData from "./Providers/DeviceData/addDeviceData.ts";
 import applyDeviceDataRetention from "./Providers/DeviceData/applyDeviceDataRetention.ts";
 import deleteDeviceData from "./Providers/DeviceData/deleteDeviceData.ts";
 import editDeviceData from "./Providers/DeviceData/editDeviceData.ts";
+import exportDeviceData from "./Providers/DeviceData/exportDeviceData.ts";
 import getDeviceDataAmount from "./Providers/DeviceData/getDeviceDataAmount.ts";
 import getDeviceDataAvg from "./Providers/DeviceData/getDeviceDataAvg.ts";
 import getDeviceDataCount from "./Providers/DeviceData/getDeviceDataCount.ts";
@@ -62,6 +63,7 @@ import getHourlyStatistics from "./Providers/Statistic/getHourlyStatistics.ts";
 import getSummary from "./Providers/Summary/getSummary.ts";
 import getTagKeys from "./Providers/Tag/getTagKeys.ts";
 import { destroyKnex, setupKnex } from "./knex.ts";
+import importDeviceData from "./Providers/DeviceData/importDeviceData.ts";
 
 /**
  * Starts the database module.
@@ -147,6 +149,8 @@ async function startModule() {
   sqlite.getTagKeys = getTagKeys;
   sqlite.setDeviceParams = setDeviceParams;
   sqlite.setPluginStorageItem = setPluginStorageItem;
+  sqlite.exportDeviceData = exportDeviceData;
+  sqlite.importDeviceData = importDeviceData;
 }
 
 startModule();

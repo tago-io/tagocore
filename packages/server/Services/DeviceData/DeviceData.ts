@@ -588,6 +588,46 @@ export async function deleteDeviceData(
   return data.length;
 }
 
+/**
+ * Export data from a device.
+ * @returns The CSV file path with the data.
+ */
+export async function exportDeviceData(id: TGenericID, folder: string) {
+  const device = await getDeviceInfo(id);
+
+  if (!device) {
+    return Promise.reject("Device not found");
+  }
+
+  const data = await invokeDatabaseFunction(
+    "exportDeviceData",
+    id,
+    device.type,
+    folder,
+  );
+  return data;
+}
+
+/**
+ * Import data from a CSV file to a device.
+ * @returns boolean if imports with success.
+ */
+export async function importDeviceData(id: TGenericID, folder: string) {
+  const device = await getDeviceInfo(id);
+
+  if (!device) {
+    return Promise.reject("Device not found");
+  }
+
+  const data = await invokeDatabaseFunction(
+    "importDeviceData",
+    id,
+    device.type,
+    folder,
+  );
+  return data;
+}
+
 async function validateMonthRange(query: IDeviceDataQuery) {
   if (!query.start_date) {
     throw new Error("start_date field is required");
