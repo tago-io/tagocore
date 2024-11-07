@@ -21,6 +21,7 @@ export async function getDeviceConnection(id: TGenericID, type: TDeviceType) {
       table.timestamp("created_at").nullable();
       table.timestamp("chunk_timestamp_start");
       table.timestamp("chunk_timestamp_end");
+      table.string("serie", 100);
 
       if (type === "mutable") {
         table.timestamp("updated_at");
