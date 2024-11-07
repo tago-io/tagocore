@@ -54,6 +54,7 @@ import getDeviceDataLastValue from "./Providers/DeviceData/getDeviceDataLastValu
 import getDeviceDataMax from "./Providers/DeviceData/getDeviceDataMax.ts";
 import getDeviceDataMin from "./Providers/DeviceData/getDeviceDataMin.ts";
 import getDeviceDataSum from "./Providers/DeviceData/getDeviceDataSum.ts";
+import importDeviceData from "./Providers/DeviceData/importDeviceData.ts";
 import deletePluginStorageItem from "./Providers/PluginStorage/deletePluginStorageItem.ts";
 import getAllPluginStorageItems from "./Providers/PluginStorage/getAllPluginStorageItem.ts";
 import getPluginStorageItem from "./Providers/PluginStorage/getPluginStorageItem.ts";
@@ -63,7 +64,6 @@ import getHourlyStatistics from "./Providers/Statistic/getHourlyStatistics.ts";
 import getSummary from "./Providers/Summary/getSummary.ts";
 import getTagKeys from "./Providers/Tag/getTagKeys.ts";
 import { destroyKnex, setupKnex } from "./knex.ts";
-import importDeviceData from "./Providers/DeviceData/importDeviceData.ts";
 
 /**
  * Starts the database module.
