@@ -63,6 +63,8 @@ import getHourlyStatistics from "./Providers/Statistic/getHourlyStatistics.ts";
 import getSummary from "./Providers/Summary/getSummary.ts";
 import getTagKeys from "./Providers/Tag/getTagKeys.ts";
 import configs from "./settings.ts";
+import exportDeviceData from "./Providers/DeviceData/exportDeviceData.ts";
+import importDeviceData from "./Providers/DeviceData/importDeviceData.ts";
 
 export const postgreSQL = new DatabaseModule({
   id: "PostgreSQL",
@@ -135,3 +137,5 @@ postgreSQL.getSummary = getSummary;
 postgreSQL.getTagKeys = getTagKeys;
 postgreSQL.setDeviceParams = setDeviceParams;
 postgreSQL.setPluginStorageItem = setPluginStorageItem;
+postgreSQL.exportDeviceData = exportDeviceData;
+postgreSQL.importDeviceData = importDeviceData;

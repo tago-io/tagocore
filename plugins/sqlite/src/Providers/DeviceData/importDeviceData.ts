@@ -15,7 +15,6 @@ async function _insertData(client: Knex, data: any[]) {
       return;
     })
     .catch((error) => {
-      console.log(error);
       Promise.reject(error);
     });
 }
@@ -48,7 +47,6 @@ async function importDeviceData(
         resolve("Data imported successfully");
       })
       .on("error", (error) => {
-        console.log(error);
         reject(error);
       });
   });

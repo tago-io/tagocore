@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import { Stream } from "node:stream";
 import type { TDeviceType, TGenericID } from "@tago-io/tcore-sdk/types";
 import { stringify } from "csv";
 import { getDeviceConnection } from "../../Helpers/DeviceDatabase.ts";
