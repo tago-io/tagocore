@@ -298,11 +298,12 @@ export async function deactivatePlugin(pluginID: string) {
       (id) => id !== pluginID,
     );
     await setMainSettings(settings);
-    const plugins = await getAllInsidePlugins();
-    const plugin = plugins.find((x: any) => x.id === pluginID);
+    const allPlugins = await getAllInsidePlugins();
+    const plugin = allPlugins.find((x: any) => x.id === pluginID);
     if (plugin) {
       const stopPlugin = new Plugin(plugin.fullPath);
       await stopPlugin.stop(true, 3000).catch(() => null);
+      plugins.delete(pluginID);
       const socketData = {
         id: pluginID,
         delete: true,

@@ -211,6 +211,7 @@ export async function setPluginModulesSettings(id: string, values: any) {
   const filePath = path.join(root, "settings.yml");
   const plugin = plugins.get(id);
   const modules: IPluginSettingsModule[] = [];
+  let firstConfig = false;
 
   for (const item of values) {
     const module = plugin?.modules?.get(item.moduleID);
@@ -231,6 +232,8 @@ export async function setPluginModulesSettings(id: string, values: any) {
     } else {
       modules.push({ id: item.moduleID, values: { [item.field]: item.value } });
     }
+
+    firstConfig = item.setupDatabase;
   }
 
   const data: IPluginSettings = {
@@ -249,6 +252,15 @@ export async function setPluginModulesSettings(id: string, values: any) {
     if (!cache[item.moduleID]) {
       cache[item.moduleID] = true;
       await startPluginModule(id, item.moduleID);
+    }
+  }
+
+  if (firstConfig) {
+    for (const plugin of plugins.values()) {
+      if (plugin.types.includes("database") && plugin.id !== id) {
+        await plugin.stop(true, 3000).catch(() => null);
+        plugins.delete(plugin.id);
+      }
     }
   }
 }
