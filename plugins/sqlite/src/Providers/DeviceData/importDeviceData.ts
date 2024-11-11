@@ -34,6 +34,27 @@ async function importDeviceData(
       .pipe(parse({ columns: true, encoding: "utf8" }))
       .on("data", (row) => {
         row.id = generateResourceID();
+
+        if (!row.location) {
+          row.location = null;
+        }
+
+        if (!row.metadata) {
+          row.metadata = null;
+        }
+
+        if (!row.value) {
+          row.value = null;
+        }
+
+        if (!row.unit) {
+          row.unit = null;
+        }
+
+        if (!row.serie) {
+          row.serie = null;
+        }
+
         data.push(row);
         if (data.length === 1000) {
           _insertData(client, data);

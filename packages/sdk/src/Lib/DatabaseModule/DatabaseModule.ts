@@ -42,7 +42,7 @@ import type {
   TDeviceType,
   TGenericID,
   TGenericToken,
-} from "../../Types.ts";
+} from "../../Types/index.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
 /**

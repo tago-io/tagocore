@@ -1,7 +1,7 @@
 import type {
   IModuleSetupWithoutType,
   IPluginFilesystemItem,
-} from "../../Types.ts";
+} from "../../Types/index.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
 /**

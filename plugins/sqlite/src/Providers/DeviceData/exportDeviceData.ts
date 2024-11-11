@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { csvNameGenerator } from "@tago-io/tcore-sdk";
 import type { TDeviceType, TGenericID } from "@tago-io/tcore-sdk/types";
 import { stringify } from "csv";
 import { getDeviceConnection } from "../../Helpers/DeviceDatabase.ts";
@@ -14,16 +15,7 @@ async function exportDeviceData(
   const client = await getDeviceConnection(deviceID, type);
   return new Promise((resolve, reject) => {
     const deviceDataStream = client.select("*").from("data").stream();
-    const date = new Date();
-    const day = date.getDate().toString();
-    const month = (date.getMonth() + 1).toString();
-    const year = date.getFullYear().toString();
-    const hour = date.getHours().toString();
-    const minute = date.getMinutes().toString();
-    const second = date.getSeconds().toString();
-    const name = `${year}-${month}-${day}_${hour}-${minute}-${second}`;
-
-    const filename = `${folder}/data_${deviceID}_${name}.csv`;
+    const filename = `${folder}/${csvNameGenerator(`data_${deviceID}`)}`;
     const file = fs.createWriteStream(filename);
     file.setDefaultEncoding("utf8");
 

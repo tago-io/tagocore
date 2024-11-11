@@ -2,7 +2,7 @@ import type {
   IDeviceData,
   IModuleSetupWithoutType,
   TGenericID,
-} from "../../Types.ts";
+} from "../../Types/index.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
 /**
