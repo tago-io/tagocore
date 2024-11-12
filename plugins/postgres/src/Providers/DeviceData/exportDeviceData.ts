@@ -2,7 +2,6 @@ import fs from "node:fs";
 import { csvNameGenerator } from "@tago-io/tcore-sdk";
 import type { TDeviceType, TGenericID } from "@tago-io/tcore-sdk/types";
 import { stringify } from "csv";
-import { deviceDB } from "../../Database/index.ts";
 import { getDeviceConnection } from "../../Helpers/DeviceDatabase.ts";
 
 /**
@@ -19,7 +18,7 @@ async function exportDeviceData(
     const file = fs.createWriteStream(filename);
     file.setDefaultEncoding("utf8");
 
-    // TODO - Fix to use copy from postgres
+    // TODO - Fix to use copy from mysql
     // const sqlCommand = `COPY "${deviceID}" TO STDOUT WITH CSV HEADER`;
     // const deviceDataStream = deviceDB.read.raw(sqlCommand).stream();
     const deviceDataStream = client.read("data")?.select("*").stream();
