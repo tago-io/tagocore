@@ -13,13 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform: [linux/amd64, linux/arm64/v8]
-        include:
-          - platform: linux/amd64
-          - platform: linux/arm64/v8
-          # - platform: linux/arm/v7
-          # - platform: linux/ppc64le
-          # - platform: linux/s390x
+        platform:
+          - linux/amd64
+          - linux/arm64/v8
 
     steps:
       - name: Check out the code
