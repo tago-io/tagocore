@@ -13,22 +13,43 @@ async function exportDeviceData(
   folder: string,
 ): Promise<string> {
   const client = await getDeviceConnection(deviceID, type);
-  return new Promise((resolve, reject) => {
-    const deviceDataStream = client.select("*").from("data").stream();
-    const filename = `${folder}/${csvNameGenerator(`data_${deviceID}`)}`;
-    const file = fs.createWriteStream(filename);
-    file.setDefaultEncoding("utf8");
 
-    deviceDataStream
-      .pipe(stringify({ header: true }))
-      .pipe(file)
-      .on("finish", () => {
-        resolve(filename);
-      })
-      .on("error", (error) => {
-        reject(error);
-      });
+  const filename = `${folder}/${csvNameGenerator(`data_${deviceID}`)}`;
+  const file = fs.createWriteStream(filename);
+  file.setDefaultEncoding("utf8");
+  const columns = [
+    "id",
+    "variable",
+    "type",
+    "value",
+    "unit",
+    "group",
+    "location",
+    "metadata",
+    "time",
+    "created_at",
+  ];
+
+  const stringifier = stringify({
+    header: true,
+    columns,
   });
+
+  stringifier.pipe(file);
+
+  const deviceDataStream = client.select(columns).from("data").stream();
+
+  if (!deviceDataStream) {
+    return Promise.reject("No data to export");
+  }
+
+  for await (const row of deviceDataStream) {
+    row.time = new Date(row.time).toISOString();
+    row.created_at = new Date(row.created_at).toISOString();
+    stringifier.write(row);
+  }
+
+  return Promise.resolve(filename);
 }
 
 export default exportDeviceData;

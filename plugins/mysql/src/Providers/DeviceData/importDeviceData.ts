@@ -89,15 +89,6 @@ async function importDeviceData(
     throw new Error("Device not found");
   }
   return new Promise((resolve, reject) => {
-    // TODO - Fix to use copy from mysql
-    // const sqlCommand = `COPY "${deviceID}" FROM '${fileName}' DELIMITER ',' CSV HEADER`;
-    // deviceDB.write.raw(sqlCommand).then(() => {
-    //   resolve("Data imported successfully");
-    // }).catch((error) => {
-    //   console.log(error);
-    //   reject(error);
-    // });
-
     const data: any[] = [];
     fs.createReadStream(fileName)
       .pipe(parse({ columns: true, encoding: "utf8" }))

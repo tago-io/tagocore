@@ -20,7 +20,7 @@ export async function setupKnex(data: any) {
   const filename = data.file;
 
   knexClient = knex({
-    client: "better-sqlite3",
+    client: "sqlite3",
     connection: { filename },
     useNullAsDefault: true,
   });

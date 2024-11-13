@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "knex": "3.1.0",
-    "better-sqlite3": "11.5.0",
+    "sqlite3": "5.1.7",
     "csv": "6.3.10"
   },
   "devDependencies": {}

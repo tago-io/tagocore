@@ -13,30 +13,44 @@ async function exportDeviceData(
   folder: string,
 ): Promise<string> {
   const client = await getDeviceConnection(deviceID, type);
-  return new Promise((resolve, reject) => {
-    const filename = `${folder}/${csvNameGenerator(`data_${deviceID}`)}`;
-    const file = fs.createWriteStream(filename);
-    file.setDefaultEncoding("utf8");
 
-    // TODO - Fix to use copy from mysql
-    // const sqlCommand = `COPY "${deviceID}" TO STDOUT WITH CSV HEADER`;
-    // const deviceDataStream = deviceDB.read.raw(sqlCommand).stream();
-    const deviceDataStream = client.read("data")?.select("*").stream();
-    if (!deviceDataStream) {
-      return reject("No data to export");
-    }
+  const filename = `${folder}/${csvNameGenerator(`data_${deviceID}`)}`;
+  const file = fs.createWriteStream(filename);
+  file.setDefaultEncoding("utf8");
+  const columns = [
+    "id",
+    "variable",
+    "type",
+    "value",
+    "unit",
+    "group",
+    "location",
+    "metadata",
+    "time",
+    "created_at",
+  ];
 
-    deviceDataStream
-      .pipe(stringify({ header: true }))
-      .pipe(file)
-      .on("finish", () => {
-        resolve(filename);
-      })
-      .on("error", (error) => {
-        console.log(error);
-        reject(error);
-      });
+  const stringifier = stringify({
+    header: true,
+    columns,
+    cast: {
+      date: (value: Date) => value.toISOString(),
+    },
   });
+
+  stringifier.pipe(file);
+
+  const deviceDataStream = client.read("data")?.select(columns).stream();
+
+  if (!deviceDataStream) {
+    return Promise.reject("No data to export");
+  }
+
+  for await (const row of deviceDataStream) {
+    stringifier.write(row);
+  }
+
+  return Promise.resolve(filename);
 }
 
 export default exportDeviceData;

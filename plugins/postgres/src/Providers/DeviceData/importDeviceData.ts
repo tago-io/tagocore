@@ -5,6 +5,7 @@ import {
   type TGenericID,
   generateResourceID,
   zDeviceData,
+  zDeviceImmutableData,
 } from "@tago-io/tcore-sdk/types";
 import { parse } from "csv";
 import type { Knex } from "knex";
@@ -37,27 +38,29 @@ function _parseData(row: any, device: IDevice) {
     id: generateResourceID(),
     variable: row.variable,
     type: row.type,
-    value: !row.value ? null : row.value,
-    unit: !row.unit ? null : row.unit,
+    value: !row.value ? undefined : row.value,
+    unit: !row.unit ? undefined : row.unit,
     group: row.group,
-    location: !row.location ? null : row.unit,
-    metadata: !row.metadata ? null : JSON.parse(row.location),
-    time: row.time,
+    location: !row.location ? undefined : JSON.parse(row.location),
+    metadata: !row.metadata ? undefined : JSON.parse(row.metadata),
+    time: new Date(row.time),
     created_at: new Date(),
-    chunk_timestamp_start: null,
-    chunk_timestamp_end: null,
-    serie: !row.serie ? null : row.unit,
+    chunk_timestamp_start: undefined,
+    chunk_timestamp_end: undefined,
+    serie: !row.serie ? undefined : row.serie,
   };
 
+  let zodData: any;
   if (device.chunk_period) {
     const chunkTimestamp = _getChunkTimestamp(new Date(row.time), device);
     if (chunkTimestamp) {
       parsedData.chunk_timestamp_start = chunkTimestamp.startDate;
       parsedData.chunk_timestamp_end = chunkTimestamp.endDate;
     }
+    zodData = zDeviceImmutableData.parse(parsedData);
+  } else {
+    zodData = zDeviceData.parse(parsedData);
   }
-
-  const zodData = zDeviceData.parse(parsedData);
 
   return zodData;
 }
@@ -86,15 +89,6 @@ async function importDeviceData(
     throw new Error("Device not found");
   }
   return new Promise((resolve, reject) => {
-    // TODO - Fix to use copy from postgres
-    // const sqlCommand = `COPY "${deviceID}" FROM '${fileName}' DELIMITER ',' CSV HEADER`;
-    // deviceDB.write.raw(sqlCommand).then(() => {
-    //   resolve("Data imported successfully");
-    // }).catch((error) => {
-    //   console.log(error);
-    //   reject(error);
-    // });
-
     const data: any[] = [];
     fs.createReadStream(fileName)
       .pipe(parse({ columns: true, encoding: "utf8" }))
