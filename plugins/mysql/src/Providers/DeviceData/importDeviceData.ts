@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import {
   type IDevice,
+  type IDeviceChunkPeriod,
   type TDeviceType,
   type TGenericID,
   generateResourceID,
@@ -13,6 +14,45 @@ import { DateTime } from "luxon";
 import { deviceDB } from "../../Database/index.ts";
 import getDeviceInfo from "../Device/getDeviceInfo.ts";
 
+/**
+ * Validates the time range for immutable data points.
+ * Throws an error if something is wrong.
+ */
+function _validateImmutableTimeRange(device: IDevice, data: any) {
+  if (device.chunk_period) {
+    const dateRange = _isImmutableTimeOutOfRange(
+      data.time,
+      device.chunk_period,
+      device.chunk_retention || 0,
+    );
+
+    if (!dateRange.isOk) {
+      const title = `Time must be between ${dateRange.startDate} and ${dateRange.endDate}`;
+      throw new Error(title);
+    }
+
+    return dateRange;
+  }
+}
+
+function _isImmutableTimeOutOfRange(
+  time: Date,
+  period: IDeviceChunkPeriod,
+  retention: number,
+): any {
+  const date = DateTime.fromJSDate(time);
+  const startDate = DateTime.utc()
+    .minus({ [period]: retention })
+    .startOf(period);
+  const endDate = DateTime.utc().plus({ day: 1 }).endOf("day");
+
+  return {
+    isOk: date >= startDate && date <= endDate,
+    startDate: startDate.toJSDate(),
+    endDate: endDate.toJSDate(),
+  };
+}
+
 async function _insertData(client: Knex, data: any[], deviceID: TGenericID) {
   client
     .batchInsert(deviceID, data, 1000)
@@ -22,26 +62,6 @@ async function _insertData(client: Knex, data: any[], deviceID: TGenericID) {
     .catch((error) => {
       throw error;
     });
-}
-
-/**
- * Gets the chunk timestamps for a date.
- */
-function _getChunkTimestamp(date: Date, device: IDevice) {
-  const dateJS = DateTime.fromJSDate(date).toUTC();
-
-  if (!device?.chunk_period) {
-    return null;
-  }
-
-  if (!dateJS.isValid) {
-    throw "Invalid Database Chunk Address (date)";
-  }
-
-  const startDate = dateJS.startOf(device.chunk_period).toJSDate();
-  const endDate = dateJS.endOf(device.chunk_period).toJSDate();
-
-  return { startDate, endDate };
 }
 
 function _parseData(row: any, device: IDevice) {
@@ -63,7 +83,7 @@ function _parseData(row: any, device: IDevice) {
 
   let zodData: any;
   if (device.chunk_period) {
-    const chunkTimestamp = _getChunkTimestamp(new Date(row.time), device);
+    const chunkTimestamp = _validateImmutableTimeRange(device, parsedData);
     if (chunkTimestamp) {
       parsedData.chunk_timestamp_start = chunkTimestamp.startDate;
       parsedData.chunk_timestamp_end = chunkTimestamp.endDate;

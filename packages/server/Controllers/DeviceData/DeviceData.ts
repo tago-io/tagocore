@@ -254,8 +254,8 @@ export default (app: Application) => {
   app.get("/device/:id/data", warm(GetDataByID));
   app.post("/device/:id/empty", warm(EmptyDevice));
   app.put("/device/:id/data", warm(EditDataByDeviceID));
-  app.post("/device/:id/data/export", warm(ExportDeviceData));
-  app.post("/device/:id/data/import", warm(ImportDeviceData));
+  app.post("/device/:id/data/backup", warm(ExportDeviceData));
+  app.post("/device/:id/data/restore", warm(ImportDeviceData));
   app.delete("/device/:id/data", warm(DeleteDataByDeviceID));
   app.get("/device/:id/data_amount", warm(GetDataAmount));
   app.get("/bucket/:id/data_amount", warm(GetDataAmount)); // SDK still uses the bucket route
