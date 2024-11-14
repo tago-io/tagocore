@@ -45,7 +45,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           push: true
           tags: |
-            ${DOCKER_IMAGE}:${{ github.ref_name }}
-            ${DOCKER_IMAGE}:${{ env.TAG }}
+            ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }}
+            ${{ env.DOCKER_IMAGE }}:${{ env.TAG }}
           build-args:
             BUILD_PLATFORM=${{ matrix.platform }}
