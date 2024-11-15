@@ -1,4 +1,4 @@
-import * as os from "os";
+import * as os from "node:os";
 
 function getPlatform() {
   const arch = os.arch();
@@ -7,9 +7,11 @@ function getPlatform() {
   if (platform === "linux") {
     if (arch === "x64") {
       return "linux/amd64";
-    } else if (arch === "arm64") {
+    }
+    if (arch === "arm64") {
       return "linux/arm64/v8";
-    } else if (arch === "arm") {
+    }
+    if (arch === "arm") {
       return "linux/arm/v7";
     }
   }
