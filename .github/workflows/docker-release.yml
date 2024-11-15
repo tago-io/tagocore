@@ -1,4 +1,4 @@
-name: Multi-Arch Docker Build and Push
+name: Publish Docker image
 
 on:
   release:
@@ -7,6 +7,11 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
 
     steps:
       - name: Check out the code
@@ -24,10 +29,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Determine Tags
         id: tags
         run: |
           echo "DOCKER_IMAGE=tagoio/tagocore" >> $GITHUB_ENV
+          echo "GHCR_IMAGE=ghcr.io/${{ github.repository_owner }}/tagocore" >> $GITHUB_ENV
           if [[ ${{ github.ref_name }} == *"-beta"* ]]; then
             echo "TAG=beta" >> $GITHUB_ENV
           else
@@ -39,8 +52,10 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
+          platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: |
             ${{ env.DOCKER_IMAGE }}:${{ github.ref_name }}
             ${{ env.DOCKER_IMAGE }}:${{ env.TAG }}
+            ${{ env.GHCR_IMAGE }}:${{ github.ref_name }}
+            ${{ env.GHCR_IMAGE }}:${{ env.TAG }}
