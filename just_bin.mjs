@@ -1,4 +1,26 @@
-function generateFileName(version, platform) {
+import * as os from "node:os";
+
+function getPlatform() {
+  const arch = os.arch();
+  const platform = os.platform();
+
+  if (platform === "linux") {
+    if (arch === "x64") {
+      return "linux/amd64";
+    }
+    if (arch === "arm64") {
+      return "linux/arm64/v8";
+    }
+    if (arch === "arm") {
+      return "linux/arm/v7";
+    }
+  }
+
+  throw new Error(`Unsupported platform: ${platform} ${arch}`);
+}
+
+function generateFileName(version) {
+  const platform = getPlatform();
   let arch = "";
 
   if (platform === "linux/amd64") {
@@ -12,4 +34,4 @@ function generateFileName(version, platform) {
   return `just-${version}-${arch}.tar.gz`;
 }
 
-console.log(generateFileName(process.argv[2], process.argv[3]));
+console.log(generateFileName(process.argv[2]));
