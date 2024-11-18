@@ -96,6 +96,11 @@ export const zDeviceData = z.object({
   variable: z.string(),
 });
 
+export const zDeviceImmutableData = zDeviceData.extend({
+  chunk_timestamp_start: z.date(),
+  chunk_timestamp_end: z.date(),
+});
+
 /**
  * Configuration to set a location to create a new device data.
  */

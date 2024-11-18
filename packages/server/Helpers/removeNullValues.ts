@@ -3,7 +3,7 @@
  */
 function removeNullValues<T>(value: T): T {
   for (const key in value) {
-    if (value[key] === null || value[key] === undefined) {
+    if (value[key] === null || value[key] === undefined || value[key] === "") {
       delete value[key];
     }
   }

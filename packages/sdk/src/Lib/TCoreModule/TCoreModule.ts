@@ -5,7 +5,7 @@ import type {
   IPluginMessage,
   TModuleMessageType,
   TPluginType,
-} from "../../Types.ts";
+} from "../../Types/index.ts";
 import APIBridge from "../APIBridge/APIBridge.ts";
 
 const moduleIDs = new Map<string, boolean>();

@@ -1,4 +1,4 @@
-import type { IModuleSetupWithoutType } from "../../Types.ts";
+import type { IModuleSetupWithoutType } from "../../Types/index.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
 /**
