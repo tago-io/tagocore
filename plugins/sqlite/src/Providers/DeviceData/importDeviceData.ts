@@ -10,8 +10,8 @@ import {
 } from "@tago-io/tcore-sdk/types";
 import { parse } from "csv";
 import type { Knex } from "knex";
-import { getDeviceConnection } from "../../Helpers/DeviceDatabase.ts";
 import { DateTime } from "luxon";
+import { getDeviceConnection } from "../../Helpers/DeviceDatabase.ts";
 import getDeviceInfo from "../Device/getDeviceInfo.ts";
 
 /**
@@ -92,11 +92,11 @@ function _parseData(row: any, device: IDevice) {
   }
 
   // This is to fix json type in sqlite
-  if (zodData.location){
+  if (zodData.location) {
     zodData.location = JSON.stringify(zodData.location);
   }
 
-  if (zodData.metadata){
+  if (zodData.metadata) {
     zodData.metadata = JSON.stringify(zodData.metadata);
   }
 
