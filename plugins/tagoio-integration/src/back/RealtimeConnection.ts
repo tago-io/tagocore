@@ -6,6 +6,7 @@ import { cache } from "./Global.ts";
 import { getMachineID } from "./Helpers.ts";
 import { sendDataToTagoio } from "./Request.ts";
 import removeNullValues from "../../../../packages/sdk/src/Types/Helpers/removeNullValues.ts";
+import { IComputerUsage } from "@tago-io/tcore-sdk/types";
 
 let events: EventSource | null = null;
 const pingInterval = 240000;
