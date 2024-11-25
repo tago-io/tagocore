@@ -103,6 +103,8 @@ async function emitStartData(token: string, connID: string) {
     core.getSummary(),
     helpers.getComputerUsage(),
   ]);
+
+  const computerUsage = removeNullValues(data[1]);
   const startData = {
     machine_id: getMachineID(),
     local_ips: getLocalIPs().join(", "),
@@ -112,7 +114,7 @@ async function emitStartData(token: string, connID: string) {
     tcore_start_time: tcoreStartTime,
     tcore_version: "0.7.0",
     summary: data[0],
-    computer_usage: removeNullValues(data[1]),
+    computer_usage: computerUsage,
     last_ping: Date.now(),
   };
   const response = await sendDataToTagoio(
