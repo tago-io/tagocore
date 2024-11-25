@@ -5,6 +5,7 @@ import EventSource from "eventsource";
 import { cache } from "./Global.ts";
 import { getMachineID } from "./Helpers.ts";
 import { sendDataToTagoio } from "./Request.ts";
+import removeNullValues from "../../../../packages/sdk/src/Types/Helpers/removeNullValues.ts";
 
 let events: EventSource | null = null;
 const pingInterval = 240000;
@@ -111,7 +112,7 @@ async function emitStartData(token: string, connID: string) {
     tcore_start_time: tcoreStartTime,
     tcore_version: "0.7.0",
     summary: data[0],
-    computer_usage: data[1],
+    computer_usage: removeNullValues(data[1]),
     last_ping: Date.now(),
   };
   const response = await sendDataToTagoio(
