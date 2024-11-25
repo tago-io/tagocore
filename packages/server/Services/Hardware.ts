@@ -153,9 +153,9 @@ export async function getDiskUsages(): Promise<IComputerUsage[]> {
     description: `${formatBytes(x.used)} / ${formatBytes(x.size)}`,
     detail: x.mount,
     title: `Disk ${i + 1}`,
-    total: x.size === null ? 0 : x.size,
+    total: x.size === null || x.size === undefined ? 0 : x.size,
     type: "disk",
-    used: x.used === null ? 0 : x.used,
+    used: x.used === null || x.size === undefined ? 0 : x.used,
   }));
 }
 
