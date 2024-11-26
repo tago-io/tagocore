@@ -2,11 +2,10 @@ import os from "node:os";
 import { URLSearchParams } from "node:url";
 import { core, helpers, pluginStorage } from "@tago-io/tcore-sdk";
 import EventSource from "eventsource";
+import removeNullValues from "../../../../packages/sdk/src/Types/Helpers/removeNullValues.ts";
 import { cache } from "./Global.ts";
 import { getMachineID } from "./Helpers.ts";
 import { sendDataToTagoio } from "./Request.ts";
-import removeNullValues from "../../../../packages/sdk/src/Types/Helpers/removeNullValues.ts";
-import { IComputerUsage } from "@tago-io/tcore-sdk/types";
 
 let events: EventSource | null = null;
 const pingInterval = 240000;
