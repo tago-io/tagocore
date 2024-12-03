@@ -40,8 +40,8 @@ export const zNetworkInfo = z.object({
  * Configuration of a single computer usage statistic.
  */
 export const zComputerUsage = z.object({
-  total: z.number(),
-  used: z.number(),
+  total: z.number().optional(),
+  used: z.number().optional(),
   description: z.string().optional(),
   title: z.string(),
   type: z.string(),

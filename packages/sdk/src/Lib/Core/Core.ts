@@ -29,7 +29,7 @@ import type {
   TGenericID,
   TGenericToken,
   TLiveInspectorConnectionID,
-} from "../../Types.ts";
+} from "../../Types/index.ts";
 import APIBridge from "../APIBridge/APIBridge.ts";
 
 /**

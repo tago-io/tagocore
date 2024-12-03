@@ -22,6 +22,10 @@ build-console:
   @rm -rf build/console
   @cd packages/console && npm run build
 
+build-integration:
+  @rm -rf plugins/tagoio-integration/build
+  @cd plugins/tagoio-integration && npm run build
+
 install:
   @npm ci
 

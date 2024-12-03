@@ -34,6 +34,7 @@ export const zPluginType = z.enum([
   "service",
   "sidebar-button",
   "sidebar-footer-button",
+  "system-override",
   "default",
 ]);
 
@@ -63,6 +64,7 @@ export const zPluginPermission = z.enum([
   "action",
   "device-data",
   "cli",
+  "plugin",
 ]);
 
 /**

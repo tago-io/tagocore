@@ -1,0 +1,36 @@
+{
+  "name": "@tago-io/tagocore-plugin-tagoio-integration",
+  "version": "0.7.0",
+  "private": true,
+  "main": "./src/back/index.ts",
+  "type": "module",
+  "tcore": {
+    "name": "TagoIO Integration",
+    "short_description": "Enables integration between TagoIO Cloud and TagoCore",
+    "full_description": "./README.md",
+    "icon": "./assets/icon.png",
+    "priority": "highest",
+    "cluster": true,
+    "hidden": true,
+    "permissions": ["device", "device-data", "plugin", "action"],
+    "types": ["navbar-button", "page", "system-override", "hook"],
+    "publisher": {
+      "name": "TagoIO",
+      "domain": "tago.io"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "watch": "vite",
+    "build": "vite build",
+    "build-watch": "vite build --watch",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "path-browserify": "1.0.1",
+    "eventsource": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/eventsource": "^1.1.15"
+  }
+}
