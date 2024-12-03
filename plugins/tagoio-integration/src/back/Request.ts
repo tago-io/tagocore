@@ -1,3 +1,4 @@
+import * as getConnectionURI from "@tago-io/sdk/lib/regions.js";
 import axios from "axios";
 
 /**
@@ -6,7 +7,7 @@ import axios from "axios";
 async function createTCore(token: string, data: any) {
   try {
     const response = await axios({
-      url: `${process.env.TAGOIO_API}/tcore/instance`,
+      url: `${getConnectionURI.default.default("usa-1").api}/tcore/instance`,
       method: "POST",
       headers: { token },
       data,
@@ -28,7 +29,7 @@ async function sendDataToTagoio(
 ) {
   try {
     const response = await axios({
-      url: `${process.env.TAGOIO_API}/tcore/sse/${connId}`,
+      url: `${getConnectionURI.default.default("usa-1").api}/tcore/sse/${connId}`,
       method: "POST",
       headers: { token },
       data: {

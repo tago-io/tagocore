@@ -20,7 +20,7 @@
     "url": "git+https://github.com/tago-io/tcore.git"
   },
   "dependencies": {
-    "@tago-io/sdk": "10.4.4",
+    "@tago-io/sdk": "11.3.6",
     "async": "3.2.6",
     "axios": "0.26.0",
     "body-parser": "2.0.1",

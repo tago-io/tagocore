@@ -1,5 +1,6 @@
 import os from "node:os";
 import { URLSearchParams } from "node:url";
+import * as getConnectionURI from "@tago-io/sdk/lib/regions.js";
 import { core, helpers, pluginStorage } from "@tago-io/tcore-sdk";
 import EventSource from "eventsource";
 import removeNullValues from "../../../../packages/sdk/src/Types/Helpers/removeNullValues.ts";
@@ -22,7 +23,7 @@ function startRealtimeCommunication(token: string) {
 
   const channel = "commands";
   const params = new URLSearchParams({ token, channel });
-  const url = `${process.env.TAGOIO_SSE}/events?${params.toString()}`;
+  const url = `${getConnectionURI.default.default("usa-1").sse}?${params.toString()}`;
 
   const connect = () => {
     events = new EventSource(url);
