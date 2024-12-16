@@ -10,29 +10,52 @@ import * as Style from "./StepMasterPassword.style";
 /**
  * Step to set the master password of the application.
  */
-function StepMasterPassword(props: any) {
+function StepMasterPassword(props: {
+  onBack: () => void;
+  onNext: (password: string) => void;
+}) {
   const { onBack, onNext } = props;
   const [value, setValue] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const passwordRef = useRef<HTMLInputElement>(null);
   const confirmationRef = useRef<HTMLInputElement>(null);
 
-  /**
-   * Goes to the next step.
-   */
-  const next = useCallback(async () => {
-    setErrorMsg("");
+  const validate = useCallback(() => {
+    if (!value || !confirmation) {
+      return {
+        message: "Password and confirmation are required",
+        focusElement: !value ? passwordRef.current : confirmationRef.current,
+      };
+    }
 
     if (value !== confirmation) {
-      setErrorMsg("Passwords do not match");
-      return;
+      return {
+        message: "Passwords do not match",
+        focusElement: confirmationRef.current,
+      };
     }
 
     if (value.length < 6) {
-      setErrorMsg("Password must have at least 6 characters");
+      return {
+        message: "Password must have at least 6 characters",
+        focusElement: passwordRef.current,
+      };
+    }
+
+    return null;
+  }, []);
+
+  const next = useCallback(async () => {
+    const error = validate();
+    if (error) {
+      setErrorMsg(error.message);
+      error.focusElement?.focus();
       return;
     }
+    setErrorMsg("");
 
     try {
       setLoading(true);
@@ -68,7 +91,7 @@ function StepMasterPassword(props: any) {
     [next],
   );
 
-  const nextDisabled = !value || !confirmation || loading;
+  const nextDisabled = loading;
 
   return (
     <SetupForm
@@ -97,6 +120,7 @@ function StepMasterPassword(props: any) {
           <InputPassword
             autoComplete="new-password"
             autoFocus
+            inputRef={passwordRef}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={onPasswordKeyDown}
             value={value}

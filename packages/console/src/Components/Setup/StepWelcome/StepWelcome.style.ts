@@ -29,12 +29,10 @@ export const Content = styled.div`
     }
 
     span.next {
-      background: #000;
-      color: #fff;
+      display: inline-block;
       background: ${({ theme }) => theme.buttonPrimary};
       color: ${({ theme }) => theme.buttonPrimaryFont};
       padding: 3px 6px;
-      display: inline-block;
       border-radius: 4px;
     }
   }
