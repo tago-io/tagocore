@@ -1,7 +1,7 @@
-import { DefaultTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
 
 /**
- * The fonts of the application.
+ * Font settings for TagoCore Console.
  */
 const fonts = {
   small: ".73rem",
@@ -17,7 +17,7 @@ const fonts = {
 };
 
 /**
- * This is the light theme of the application.
+ * Light theme for TagoCore Console.
  */
 const lightTheme: DefaultTheme = {
   action: "hsl(11, 80%, 50%)",
