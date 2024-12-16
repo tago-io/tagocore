@@ -1,3 +1,5 @@
+import { DefaultTheme } from "styled-components";
+
 /**
  * The fonts of the application.
  */
@@ -17,7 +19,7 @@ const fonts = {
 /**
  * This is the light theme of the application.
  */
-const lightTheme = {
+const lightTheme: DefaultTheme = {
   action: "hsl(11, 80%, 50%)",
   actionTriggerByMQTT: "hsl(296, 32%, 43%)",
   actionTriggerByResource: "hsl(208, 56%, 45%)",
@@ -55,6 +57,7 @@ const lightTheme = {
   fieldsetBorder: "rgb(0, 0, 0, 0.1)",
   files: "hsl(34, 84%, 49%)",
   font: "hsl(0, 4%, 29%)",
+  fontFaded: "hsla(0, 4%, 29%, 0.7)",
   font2: "rgba(0, 0, 0, .5)",
   font3: "rgba(0, 0, 0, .4)",
   formControlBackground: "hsl(0, 0%, 99%)",
