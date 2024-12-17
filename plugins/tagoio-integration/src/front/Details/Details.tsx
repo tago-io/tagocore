@@ -53,7 +53,7 @@ function Details(props: IDetailsProps) {
       `${location.protocol}//${location.hostname}:${port}/tcore`,
       { active },
     );
-  }, [active]);
+  }, [active, port]);
 
   /**
    * Called when the active changes.

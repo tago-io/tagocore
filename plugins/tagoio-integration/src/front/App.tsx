@@ -17,7 +17,7 @@ function App() {
   /**
    * Fetches the tcore instance and sets it locally.
    */
-  const fetchTCore = async () => {
+  const fetchTCore = useCallback(async () => {
     const location = window.location;
     axios
       .get(`${location.protocol}//${location.hostname}:${port}/tcore`)
@@ -28,7 +28,7 @@ function App() {
       .catch(() => {
         setLoading(false);
       });
-  };
+  }, [port]);
 
   /**
    * Signs out.
@@ -40,7 +40,7 @@ function App() {
     );
     setTCore(null);
     setLoading(false);
-  }, []);
+  }, [port]);
 
   /**
    * Tries to fetch tcore once we load the app.
@@ -49,7 +49,7 @@ function App() {
     if (port) {
       fetchTCore();
     }
-  }, [port]);
+  }, [port, fetchTCore]);
 
   /**
    * TODO:

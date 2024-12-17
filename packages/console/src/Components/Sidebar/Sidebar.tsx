@@ -47,12 +47,12 @@ function Sidebar(props: ISidebarProps) {
       },
     },
     {
-      color: theme.bucket,
-      icon: EIcon.bucket,
-      text: "Buckets",
+      text: "Store",
+      icon: EIcon.store,
+      color: theme.settings,
       action: {
         type: "open-url",
-        url: "/console/buckets/",
+        url: "/console/pluginstore",
       },
     },
     {
@@ -74,12 +74,12 @@ function Sidebar(props: ISidebarProps) {
       },
     },
     {
-      text: "Store",
-      icon: EIcon.store,
+      text: "Logs",
+      icon: EIcon.scroll,
       color: theme.settings,
       action: {
         type: "open-url",
-        url: "/console/pluginstore",
+        url: "/logs",
       },
     },
     {
