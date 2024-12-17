@@ -217,11 +217,11 @@ function Modal(props: IModalProps) {
     );
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect state machine
   useEffect(() => {
     if (shouldClose) {
       onClose?.();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldClose]);
 
   return createPortal(

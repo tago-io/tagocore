@@ -16,8 +16,6 @@ import StepPluginConfig from "../StepPluginConfig/StepPluginConfig.tsx";
 import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
 import * as Style from "./StepDatabaseError.style";
 
-/**
- */
 function StepDatabaseError() {
   const [action, setAction] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,26 +25,20 @@ function StepDatabaseError() {
   const [plugin, setPlugin] = useState<IPlugin | null>(null);
   const navigate = useNavigate();
 
-  /**
-   */
-  const showFactoryResetModal = () => {
+  const showFactoryResetModal = useCallback(() => {
     setModalReset(true);
-  };
+  }, []);
 
-  /**
-   */
-  const loadPlugin = async () => {
+  const loadPlugin = useCallback(async () => {
     if (!plugin) {
       const plug = await getPluginDatabaseInfo();
       setPlugin(plug);
       return plug;
     }
     return plugin;
-  };
+  }, [plugin]);
 
-  /**
-   */
-  const showConfigs = async () => {
+  const showConfigs = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -55,11 +47,9 @@ function StepDatabaseError() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [loadPlugin]);
 
-  /**
-   */
-  const retryConnection = async () => {
+  const retryConnection = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -75,29 +65,28 @@ function StepDatabaseError() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [loadPlugin]);
 
-  /**
-   */
-  const doAction = () => {
-    switch (action) {
-      case "factory-reset":
-        showFactoryResetModal();
-        break;
-      case "retry-conn":
-        retryConnection();
-        break;
-      case "show-configs":
-        showConfigs();
-        break;
-      default:
-        break;
-    }
-    setAction("");
-  };
+  const doAction = useCallback(
+    (actionToDo: string) => {
+      switch (actionToDo) {
+        case "factory-reset":
+          showFactoryResetModal();
+          break;
+        case "retry-conn":
+          retryConnection();
+          break;
+        case "show-configs":
+          showConfigs();
+          break;
+        default:
+          break;
+      }
+      setAction("");
+    },
+    [showFactoryResetModal, retryConnection, showConfigs],
+  );
 
-  /**
-   */
   const renderSuccessMessage = useCallback(() => {
     if (!success) {
       return null;
@@ -112,8 +101,6 @@ function StepDatabaseError() {
     );
   }, [success]);
 
-  /**
-   */
   const renderConfigHidden = () => {
     return (
       <Style.ConfigHidden>
@@ -137,30 +124,26 @@ function StepDatabaseError() {
     );
   };
 
-  /**
-   */
   useEffect(() => {
     setDocumentTitle("Database Plugin Error");
   }, []);
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.masterPassword): mobx observer
   useEffect(() => {
     if (action && store.masterPassword) {
-      doAction();
+      doAction(action);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [action, store.masterPassword]);
+  }, [action, store.masterPassword, doAction]);
 
   /**
    * Goes to the main console route if there is no database error.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.databaseError): mobx observer
   useEffect(() => {
     if (!store.databaseError) {
       navigate("/console");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.databaseError]);
+  }, [store.databaseError, navigate]);
 
   /**
    * Cleans up the master password after the screen ends.

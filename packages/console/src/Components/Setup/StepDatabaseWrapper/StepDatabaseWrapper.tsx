@@ -13,7 +13,10 @@ import StepDatabaseWithStore from "../StepDatabaseWithStore/StepDatabaseWithStor
  * - the database selection without the plugin store.
  * - or the database selection with the plugin store.
  */
-function StepDatabaseWrapper(props: any) {
+function StepDatabaseWrapper(props: {
+  onBack: () => void;
+  onNext: (param: any) => void;
+}) {
   const [checkPassword, setCheckPassword] = useState(true);
   const { data, error } = useApiRequest(
     `/plugin/${PLUGIN_STORE_PLUGIN_ID}/get-database-list/call`,
@@ -24,13 +27,11 @@ function StepDatabaseWrapper(props: any) {
   );
   const { onBack, onNext } = props;
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.masterPassword): mobx observer
   useEffect(() => {
     if (store.masterPassword) {
       setCheckPassword(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.masterPassword]);
 
   const loading = !data && !error;

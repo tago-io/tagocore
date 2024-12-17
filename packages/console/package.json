@@ -9,7 +9,10 @@
     "watch": "vite",
     "build": "vite build",
     "build-watch": "vite build --watch",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "biome check .",
+    "format": "biome format . --write",
+    "lint-fix": "biome check . --write"
   },
   "dependencies": {
     "@antv/g2": "4.1.23",

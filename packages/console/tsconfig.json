@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,14 +19,6 @@
     "module": "ESNext",
     "moduleResolution": "bundler"
   },
-  "include": [
-    "types/styled.d.ts",
-    "types/index.d.ts",
-    "src/**/*"
-  ],
-  "exclude": [
-    "src/**/*.test.tsx",
-    "src/**/__mocks__/*",
-    "node_modules"
-  ]
+  "include": ["types/styled.d.ts", "types/index.d.ts", "src/**/*"],
+  "exclude": ["src/**/*.test.tsx", "src/**/__mocks__/*", "node_modules"]
 }

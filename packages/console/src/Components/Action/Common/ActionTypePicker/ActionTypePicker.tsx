@@ -42,9 +42,6 @@ const defaultOptions: IOption[] = [
   },
 ];
 
-/**
- * Props.
- */
 interface IActionTypePicker {
   /**
    * Option object.
@@ -166,8 +163,7 @@ function ActionTypePicker(props: IActionTypePicker) {
     if (isSchedule && props.value?.id === "tagoio") {
       props.onChange(null as any);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.value, isSchedule]);
+  }, [props.value, isSchedule, props.onChange]);
 
   return (
     <OptionsPicker<IOption>

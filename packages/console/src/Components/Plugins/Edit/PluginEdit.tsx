@@ -90,22 +90,22 @@ function PluginEdit() {
     return true;
   }, [data.modules, values]);
 
-  /**
-   * Enables the plugin again.
-   */
   const enable = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     enablePlugin(id);
   }, [id]);
 
-  /**
-   * Disable the entire plugin.
-   */
   const disable = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     disablePlugin(id);
   }, [id]);
 
-  /**
-   */
   const stopModule = useCallback(
     async (module: IPluginModule) => {
       stopPluginModule(data.id, module.id);
@@ -113,8 +113,6 @@ function PluginEdit() {
     [data],
   );
 
-  /**
-   */
   const startModule = useCallback(
     async (module: IPluginModule) => {
       startPluginModule(data.id, module.id);
@@ -122,9 +120,6 @@ function PluginEdit() {
     [data],
   );
 
-  /**
-   * Renders the `Settings` tab's content.
-   */
   const renderSettingsTab = () => {
     return (
       <SettingsTab
@@ -141,10 +136,11 @@ function PluginEdit() {
     );
   };
 
-  /**
-   * Saves the plugin.
-   */
   const save = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     const editValues = [];
     for (const key in values) {
       if (values[key]) {
@@ -167,11 +163,12 @@ function PluginEdit() {
     }
   }, [id, values]);
 
-  /**
-   * Uninstalls the plugin.
-   */
   const uninstall = useCallback(
     async (keepData: boolean) => {
+      if (!id) {
+        return;
+      }
+
       await uninstallPlugin(id, keepData);
     },
     [id],
@@ -187,8 +184,6 @@ function PluginEdit() {
     );
   }, [values]);
 
-  /**
-   */
   useEffect(() => {
     function onModuleStatus(params: any) {
       const module = data.modules.find((x) => x.id === params.id);
@@ -223,6 +218,7 @@ function PluginEdit() {
   /**
    * Attaches the events to listen to the modules.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.socketConnected): mobx observer
   useEffect(() => {
     if (store.socketConnected && data.id) {
       for (const module of data.modules) {
@@ -234,8 +230,7 @@ function PluginEdit() {
         }
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.socketConnected, data.id]);
+  }, [store.socketConnected, data.id, data.modules]);
 
   return (
     <EditPage<IPlugin>

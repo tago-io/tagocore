@@ -103,6 +103,7 @@ const WrappedStoreRoutes = observer(() => {
     }
   }, [plugins]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect state machine
   useEffect(() => {
     if (status) {
       if (status.database?.error) {
@@ -131,17 +132,16 @@ const WrappedStoreRoutes = observer(() => {
         store.accountConfigured = status.account;
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [status, navigate]);
 
   /**
    * Starts the socket connection.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mobx observers
   useEffect(() => {
     if (store.masterPassword || store.token) {
       startSocket();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.masterPassword, store.token]);
 
   if (!readyToRender) {

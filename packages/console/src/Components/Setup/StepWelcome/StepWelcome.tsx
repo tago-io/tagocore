@@ -4,7 +4,7 @@ import { EButton } from "../../../index.ts";
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import * as Style from "./StepWelcome.style";
 
-function StepWelcome(props: { onNext: () => void }) {
+function StepWelcome(props: { onNext: (params: any) => void }) {
   return (
     <SetupForm
       buttons={[

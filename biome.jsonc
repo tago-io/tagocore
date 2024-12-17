@@ -7,7 +7,12 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["build", "build-tsc", "standalone-plugins", "standalone"]
+    "ignore": [
+      "build",
+      "build-tsc",
+      "standalone-plugins",
+      "standalone"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -29,8 +34,7 @@
         "noCommonJs": "error"
       },
       "correctness": {
-        "useImportExtensions": "error",
-        "useExhaustiveDependencies": "off"
+        "useImportExtensions": "error"
       },
       "suspicious": {
         "noExplicitAny": "off",

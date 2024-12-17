@@ -3,7 +3,7 @@ import type { DefaultTheme } from "styled-components";
 /**
  * Font settings for TagoCore Console.
  */
-const fonts = {
+export const fonts = {
   small: ".73rem",
   default: ".88rem",
   medium: "1.1rem",
@@ -19,7 +19,7 @@ const fonts = {
 /**
  * Light theme for TagoCore Console.
  */
-const lightTheme: DefaultTheme = {
+export const lightTheme: DefaultTheme = {
   action: "hsl(11, 80%, 50%)",
   actionTriggerByMQTT: "hsl(296, 32%, 43%)",
   actionTriggerByResource: "hsl(208, 56%, 45%)",
@@ -82,5 +82,3 @@ const lightTheme: DefaultTheme = {
   tabTitleHover: "rgba(0, 0, 0, 0.04)",
   tabTitleSelected: "rgb(255, 255, 255)",
 };
-
-export { fonts, lightTheme };

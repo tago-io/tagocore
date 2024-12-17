@@ -1,6 +1,6 @@
 import type { IPlugin } from "@tago-io/tcore-sdk/types";
 import { flattenConfigFields } from "@tago-io/tcore-shared";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { promiseDelay } from "../../../Helpers/promiseDelay.ts";
 import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
 import editPluginSettings from "../../../Requests/editPluginSettings.ts";
@@ -18,20 +18,16 @@ import Status from "../../Plugins/Common/Status/Status.tsx";
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
 
-/**
- */
 interface IStepPluginConfigProps {
   backButton?: any;
   description?: string;
   mustBeDatabasePlugin?: boolean;
-  onBack?: () => void;
   plugin?: IPlugin;
   pluginID?: string;
   title?: string;
+  onBack?: () => void;
 }
 
-/**
- */
 function StepPluginConfig(props: IStepPluginConfigProps) {
   const {
     mustBeDatabasePlugin,
@@ -51,20 +47,21 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
   const [errors, setErrors] = useState<any>({});
   const [values, setValues] = useState<any>({});
 
-  const mod =
-    plugin?.modules?.find?.((x) => x.type === "database") ||
-    plugin?.modules?.[0];
+  const mod = useMemo(() => {
+    const pluginMods = plugin?.modules || [];
+
+    const firstDbModule = pluginMods.find((plug) => plug.type === "database");
+
+    return firstDbModule || pluginMods[0];
+  }, [plugin?.modules]);
+
   const load = loading || !plugin;
 
-  /**
-   */
-  const loadPluginManually = async () => {
-    const plug = await getPluginInfo(pluginID as string);
+  const loadPluginManually = useCallback(async (id: string) => {
+    const plug = await getPluginInfo(id);
     setPlugin(plug);
-  };
+  }, []);
 
-  /**
-   */
   const renderErrorStatus = useCallback(() => {
     if (!errorMessage) {
       return null;
@@ -82,8 +79,6 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
     );
   }, [errorMessage]);
 
-  /**
-   */
   const renderSuccessMessage = useCallback(() => {
     if (!success) {
       return null;
@@ -98,8 +93,6 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
     );
   }, [success]);
 
-  /**
-   */
   const save = useCallback(async () => {
     if (!validate()) {
       return;
@@ -127,23 +120,26 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
     } finally {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugin, values]);
+  }, [plugin, values, mod?.id]);
 
-  /**
-   */
-  const setDefaultValues = useCallback(() => {
-    const flattened = flattenConfigFields(mod?.configs || []);
-    for (const field of flattened) {
-      if ("defaultValue" in field && field.defaultValue) {
-        values[field.field] = field.defaultValue;
+  const setDefaultValues = useCallback(
+    (options: {
+      plugin: IPlugin | null;
+    }) => {
+      const flattened = flattenConfigFields(
+        (options.plugin as any)?.configs || [],
+      );
+      for (const field of flattened) {
+        if ("defaultValue" in field && field.defaultValue) {
+          values[field.field] = field.defaultValue;
+        }
       }
-    }
 
-    setErrorMessage(mod?.error || "");
-    setValues({ ...values });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugin]);
+      setErrorMessage(options.plugin?.error || "");
+      setValues({ ...values });
+    },
+    [values],
+  );
 
   /**
    * Validates the form data to make sure the object is not faulty.
@@ -160,23 +156,17 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
     return true;
   };
 
-  /**
-   */
   useEffect(() => {
     if (plugin) {
-      setDefaultValues();
+      setDefaultValues({ plugin });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugin]);
+  }, [plugin, setDefaultValues]);
 
-  /**
-   */
   useEffect(() => {
     if (pluginID) {
-      loadPluginManually();
+      loadPluginManually(pluginID);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pluginID]);
+  }, [pluginID, loadPluginManually]);
 
   const hasDatabaseModule = plugin?.modules?.some((x) => x.type === "database");
 

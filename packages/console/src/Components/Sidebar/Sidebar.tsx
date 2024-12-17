@@ -13,9 +13,6 @@ import Item from "./Item.tsx";
 import PluginButton from "./PluginButton/PluginButton.tsx";
 import * as Style from "./Sidebar.style";
 
-/**
- * Props.
- */
 interface ISidebarProps {
   /**
    * Indicates if the sidebar is open or closed.
@@ -162,6 +159,7 @@ function Sidebar(props: ISidebarProps) {
   /**
    * Attaches the events to listen to the plugins.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mobx observer
   useEffect(() => {
     if (store.socketConnected) {
       for (const plugin of store.plugins) {
@@ -173,8 +171,7 @@ function Sidebar(props: ISidebarProps) {
         }
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.socketConnected, store.plugins.length]);
+  }, [store.socketConnected, store.plugins]);
 
   return (
     <Style.Container data-testid="sidebar" open={props.open}>
