@@ -139,6 +139,10 @@ function DeviceEdit() {
       encoder_stack: data.encoder_stack || [],
     };
 
+    if (!id) {
+      return;
+    }
+
     await editDevice(id, formatted);
     await setDeviceParams(data.id, normalizeConfigParameters(params) as any);
 
@@ -154,6 +158,10 @@ function DeviceEdit() {
    * Deletes the device.
    */
   const deleteData = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     await deleteDevice(id);
   }, [id]);
 

@@ -117,7 +117,6 @@ const WrappedStoreRoutes = observer(() => {
       ) {
         // not configured, go to setup
         setReadyToRender(true);
-        console.log("navigatin");
         navigate("/console/setup");
       } else {
         // configured, validate token

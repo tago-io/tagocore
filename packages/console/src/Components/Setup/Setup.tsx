@@ -6,7 +6,7 @@ import store from "../../System/Store.ts";
 import SetupBackground from "./SetupBackground/SetupBackground.tsx";
 import StepDatabaseWrapper from "./StepDatabaseWrapper/StepDatabaseWrapper.tsx";
 import StepMasterPassword from "./StepMasterPassword/StepMasterPassword.tsx";
-import StepPluginConfig from "./StepPluginConfig/StepPluginConfig.tsx";
+import { StepPluginConfigByID } from "./StepPluginConfig/StepPluginConfig.tsx";
 import StepSignUp from "./StepSignUp/StepSignUp.tsx";
 import StepWelcome from "./StepWelcome/StepWelcome.tsx";
 
@@ -22,8 +22,9 @@ type TSetupStep =
  */
 function Setup() {
   const [step, setStep] = useState(0);
-  const [pluginID, setPluginID] = useState<any>(null);
+  const [pluginID, setPluginID] = useState<string | null>(null);
   const [readyToRender, setReadyToRender] = useState(false);
+
   const navigate = useNavigate();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: mobx observers
@@ -131,14 +132,14 @@ function Setup() {
     );
   }
 
-  if (currentStep === "plugin-settings") {
+  if (currentStep === "plugin-settings" && pluginID) {
     return (
       <>
         <SetupBackground />
-        <StepPluginConfig
-          onBack={back}
+        <StepPluginConfigByID
           pluginID={pluginID}
           mustBeDatabasePlugin
+          onBack={back}
         />
       </>
     );

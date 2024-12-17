@@ -11,9 +11,7 @@ import { EIcon } from "../../Icon/Icon.types";
 import ModalFileSelect from "../../ModalFileSelect/ModalFileSelect.tsx";
 import Tooltip from "../../Tooltip/Tooltip.tsx";
 import * as Style from "./InstalLocalPluginButton.style";
-/**
- * This component handles the installation of a plugin.
- */
+
 function InstallLocalPluginButton() {
   const [modalSelectFolder, setModalSelectFolder] = useState(false);
   const { data: settings } = useApiRequest<ISettings>("/mainsettings");
@@ -24,26 +22,17 @@ function InstallLocalPluginButton() {
     [token, masterPassword],
   );
 
-  /**
-   * Opens the folder selector modal.
-   */
   const activateModalFolder = useCallback(() => {
     setModalSelectFolder(true);
   }, []);
 
-  /**
-   * Close the folder selector modal.
-   */
   const deactivateModalFolder = useCallback(() => {
     setModalSelectFolder(false);
   }, []);
 
-  /**
-   * Add plugin folder to the property custom_plugins.
-   */
   const addFolder = useCallback(
-    (folder) => {
-      axios.post("/plugin/addexternalplugin", { folder }, { headers });
+    (path: string) => {
+      axios.post("/plugin/addexternalplugin", { folder: path }, { headers });
     },
     [headers],
   );

@@ -19,6 +19,11 @@
     "module": "ESNext",
     "moduleResolution": "bundler"
   },
-  "include": ["types/styled.d.ts", "types/index.d.ts", "src/**/*"],
+  "include": [
+    "types/styled.d.ts",
+    "types/index.d.ts",
+    "src/**/*",
+    "vite-env.d.ts"
+  ],
   "exclude": ["src/**/*.test.tsx", "src/**/__mocks__/*", "node_modules"]
 }

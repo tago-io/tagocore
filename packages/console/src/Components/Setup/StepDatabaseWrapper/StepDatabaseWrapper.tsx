@@ -18,6 +18,8 @@ function StepDatabaseWrapper(props: {
   onNext: (param: any) => void;
 }) {
   const [checkPassword, setCheckPassword] = useState(true);
+  // FIXME: is this request needed?
+  // FIXME: also see weird error handling below if request is removed
   const { data, error } = useApiRequest(
     `/plugin/${PLUGIN_STORE_PLUGIN_ID}/get-database-list/call`,
     {

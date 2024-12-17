@@ -275,6 +275,10 @@ function ActionEdit() {
    * Saves the Action.
    */
   const save = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     const formatted = convertActionToAPI(
       data,
       action,
@@ -301,6 +305,10 @@ function ActionEdit() {
    * Deletes the Action.
    */
   const deleteData = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     await deleteAction(id);
   }, [id]);
 
@@ -309,7 +317,7 @@ function ActionEdit() {
    * This will apply the change to the data state.
    */
   const onChangeData = useCallback(
-    (field: keyof IAction, value) => {
+    (field: keyof IAction, value: any) => {
       setData({ ...data, [field]: value });
     },
     [data],

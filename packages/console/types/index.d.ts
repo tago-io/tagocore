@@ -1,5 +1,5 @@
 /**
- * PNG Imports will return a string containing the path to the image.
+ * PNG imports will return a string containing the path to the image.
  */
 declare module "*.png" {
   const content: string;
@@ -7,7 +7,7 @@ declare module "*.png" {
 }
 
 /**
- * GIF Imports will return a string containing the path to the image.
+ * GIF imports will return a string containing the path to the image.
  */
 declare module "*.gif" {
   const content: string;
@@ -15,9 +15,11 @@ declare module "*.gif" {
 }
 
 /**
- * SVG Imports will return the actual <svg> tag in a react component.
+ * SVG imports will return the actual `<svg>` tag in a React component via SVGR.
  */
 declare module "*.svg" {
-  const content: ReactSVGElement;
-  export default content;
+  import type React from "react";
+  const SVG: React.VFC<React.SVGProps<SVGSVGElement>>;
+
+  export default SVG;
 }

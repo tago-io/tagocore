@@ -4,28 +4,16 @@ import { EIcon } from "../../Icon/Icon.types";
 import Loading from "../../Loading/Loading.tsx";
 import * as Style from "./ComputerUsage.style";
 
-/**
- * Props.
- */
 interface IComputerUsageProps {
-  /**
-   * Values.
-   */
   usages: IComputerUsage[] | null;
 }
 
-/**
- * This is the content of the `Computer Usage` card in the home page.
- */
 function ComputerUsage(props: IComputerUsageProps) {
   const { usages } = props;
   if (!usages) {
     return <Loading />;
   }
 
-  /**
-   * Gets the icon.
-   */
   const getIcon = (type: string) => {
     if (type === "memory") {
       return EIcon.memory;
@@ -42,38 +30,42 @@ function ComputerUsage(props: IComputerUsageProps) {
     return EIcon.cog;
   };
 
-  /**
-   * Renders a single usage.
-   */
-  const renderUsage = (usage: IComputerUsage) => {
-    const { title, total, type, detail, used, description } = usage;
-    const percent = Math.floor((used / total) * 100);
-
-    return (
-      <Style.Item key={title}>
-        <Icon size="40px" icon={getIcon(type)} />
-
-        <div className="data">
-          <h3>{title}</h3>
-
-          <div className="bar-container">
-            <Style.Bar value={percent || 0} />
-            <span>{percent}%</span>
-          </div>
-
-          <span className="description">
-            {detail}
-            {detail && description ? " • " : ""}
-            {description}
-          </span>
-        </div>
-      </Style.Item>
-    );
-  };
-
   return (
     <Style.Container>
-      {(usages || []).map(renderUsage)}
+      {usages.map((usage) => {
+        const {
+          title,
+          description,
+          type,
+          detail,
+          // defaults for `used` and `total` to prevent `undefined` or division by zero
+          used = 0,
+          total = 100,
+        } = usage;
+
+        const percent = Math.floor((used / total) * 100);
+
+        return (
+          <Style.Item key={title}>
+            <Icon size="40px" icon={getIcon(type)} />
+
+            <div className="data">
+              <h3>{title}</h3>
+
+              <div className="bar-container">
+                <Style.Bar value={percent || 0} />
+                <span>{percent}%</span>
+              </div>
+
+              <span className="description">
+                {detail}
+                {detail && description ? " • " : ""}
+                {description}
+              </span>
+            </div>
+          </Style.Item>
+        );
+      })}
       <div className="space" />
     </Style.Container>
   );

@@ -12,7 +12,7 @@ import ModalFactoryReset from "../../Plugins/Common/ModalFactoryReset/ModalFacto
 import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalMasterPassword.tsx";
 import SetupBackground from "../SetupBackground/SetupBackground.tsx";
 import SetupForm from "../SetupForm/SetupForm.tsx";
-import StepPluginConfig from "../StepPluginConfig/StepPluginConfig.tsx";
+import { StepPluginConfig } from "../StepPluginConfig/StepPluginConfig.tsx";
 import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
 import * as Style from "./StepDatabaseError.style";
 

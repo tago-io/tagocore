@@ -5,7 +5,7 @@ import { promiseDelay } from "../../../Helpers/promiseDelay.ts";
 import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
 import editPluginSettings from "../../../Requests/editPluginSettings.ts";
 import editSettings from "../../../Requests/editSettings.ts";
-import getPluginInfo from "../../../Requests/getPluginInfo.ts";
+import { usePluginInfo } from "../../../Requests/getPluginInfo.ts";
 import {
   EButton,
   EIcon,
@@ -15,7 +15,7 @@ import {
 } from "../../../index.ts";
 import PluginConfigFields from "../../Plugins/Common/PluginConfigFields/PluginConfigFields.tsx";
 import Status from "../../Plugins/Common/Status/Status.tsx";
-import SetupForm from "../SetupForm/SetupForm.tsx";
+import SetupForm, { type SetupFormButton } from "../SetupForm/SetupForm.tsx";
 import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
 
 interface IStepPluginConfigProps {
@@ -28,56 +28,128 @@ interface IStepPluginConfigProps {
   onBack?: () => void;
 }
 
-function StepPluginConfig(props: IStepPluginConfigProps) {
+interface StepPluginConfigProps {
+  plugin: IPlugin | null;
+  title?: string;
+  description?: string;
+  backButton?: SetupFormButton;
+  isLoading?: boolean;
+  mustBeDatabasePlugin?: boolean;
+  onBack?: () => void;
+}
+
+export function StepPluginConfig(props: StepPluginConfigProps) {
   const {
-    mustBeDatabasePlugin,
-    pluginID,
+    plugin,
+    title = "Plugin Configuration",
+    description = "Adjust the settings of your main Database Plugin",
+    isLoading = false,
+    mustBeDatabasePlugin = false,
     onBack,
-    title,
-    backButton,
-    description,
   } = props;
 
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [plugin, setPlugin] = useState<IPlugin | null>(
-    () => props.plugin || null,
-  );
-  const [errors, setErrors] = useState<any>({});
-  const [values, setValues] = useState<any>({});
 
-  const mod = useMemo(() => {
-    const pluginMods = plugin?.modules || [];
+  const [isSaving, setIsSaving] = useState(false);
+  const [formErrors, setFormErrors] = useState<Record<string, boolean>>({});
+  const [formData, setFormData] = useState<Record<string, any>>({});
 
-    const firstDbModule = pluginMods.find((plug) => plug.type === "database");
+  const isLoadingPlugin = !plugin || isLoading || isSaving;
 
-    return firstDbModule || pluginMods[0];
-  }, [plugin?.modules]);
-
-  const load = loading || !plugin;
-
-  const loadPluginManually = useCallback(async (id: string) => {
-    const plug = await getPluginInfo(id);
-    setPlugin(plug);
-  }, []);
-
-  const renderErrorStatus = useCallback(() => {
-    if (!errorMessage) {
+  const firstDatabaseModule = useMemo(() => {
+    if (!plugin) {
       return null;
     }
 
+    return plugin.modules.find((module) => module.type === "database") || null;
+  }, [plugin]);
+
+  const firstModule = useMemo(() => {
+    if (mustBeDatabasePlugin) {
+      return firstDatabaseModule;
+    }
+
+    return plugin?.modules?.[0] || null;
+  }, [mustBeDatabasePlugin, firstDatabaseModule, plugin?.modules]);
+
+  const isSaveDisabled = useMemo(() => {
     return (
-      <FormGroup>
-        <Status
-          color={"hsla(0, 100%, 44%, 0.1)"}
-          icon={EIcon["exclamation-triangle"]}
-          iconColor="hsl(0, 100%, 40%)"
-          value={errorMessage}
-        />
-      </FormGroup>
+      isLoadingPlugin ||
+      (mustBeDatabasePlugin && plugin && !firstDatabaseModule)
     );
-  }, [errorMessage]);
+  }, [isLoadingPlugin, plugin, mustBeDatabasePlugin, firstDatabaseModule]);
+
+  const setDefaultFormData = useCallback(
+    (pluginInfo: IPlugin) => {
+      if (!firstModule) {
+        setErrorMessage(pluginInfo.error || "");
+        setFormData({});
+        return;
+      }
+
+      const flattenedConfigFields = flattenConfigFields(
+        firstModule.configs ?? [],
+      );
+
+      const defaultFormData: Record<string, any> = {};
+      for (const field of flattenedConfigFields) {
+        if ("defaultValue" in field && field.defaultValue) {
+          defaultFormData[field.field] = field.defaultValue;
+        }
+      }
+
+      setErrorMessage(pluginInfo.error || "");
+      setFormData(defaultFormData);
+    },
+    [firstModule],
+  );
+
+  const validate = useCallback(() => {
+    const err = validateConfigFields(firstModule?.configs || [], formData);
+    if (err !== null) {
+      setFormErrors(err);
+      return false;
+    }
+
+    setFormErrors({});
+    return true;
+  }, [formData, firstModule?.configs]);
+
+  const save = useCallback(async () => {
+    if (!validate()) {
+      return;
+    }
+
+    if (!firstModule || !plugin) {
+      return;
+    }
+
+    setIsSaving(true);
+    setErrorMessage("");
+
+    try {
+      const editValues = Object.keys(formData).map((key) => ({
+        moduleID: firstModule.id,
+        field: key,
+        value: formData[key],
+        setupDatabase: true,
+      }));
+
+      await editPluginSettings(plugin?.id || "", editValues);
+
+      // some artificial delay to give a better UX feel
+      await promiseDelay(1000);
+      await editSettings({ database_plugin: `${plugin.id}:${firstModule.id}` });
+
+      setSuccess(true);
+    } catch (error: any) {
+      const msg = error?.response?.data?.message || error?.toString?.();
+      setErrorMessage(msg);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [plugin, formData, firstModule, validate]);
 
   const renderSuccessMessage = useCallback(() => {
     if (!success) {
@@ -93,117 +165,43 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
     );
   }, [success]);
 
-  const save = useCallback(async () => {
-    if (!validate()) {
-      return;
-    }
-
-    setLoading(true);
-    setErrorMessage("");
-
-    try {
-      const editValues = Object.keys(values).map((key) => ({
-        moduleID: mod?.id,
-        field: key,
-        value: values[key],
-        setupDatabase: true,
-      }));
-
-      await editPluginSettings(plugin?.id || "", editValues);
-      await promiseDelay(1000); // a bit of delay generates more 'trust'
-      await editSettings({ database_plugin: `${plugin?.id}:${mod?.id}` });
-
-      setSuccess(true);
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || err?.toString?.();
-      setErrorMessage(msg);
-    } finally {
-      setLoading(false);
-    }
-  }, [plugin, values, mod?.id]);
-
-  const setDefaultValues = useCallback(
-    (options: {
-      plugin: IPlugin | null;
-    }) => {
-      const flattened = flattenConfigFields(
-        (options.plugin as any)?.configs || [],
-      );
-      for (const field of flattened) {
-        if ("defaultValue" in field && field.defaultValue) {
-          values[field.field] = field.defaultValue;
-        }
-      }
-
-      setErrorMessage(options.plugin?.error || "");
-      setValues({ ...values });
-    },
-    [values],
-  );
-
-  /**
-   * Validates the form data to make sure the object is not faulty.
-   * This should return a boolean to indicate if the data is correct or not.
-   */
-  const validate = () => {
-    const err = validateConfigFields(mod?.configs || [], values);
-    if (err !== null) {
-      setErrors(err);
-      return false;
-    }
-
-    setErrors({});
-    return true;
-  };
-
   useEffect(() => {
     if (plugin) {
-      setDefaultValues({ plugin });
+      setDefaultFormData(plugin);
     }
-  }, [plugin, setDefaultValues]);
-
-  useEffect(() => {
-    if (pluginID) {
-      loadPluginManually(pluginID);
-    }
-  }, [pluginID, loadPluginManually]);
-
-  const hasDatabaseModule = plugin?.modules?.some((x) => x.type === "database");
+  }, [plugin, setDefaultFormData]);
 
   return (
     <SetupForm
-      title={title ?? "Plugin Configuration"}
-      description={
-        description ?? "Adjust the settings of your main Database Plugin"
-      }
-      loading={load}
+      title={title}
+      description={description}
+      loading={isLoadingPlugin}
       onRenderAfterFooter={renderSuccessMessage}
       buttons={[
-        backButton
-          ? { ...backButton, disabled: load }
-          : { label: "Back", disabled: load, onClick: onBack },
+        props.backButton
+          ? { ...props.backButton, disabled: isLoadingPlugin }
+          : { label: "Back", disabled: isLoadingPlugin, onClick: onBack },
         {
           label: "Save",
-          disabled:
-            load || (mustBeDatabasePlugin && plugin && !hasDatabaseModule),
+          disabled: isSaveDisabled,
           onClick: save,
           type: EButton.primary,
         },
       ]}
     >
-      {mustBeDatabasePlugin && plugin && !hasDatabaseModule ? (
+      {mustBeDatabasePlugin && plugin && !firstDatabaseModule ? (
         <EmptyMessage
           icon={EIcon["exclamation-triangle"]}
           message="The selected plugin doesn't contain a database module"
         />
       ) : plugin ? (
         <>
-          {renderErrorStatus()}
+          <ErrorStatus message={errorMessage} />
           <PluginConfigFields
-            data={mod?.configs || []}
-            errors={errors}
-            onChangeValues={setValues}
-            values={values}
+            data={firstModule?.configs || []}
+            errors={formErrors}
+            onChangeValues={setFormData}
+            values={formData}
           />
         </>
       ) : (
@@ -213,4 +211,37 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
   );
 }
 
-export default StepPluginConfig;
+export function StepPluginConfigByID(
+  props: Omit<StepPluginConfigProps, "plugin"> & {
+    pluginID: string;
+  },
+) {
+  const { data: plugin, isLoading: isLoadingPlugin } = usePluginInfo(
+    props.pluginID,
+  );
+
+  return (
+    <StepPluginConfig
+      {...props}
+      plugin={plugin ?? null}
+      isLoading={isLoadingPlugin}
+    />
+  );
+}
+
+function ErrorStatus(props: { message: string }) {
+  if (!props.message) {
+    return null;
+  }
+
+  return (
+    <FormGroup>
+      <Status
+        color={"hsla(0, 100%, 44%, 0.1)"}
+        icon={EIcon["exclamation-triangle"]}
+        iconColor="hsl(0, 100%, 40%)"
+        value={props.message}
+      />
+    </FormGroup>
+  );
+}
