@@ -11,22 +11,11 @@ import { EIcon } from "../../../Icon/Icon.types";
 import Modal from "../../../Modal/Modal.tsx";
 import * as Style from "./ModalInstallPlugin.style";
 
-/**
- * Props.
- */
 interface IModalInstallPlugin {
-  /**
-   * Called when the modal is closed.
-   */
-  onClose: (pluginID: string) => void;
-  /**
-   * The file path for the plugin that will be installed.
-   */
+  /** The file path for the plugin that will be installed. */
   source: string;
-  /**
-   * Name of the plugin or the file that is being installed. Purely visual.
-   */
   pluginName?: string;
+  onClose: (pluginID: string) => void;
 }
 
 /**
@@ -94,6 +83,7 @@ function ModalInstallPlugin(props: IModalInstallPlugin) {
   /**
    * Attaches and detaches the plugin to get the logs during installation.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.socketConnected): mobx observer
   useEffect(() => {
     if (store.socketConnected) {
       getSocket().emit("attach", "install");
@@ -101,7 +91,6 @@ function ModalInstallPlugin(props: IModalInstallPlugin) {
         getSocket().emit("unattach", "install");
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.socketConnected]);
 
   /**

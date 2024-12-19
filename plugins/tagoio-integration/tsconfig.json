@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "outDir": "./build-tsc",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "noImplicitAny": true,
+    "declaration": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler"
+  },
+  "include": ["types/index.d.ts", "src/**/*", "vite-env.d.ts"],
+  "exclude": ["src/**/*.test.tsx", "src/**/__mocks__/*", "node_modules"]
+}

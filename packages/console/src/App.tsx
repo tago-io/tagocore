@@ -13,7 +13,6 @@ import ActionList from "./Components/Action/List/ActionList.tsx";
 import AnalysisEdit from "./Components/Analysis/Edit/AnalysisEdit.tsx";
 import AnalysisList from "./Components/Analysis/List/AnalysisList.tsx";
 import BucketEdit from "./Components/Bucket/Edit/BucketEdit.tsx";
-import BucketList from "./Components/Bucket/List/BucketList.tsx";
 import DeviceEdit from "./Components/Device/Edit/DeviceEdit.tsx";
 import DeviceList from "./Components/Device/List/DeviceList.tsx";
 import Home from "./Components/Home/Home.tsx";
@@ -103,6 +102,7 @@ const WrappedStoreRoutes = observer(() => {
     }
   }, [plugins]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect state machine
   useEffect(() => {
     if (status) {
       if (status.database?.error) {
@@ -116,7 +116,6 @@ const WrappedStoreRoutes = observer(() => {
       ) {
         // not configured, go to setup
         setReadyToRender(true);
-        console.log("navigatin");
         navigate("/console/setup");
       } else {
         // configured, validate token
@@ -131,17 +130,16 @@ const WrappedStoreRoutes = observer(() => {
         store.accountConfigured = status.account;
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [status, navigate]);
 
   /**
    * Starts the socket connection.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mobx observers
   useEffect(() => {
     if (store.masterPassword || store.token) {
       startSocket();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.masterPassword, store.token]);
 
   if (!readyToRender) {
@@ -172,7 +170,6 @@ function MainScreenWrapper() {
         <Route path="/actions/:id" element={<ActionEdit />} />
         <Route path="/analysis" element={<AnalysisList />} />
         <Route path="/analysis/:id" element={<AnalysisEdit />} />
-        <Route path="/buckets" element={<BucketList />} />
         <Route path="/buckets/:id" element={<BucketEdit />} />
         <Route path="/devices" element={<DeviceList />} />
         <Route path="/devices/:id" element={<DeviceEdit />} />

@@ -12,15 +12,8 @@ import PluginConfigFields from "../PluginConfigFields/PluginConfigFields.tsx";
 import Status from "../Status/Status.tsx";
 import * as Style from "./ModuleSetup.style";
 
-/**
- * Props.
- */
 interface ISetupConfigProps {
-  /**
-   */
   module: IPluginModule;
-  /**
-   */
   data: IPlugin;
   /**
    * The value for the fields.
@@ -44,8 +37,6 @@ interface ISetupConfigProps {
   onStop: (module: IPluginModule) => Promise<void>;
 }
 
-/**
- */
 function ModuleSetup(props: ISetupConfigProps) {
   const { module, data, errors, values, onStart, onStop, onChangeValues } =
     props;
@@ -53,17 +44,13 @@ function ModuleSetup(props: ISetupConfigProps) {
     getLocalStorageAsBoolean(module.id, true),
   );
 
-  /**
-   */
   const setValues = useCallback(
-    (oldValues) => {
+    (oldValues: any) => {
       onChangeValues({ [module.id]: { ...oldValues } });
     },
     [onChangeValues, module.id],
   );
 
-  /**
-   */
   const changeOpen = useCallback(
     (newOpen: boolean) => {
       setOpen(newOpen);
@@ -72,9 +59,6 @@ function ModuleSetup(props: ISetupConfigProps) {
     [module.id],
   );
 
-  /**
-   * Returns the icon for a type of plugin.
-   */
   const getIcon = (): EIcon => {
     switch (module.type) {
       case "database":
@@ -90,13 +74,13 @@ function ModuleSetup(props: ISetupConfigProps) {
     }
   };
 
+  // Do not render encoder-type modules
   if (module.type === "encoder") {
-    // encoder types do not get rendered.
     return null;
   }
 
+  // Do not render modules without configuration settings
   if (!module.configs || module.configs.length === 0) {
-    // no configs
     return null;
   }
 

@@ -1,8 +1,6 @@
 import { EIcon, Icon } from "@tago-io/tcore-console";
 import * as Style from "./Banner.style";
 
-/**
- */
 function Banner() {
   return (
     <Style.Container className="banner">

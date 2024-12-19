@@ -13,20 +13,11 @@ import Item from "./Item.tsx";
 import PluginButton from "./PluginButton/PluginButton.tsx";
 import * as Style from "./Sidebar.style";
 
-/**
- * Props.
- */
-interface ISidebarProps {
-  /**
-   * Indicates if the sidebar is open or closed.
-   */
+interface SidebarProps {
   open: boolean;
 }
 
-/**
- * This component shows a sidebar on the left side of the page.
- */
-function Sidebar(props: ISidebarProps) {
+function Sidebar(props: SidebarProps) {
   const theme = useTheme();
 
   const buttons: Array<IPluginButtonModuleSetupOption | null> = [
@@ -50,12 +41,12 @@ function Sidebar(props: ISidebarProps) {
       },
     },
     {
-      color: theme.bucket,
-      icon: EIcon.bucket,
-      text: "Buckets",
+      text: "Store",
+      icon: EIcon.store,
+      color: theme.settings,
       action: {
         type: "open-url",
-        url: "/console/buckets/",
+        url: "/console/pluginstore",
       },
     },
     {
@@ -77,12 +68,12 @@ function Sidebar(props: ISidebarProps) {
       },
     },
     {
-      text: "Store",
-      icon: EIcon.store,
+      text: "Logs",
+      icon: EIcon.scroll,
       color: theme.settings,
       action: {
         type: "open-url",
-        url: "/console/pluginstore",
+        url: "/logs",
       },
     },
     {
@@ -107,9 +98,6 @@ function Sidebar(props: ISidebarProps) {
     }
   }
 
-  /**
-   * Renders a single plugin.
-   */
   const renderPlugin = (item: IPluginListItem) => {
     if (item.hidden) {
       return null;
@@ -117,8 +105,6 @@ function Sidebar(props: ISidebarProps) {
     return <PluginButton key={item.id} item={item} />;
   };
 
-  /**
-   */
   const renderButton = (item: any, index: number) => {
     if (!item) {
       return <div key={index} className="new-line" />;
@@ -136,8 +122,6 @@ function Sidebar(props: ISidebarProps) {
     );
   };
 
-  /**
-   */
   useEffect(() => {
     function onStatus(params: any) {
       if (params.deleted) {
@@ -162,6 +146,7 @@ function Sidebar(props: ISidebarProps) {
   /**
    * Attaches the events to listen to the plugins.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mobx observer
   useEffect(() => {
     if (store.socketConnected) {
       for (const plugin of store.plugins) {
@@ -173,8 +158,7 @@ function Sidebar(props: ISidebarProps) {
         }
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.socketConnected, store.plugins.length]);
+  }, [store.socketConnected, store.plugins]);
 
   return (
     <Style.Container data-testid="sidebar" open={props.open}>

@@ -37,12 +37,11 @@ function useApiRequest<T>(
 ): {
   data: T;
   error?: AxiosError;
-  revalidate: () => Promise<boolean>;
   mutate: any;
 } {
   const skip = options?.skip;
 
-  const { data, error, revalidate, mutate } = useSWR<T>(
+  const { data, error, mutate } = useSWR<T>(
     skip ? null : url,
     () => fetcher(url, options),
     {
@@ -53,9 +52,9 @@ function useApiRequest<T>(
   );
 
   if ((data as any)?.result !== undefined) {
-    return { data: (data as any).result, error, revalidate, mutate };
+    return { data: (data as any).result, error, mutate };
   }
-  return { data: data as T, error, revalidate, mutate };
+  return { data: data as T, error, mutate };
 }
 
 export default useApiRequest;

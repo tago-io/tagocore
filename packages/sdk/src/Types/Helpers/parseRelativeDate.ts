@@ -1,7 +1,5 @@
 import { DateTime } from "luxon";
 
-/**
- */
 export function convertDateToISO(date: Date | string, timezone?: string) {
   const rawDate = DateTime.fromJSDate(new Date(date));
   if (timezone) {
@@ -17,9 +15,7 @@ export function convertDateToISO(date: Date | string, timezone?: string) {
   );
 }
 
-/**
- */
-const durationLabelsStandard = {
+const durationLabelsStandard: Record<string, string> = {
   S: "millisecond",
   SS: "milliseconds",
   s: "second",
@@ -40,38 +36,40 @@ const durationLabelsStandard = {
   yy: "years",
 };
 
-/**
- */
-function fixDuration(duration: string) {
-  duration = String(duration || "").trim();
+function fixDuration(rawDuration: string | null | undefined) {
+  const duration = String(rawDuration || "").trim();
+
   return durationLabelsStandard[duration] || duration;
 }
 
-/**
- */
-export function parseRelativeDate(expire_time, bool_minus, date = new Date()) {
-  if (!expire_time) {
+export function parseRelativeDate(
+  expireTime: string | null | undefined,
+  operation: "plus" | "minus",
+  fromDate = new Date(),
+) {
+  if (!expireTime) {
     return;
   }
-  if (expire_time.toLowerCase() === "never") {
+
+  if (expireTime.toLowerCase() === "never") {
     return "never";
   }
 
   const regex = /(\d+)/g;
-  const split = expire_time.split(regex);
+  const splitTime = expireTime.split(regex);
 
-  if (split.length !== 3 || !split[1] || !split[2]) {
+  if (splitTime.length !== 3 || !splitTime[1] || !splitTime[2]) {
     throw new Error("Invalid date");
   }
 
   let time: DateTime;
-  if (bool_minus) {
-    time = DateTime.fromJSDate(new Date(date)).minus({
-      [fixDuration(split[2])]: Number(split[1]),
+  if (operation === "minus") {
+    time = DateTime.fromJSDate(new Date(fromDate)).minus({
+      [fixDuration(splitTime[2])]: Number(splitTime[1]),
     });
   } else {
-    time = DateTime.fromJSDate(new Date(date)).plus({
-      [fixDuration(split[2])]: Number(split[1]),
+    time = DateTime.fromJSDate(new Date(fromDate)).plus({
+      [fixDuration(splitTime[2])]: Number(splitTime[1]),
     });
   }
 

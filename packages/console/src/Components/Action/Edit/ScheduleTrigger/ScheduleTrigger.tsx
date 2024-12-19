@@ -57,7 +57,6 @@ function ScheduleTrigger(props: IScheduleTrigger) {
   useEffect(() => {
     const explanation = getCronExplanation(scheduleData.cron || "");
     setCronExplanation(explanation);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scheduleData.cron]);
 
   const showExplanation =

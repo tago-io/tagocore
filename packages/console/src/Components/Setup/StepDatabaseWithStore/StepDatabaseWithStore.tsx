@@ -1,7 +1,7 @@
 import type { IPluginList } from "@tago-io/tcore-sdk/types";
 import { SQLITE_PLUGIN_ID } from "@tago-io/tcore-shared";
 import { observer } from "mobx-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import selectPluginFile from "../../../Helpers/selectPluginFile.ts";
 import getPluginStoreInstallURLs from "../../../Requests/getPluginStoreInstallURLs.ts";
 import store from "../../../System/Store.ts";
@@ -24,8 +24,6 @@ import ModalUploadPlugin from "../../Plugins/Common/ModalUploadPlugin/ModalUploa
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import * as Style from "./StepDatabaseWithStore.style";
 
-/**
- */
 function StepDatabaseWithStore(props: any) {
   const { onBack, onNext } = props;
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
@@ -43,26 +41,26 @@ function StepDatabaseWithStore(props: any) {
   });
   const { data: platform } = useApiRequest<string>("/hardware/platform");
 
-  const installedListFiltered = installedList;
+  const installedListFiltered = useMemo(() => installedList, [installedList]);
 
   const loading = !installedListFiltered;
 
   /**
    * Opens the file selector modal.
    */
-  const activateModalFile = () => {
+  const activateModalFile = useCallback(() => {
     selectPluginFile((f) => {
       setUploadedFile(f);
       setModalUpload(true);
     });
-  };
+  }, []);
 
   /**
    * Opens the URL download modal.
    */
-  const activateModalURL = () => {
+  const activateModalURL = useCallback(() => {
     setModalURL(true);
-  };
+  }, []);
 
   /**
    * Closes the URL download modal.
@@ -81,12 +79,12 @@ function StepDatabaseWithStore(props: any) {
   /**
    * Opens the install modal.
    */
-  const activateModalInstall = (path: string) => {
+  const activateModalInstall = useCallback((path: string) => {
     setModalUpload(false);
     setModalURL(false);
     setSource(path);
     setModalInstall(true);
-  };
+  }, []);
 
   /**
    * Closes the install modal.
@@ -100,8 +98,6 @@ function StepDatabaseWithStore(props: any) {
     }
   };
 
-  /**
-   */
   const confirm = useCallback(async () => {
     const installed = installedListFiltered?.some(
       (x) => x.id === selectedItem?.id,
@@ -125,8 +121,13 @@ function StepDatabaseWithStore(props: any) {
     } else {
       onNext(selectedItem?.id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [platform, onNext, installedList, selectedItem]);
+  }, [
+    platform,
+    onNext,
+    selectedItem,
+    installedListFiltered,
+    activateModalInstall,
+  ]);
 
   /**
    */
@@ -163,93 +164,92 @@ function StepDatabaseWithStore(props: any) {
     );
   };
 
-  /**
-   */
-  const filterPlugins = () => {
-    const installedDatabases = installedListFiltered?.filter((x) =>
-      x?.types?.includes("database"),
-    );
-    const result = [];
+  const filterPlugins = useCallback(
+    (filterText: string) => {
+      const installedDatabases = installedListFiltered?.filter((x) =>
+        x?.types?.includes("database"),
+      );
+      const result = [];
 
-    for (const plugin of installedDatabases) {
-      result.push({
-        description: plugin.description,
-        id: plugin.id,
-        logoURL: `/images/${plugin.id}/icon`,
-        name: plugin.name,
-        publisher: plugin.publisher,
-        version: plugin.version,
+      for (const plugin of installedDatabases) {
+        result.push({
+          description: plugin.description,
+          id: plugin.id,
+          logoURL: `/images/${plugin.id}/icon`,
+          name: plugin.name,
+          publisher: plugin.publisher,
+          version: plugin.version,
+        });
+      }
+
+      result.sort((a, b) => {
+        if (a.id === SQLITE_PLUGIN_ID && b.id !== SQLITE_PLUGIN_ID) {
+          // priority for sqlite plugin
+          return -1;
+        }
+        if (a.id !== SQLITE_PLUGIN_ID && b.id === SQLITE_PLUGIN_ID) {
+          // priority for sqlite plugin
+          return 1;
+        }
+        if (
+          a.publisher?.domain === "tago.io" &&
+          b.publisher?.domain !== "tago.io"
+        ) {
+          // then, all TagoIO plugins
+          return -1;
+        }
+        if (
+          a.publisher?.domain !== "tago.io" &&
+          b.publisher?.domain === "tago.io"
+        ) {
+          // then, all TagoIO plugins
+          return 1;
+        }
+        return 0;
       });
-    }
 
-    result.sort((a, b) => {
-      if (a.id === SQLITE_PLUGIN_ID && b.id !== SQLITE_PLUGIN_ID) {
-        // priority for sqlite plugin
-        return -1;
+      const filtered = result.filter(
+        (x) =>
+          String(x.name).toLowerCase().includes(filterText.toLowerCase()) ||
+          String(x.description)
+            .toLowerCase()
+            .includes(filterText.toLowerCase()),
+      );
+
+      setStorePluginList(filtered);
+    },
+    [installedListFiltered],
+  );
+
+  const doAction = useCallback(
+    (actionToDo: string) => {
+      switch (actionToDo) {
+        case "local-file":
+          activateModalFile();
+          break;
+        case "download-url":
+          activateModalURL();
+          break;
+        default:
+          break;
       }
-      if (a.id !== SQLITE_PLUGIN_ID && b.id === SQLITE_PLUGIN_ID) {
-        // priority for sqlite plugin
-        return 1;
-      }
-      if (
-        a.publisher?.domain === "tago.io" &&
-        b.publisher?.domain !== "tago.io"
-      ) {
-        // then, all TagoIO plugins
-        return -1;
-      }
-      if (
-        a.publisher?.domain !== "tago.io" &&
-        b.publisher?.domain === "tago.io"
-      ) {
-        // then, all TagoIO plugins
-        return 1;
-      }
-      return 0;
-    });
+      setAction("");
+    },
+    [activateModalFile, activateModalURL],
+  );
 
-    const filtered = result.filter(
-      (x) =>
-        String(x.name).toLowerCase().includes(filter.toLowerCase()) ||
-        String(x.description).toLowerCase().includes(filter.toLowerCase()),
-    );
-
-    setStorePluginList(filtered);
-  };
-
-  /**
-   */
-  const doAction = () => {
-    switch (action) {
-      case "local-file":
-        activateModalFile();
-        break;
-      case "download-url":
-        activateModalURL();
-        break;
-      default:
-        break;
-    }
-    setAction("");
-  };
-
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.masterPassword): mobx observer
   useEffect(() => {
     if (action && store.masterPassword) {
-      doAction();
+      doAction(action);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [action, store.masterPassword]);
+  }, [action, store.masterPassword, doAction]);
 
-  /**
-   */
   useEffect(() => {
     if (installedList) {
-      filterPlugins();
+      filterPlugins(filter);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [installedList, filter]);
+  }, [installedList, filter, filterPlugins]);
 
   return (
     <>

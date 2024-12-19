@@ -1,11 +1,8 @@
-import { Account } from "@tago-io/sdk";
-import type { DeviceQuery } from "@tago-io/sdk/out/modules/Account/devices.types";
+import { Resources } from "@tago-io/sdk";
+import type { DeviceQuery } from "@tago-io/sdk/lib/types";
 import type { IDevice } from "@tago-io/tcore-sdk/types";
 import store from "../System/Store.ts";
 
-/**
- * Retrieves a list of devices.
- */
 async function getDeviceList(
   page: number,
   amount: number,
@@ -31,8 +28,9 @@ async function getDeviceList(
     ],
   };
 
-  const account = new Account({ token: store.token });
-  const result = await account.devices.list(query as DeviceQuery);
+  const resources = new Resources({ token: store.token });
+  const result = await resources.devices.list(query as DeviceQuery);
+
   return result as unknown as IDevice[];
 }
 

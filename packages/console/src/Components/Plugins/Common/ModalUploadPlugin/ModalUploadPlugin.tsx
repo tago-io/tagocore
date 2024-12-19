@@ -5,27 +5,18 @@ import store from "../../../../System/Store.ts";
 import Modal from "../../../Modal/Modal.tsx";
 import * as Style from "./ModalUploadPlugin.style";
 
-/**
- * Props.
- */
 interface IModalUploadPlugin {
   onClose: () => void;
   onUpload: (filepath: string) => void;
   file: File;
 }
 
-/**
- * Modal to upload a plugin file.
- */
 function ModalUploadPlugin(props: IModalUploadPlugin) {
   const [error, setError] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const { file, onClose, onUpload } = props;
 
-  /**
-   * Uploads the file and returns the source as the call from the API.
-   */
   const uploadFile = useCallback(async () => {
     if (!file) {
       return;
@@ -54,12 +45,9 @@ function ModalUploadPlugin(props: IModalUploadPlugin) {
     }
   }, [onClose, onUpload, error, file]);
 
-  /**
-   */
   useEffect(() => {
     uploadFile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [uploadFile]);
 
   return (
     <Modal

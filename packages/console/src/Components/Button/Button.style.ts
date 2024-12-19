@@ -3,9 +3,6 @@ import styled, { css, type DefaultTheme } from "styled-components";
 import * as IconStyle from "../Icon/Icon.style";
 import { EButton } from "./Button.types";
 
-/**
- * Props for the container.
- */
 export interface IButtonContainerProps {
   $buttonType?: EButton;
   theme: DefaultTheme;
@@ -26,7 +23,7 @@ export const Container = styled.button<IButtonContainerProps>`
   justify-content: center;
   align-items: center;
 
-  :disabled {
+  &:disabled {
     pointer-events: none;
     opacity: 0.7;
     color: ${(props) => props.theme.buttonDisabledFont} !important;
@@ -121,7 +118,7 @@ function applyTypeCss(props: IButtonContainerProps) {
       color: ${color};
     }
 
-    :hover {
+    &:hover {
       background-color: ${hoverBackground};
       color: ${hoverColor};
 
@@ -131,7 +128,7 @@ function applyTypeCss(props: IButtonContainerProps) {
       }
     }
 
-    :active {
+    &:active {
       background-color: ${activeBackground};
     }
   `;

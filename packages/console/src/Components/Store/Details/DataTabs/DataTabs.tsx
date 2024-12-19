@@ -6,14 +6,11 @@ import Markdown from "../../../Markdown/Markdown.tsx";
 import Tabs from "../../../Tabs/Tabs.tsx";
 import Screenshots from "../Screenshots/Screenshots.tsx";
 
-/**
- * Props.
- */
 interface IDataTabsProps {
   markdownURL: string;
   themeColor?: string;
   screenshots: string[];
-  pluginID: string;
+  pluginID?: string;
   pluginVersion: string;
 }
 
@@ -35,7 +32,7 @@ function DataTabs(props: IDataTabsProps) {
       return <Loading />;
     }
 
-    return markdownDescription ? (
+    return markdownDescription && pluginID ? (
       <Markdown
         localImgPrefix={`/images2/${pluginID}`}
         value={markdownDescription}

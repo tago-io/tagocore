@@ -9,46 +9,25 @@ import { EIcon } from "../../../Icon/Icon.types";
 import ModalUninstallPlugin from "../../Common/ModalUninstallPlugin/ModalUninstallPlugin.tsx";
 import * as Style from "./Buttons.style";
 
-/**
- * Props.
- */
 interface IButtonsProps {
-  /**
-   */
   data: IPlugin;
-  /**
-   * Called when the user confirm the uninstall.
-   */
-  onUninstall: (keepData: boolean) => Promise<void>;
-  /**
-   */
+  onUninstall?: (keepData: boolean) => Promise<void>;
   onEnable: () => Promise<void>;
-  /**
-   */
   onDisable: () => Promise<void>;
 }
 
-/**
- */
 function Buttons(props: IButtonsProps) {
   const [modalUninstall, setModalUninstall] = useState(false);
-  const { onEnable, data, onDisable, onUninstall } = props;
+  const { onEnable, data, onDisable } = props;
 
-  /**
-   * Opens the uninstall modal.
-   */
   const activateModalUninstall = useCallback(() => {
     setModalUninstall(true);
   }, []);
 
-  /**
-   */
   const enable = useCallback(() => {
     onEnable();
   }, [onEnable]);
 
-  /**
-   */
   const disable = useCallback(() => {
     onDisable();
   }, [onDisable]);

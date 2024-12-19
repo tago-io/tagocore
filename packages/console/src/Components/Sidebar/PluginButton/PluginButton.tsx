@@ -11,15 +11,10 @@ import { EIcon } from "../../Icon/Icon.types";
 import PluginImage from "../../PluginImage/PluginImage.tsx";
 import * as Style from "./PluginButton.style";
 
-/**
- * Props.
- */
 interface IPluginButtonProps {
   item: IPluginListItem;
 }
 
-/**
- */
 function PluginButton(props: IPluginButtonProps) {
   const { item } = props;
   const { error, id, name, version, state } = item;
@@ -31,17 +26,13 @@ function PluginButton(props: IPluginButtonProps) {
   const currentPath = loc.pathname;
   const selected = currentPath.includes(id);
 
-  /**
-   */
-  const onClickOptions = useCallback((e) => {
+  const onClickOptions = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDropdown(true);
   }, []);
 
-  /**
-   */
   const enable = useCallback(
-    (e) => {
+    (e: React.MouseEvent<HTMLDivElement>) => {
       setDropdown(false);
       e.preventDefault();
       enablePlugin(id);
@@ -49,10 +40,8 @@ function PluginButton(props: IPluginButtonProps) {
     [id],
   );
 
-  /**
-   */
   const disable = useCallback(
-    (e) => {
+    (e: React.MouseEvent<HTMLDivElement>) => {
       setDropdown(false);
       e.preventDefault();
       disablePlugin(id);
@@ -60,8 +49,6 @@ function PluginButton(props: IPluginButtonProps) {
     [id],
   );
 
-  /**
-   */
   useEffect(() => {
     function closeDropdown() {
       setDropdown(false);

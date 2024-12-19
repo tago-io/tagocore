@@ -15,8 +15,6 @@ import Status from "../../Common/Status/Status.tsx";
 import Buttons from "../Buttons/Buttons.tsx";
 import * as Style from "./SettingsTab.style";
 
-/**
- */
 interface ISettingsTab {
   /**
    * Plugin's form data.
@@ -56,8 +54,6 @@ interface ISettingsTab {
   errors: any;
 }
 
-/**
- */
 function SettingsTab(props: ISettingsTab) {
   const theme = useTheme();
   const {
@@ -71,9 +67,6 @@ function SettingsTab(props: ISettingsTab) {
     onChangeValues,
   } = props;
 
-  /**
-   * Returns the icon for a type of plugin.
-   */
   const getIcon = (setup: IModuleSetup): EIcon => {
     switch (setup.type) {
       case "database":
@@ -151,8 +144,6 @@ function SettingsTab(props: ISettingsTab) {
     );
   };
 
-  /**
-   */
   const renderLeftSectionContent = () => {
     return (
       <>
@@ -193,8 +184,6 @@ function SettingsTab(props: ISettingsTab) {
     );
   };
 
-  /**
-   */
   const renderConfigs = () => {
     return (
       <div>

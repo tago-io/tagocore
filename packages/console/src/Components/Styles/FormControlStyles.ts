@@ -1,5 +1,11 @@
 import { css } from "styled-components";
 
+export type FormControlProps = {
+  disabled?: boolean;
+  error?: boolean;
+  readOnly?: boolean;
+};
+
 export default css<{ disabled?: boolean; error?: boolean; readOnly?: boolean }>`
   outline-style: none;
   box-shadow: none;

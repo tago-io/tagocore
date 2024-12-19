@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Select from "../Select/Select.tsx";
 import * as Style from "./InputTime.style";
 
@@ -11,7 +11,10 @@ interface IInputTime {
 
 function InputTime(props: IInputTime) {
   const firstRender = useRef(true);
-  const usesAmPmFormat = props.timeFormat === "12";
+  const usesAmPmFormat = useMemo(
+    () => props.timeFormat === "12",
+    [props.timeFormat],
+  );
   const defaultValue = `2010-01-01 ${props.value || ""}`;
   const [hour, setHour] = useState(() =>
     DateTime.fromFormat(defaultValue, "yyyy-LL-dd HH:mm").toFormat(
@@ -41,13 +44,22 @@ function InputTime(props: IInputTime) {
    * Triggers change to the input outside.
    * This function will format the date using the time that we selected and the time format as well.
    */
-  function triggerChange() {
-    if (usesAmPmFormat) {
-      props.onChange(`${hour || "00"}:${minute || "00"} ${format}`);
-    } else {
-      props.onChange(`${hour || "00"}:${minute || "00"}`);
-    }
-  }
+  const triggerChange = useCallback(
+    (params: {
+      hour: string;
+      minute: string;
+      format: string;
+    }) => {
+      if (usesAmPmFormat) {
+        props.onChange(
+          `${params.hour || "00"}:${params.minute || "00"} ${params.format}`,
+        );
+      } else {
+        props.onChange(`${params.hour || "00"}:${params.minute || "00"}`);
+      }
+    },
+    [usesAmPmFormat, props.onChange],
+  );
 
   /**
    * Uses to trigger a change to the input outside if the hour, minute or time format has changed.
@@ -55,11 +67,10 @@ function InputTime(props: IInputTime) {
    */
   useEffect(() => {
     if (!firstRender.current) {
-      triggerChange();
+      triggerChange({ hour, minute, format });
     }
     firstRender.current = false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hour, minute, format]);
+  }, [hour, minute, format, triggerChange]);
 
   return (
     <Style.Container hasFormat={usesAmPmFormat}>

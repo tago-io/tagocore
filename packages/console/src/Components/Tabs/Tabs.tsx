@@ -46,6 +46,10 @@ function Tabs(props: ITabsProps) {
    * Renders a single tab's title.
    */
   const renderTabTitle = (tab: ITab, index: number) => {
+    if (tab.hidden) {
+      return null;
+    }
+
     const selected = index === props.index;
     return (
       <Style.TabTitle

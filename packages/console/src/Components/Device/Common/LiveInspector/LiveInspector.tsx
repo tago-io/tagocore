@@ -14,9 +14,6 @@ import Tooltip from "../../../Tooltip/Tooltip.tsx";
 import * as Style from "./LiveInspector.style";
 import LiveInspectorRow from "./LiveInspectorRow.tsx";
 
-/**
- * Props.
- */
 interface ILiveInspectorProps {
   /**
    * Indicates if the live inspector is enabled or not.
@@ -44,8 +41,6 @@ interface ILiveInspectorProps {
   onClear: () => void;
 }
 
-/**
- */
 function LiveInspector(props: ILiveInspectorProps) {
   const [filter, setFilter] = useState("");
   const [logsFiltered, setLogsFiltered] = useState<ILiveInspectorMessage[][]>(
@@ -73,43 +68,44 @@ function LiveInspector(props: ILiveInspectorProps) {
     downloadFile(mapped.join("\n"), "txt", "console");
   }, [logsFiltered]);
 
-  /**
-   */
-  const filterLogs = useCallback(() => {
-    const result: any = {};
+  const filterLogs = useCallback(
+    (logsToFilter: ILiveInspectorProps["logs"]) => {
+      const result: any = {};
 
-    Object.keys(logs).forEach((key: string) => {
-      result[key] = logs[key].filter((item: any) => {
-        const filterLowerCase = filter.toLowerCase();
-        const content = (String(item.content) || "").toLowerCase();
-        const timestamp = (String(item.timestamp) || "").toLowerCase();
-        const title = (String(item.title) || "").toLowerCase();
-        return (
-          !filter ||
-          content.includes(filterLowerCase) ||
-          timestamp.includes(filterLowerCase) ||
-          title.includes(filterLowerCase)
-        );
+      Object.keys(logsToFilter).forEach((key: string) => {
+        result[key] = logsToFilter[key].filter((item: any) => {
+          const filterLowerCase = filter.toLowerCase();
+          const content = (String(item.content) || "").toLowerCase();
+          const timestamp = (String(item.timestamp) || "").toLowerCase();
+          const title = (String(item.title) || "").toLowerCase();
+          return (
+            !filter ||
+            content.includes(filterLowerCase) ||
+            timestamp.includes(filterLowerCase) ||
+            title.includes(filterLowerCase)
+          );
+        });
+
+        if (!result[key].length) {
+          delete result[key];
+        }
       });
 
-      if (!result[key].length) {
-        delete result[key];
-      }
-    });
+      const array = Object.keys(result).map((key) => result[key]);
 
-    const array = Object.keys(result).map((key) => result[key]);
+      const sorted = array
+        .sort((a, b) => {
+          return (
+            new Date(b[0].timestamp).getTime() -
+            new Date(a[0].timestamp).getTime()
+          );
+        })
+        .slice(0, limit);
 
-    const sorted = array
-      .sort((a, b) => {
-        return (
-          new Date(b[0].timestamp).getTime() -
-          new Date(a[0].timestamp).getTime()
-        );
-      })
-      .slice(0, limit);
-
-    return sorted;
-  }, [filter, limit, logs]);
+      return sorted;
+    },
+    [filter, limit],
+  );
 
   /**
    * Renders the header of the live inspector.
@@ -224,7 +220,8 @@ function LiveInspector(props: ILiveInspectorProps) {
    * Resets the filtered array when a new data arrives on when one of the filter changes.
    */
   useEffect(() => {
-    const filtered = filterLogs();
+    const filtered = filterLogs(logs);
+
     setLogsFiltered(filtered);
   }, [filterLogs, logs]);
 

@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import FormControlStyles from "../Styles/FormControlStyles.ts";
+import FormControlStyles, {
+  type FormControlProps,
+} from "../Styles/FormControlStyles.ts";
 
-/**
- * Main input style.
- */
-export const Container = styled.input`
+export const Container = styled.input<FormControlProps>`
   ${FormControlStyles}
 `;
 

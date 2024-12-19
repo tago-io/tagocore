@@ -1,22 +1,24 @@
 import { observer } from "mobx-react";
 import type { ReactNode } from "react";
-import { Button, Footer, Loading } from "../../../index.ts";
+import { Button, type EButton, Footer, Loading } from "../../../index.ts";
 import * as Style from "./SetupForm.style";
 
-/**
- * Props.
- */
 interface ISetupFormProps {
   title?: string;
   description?: string;
   children?: ReactNode;
-  buttons?: any[];
+  buttons?: SetupFormButton[];
   loading?: boolean;
   onRenderAfterFooter?: () => ReactNode;
 }
 
-/**
- */
+export interface SetupFormButton {
+  label?: string;
+  disabled?: boolean;
+  type?: EButton;
+  onClick?: (...params: any) => void;
+}
+
 function SetupForm(props: ISetupFormProps) {
   const {
     onRenderAfterFooter,
@@ -27,9 +29,7 @@ function SetupForm(props: ISetupFormProps) {
     children,
   } = props;
 
-  /**
-   */
-  const renderButton = (button: any, index: number) => {
+  const renderButton = (button: SetupFormButton, index: number) => {
     return (
       <Button
         disabled={button.disabled}

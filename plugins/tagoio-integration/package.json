@@ -24,7 +24,11 @@
     "watch": "vite",
     "build": "vite build",
     "build-watch": "vite build --watch",
-    "test": "vitest"
+    "test": "vitest",
+    "check-types": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome format . --write",
+    "lint-fix": "biome check . --write"
   },
   "dependencies": {
     "path-browserify": "1.0.1",

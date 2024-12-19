@@ -11,7 +11,7 @@ import removeNullValues from "../Helpers/removeNullValues.ts";
 /**
  * Checks if a given value is indeed a date or not.
  */
-function isDate(date: any) {
+function isDate(date: any): date is Date {
   return date instanceof Date && !Number.isNaN(date.getTime());
 }
 
@@ -24,11 +24,11 @@ function handleDates(
   timezone: string,
   type: "start" | "end",
 ): Date {
-  let date: any = new Date(rawDate);
+  let date: Date | "never" | undefined = new Date(rawDate);
 
   if (!isDate(date)) {
     try {
-      date = parseRelativeDate(rawDate, type === "start");
+      date = parseRelativeDate(date, type === "start" ? "minus" : "plus");
     } catch (ex) {
       throw new Error(`Invalid ${type} date`);
     }

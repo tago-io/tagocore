@@ -1,11 +1,8 @@
-import { Account } from "@tago-io/sdk";
-import type { AnalysisQuery } from "@tago-io/sdk/out/modules/Account/analysis.types";
+import { Resources } from "@tago-io/sdk";
+import type { AnalysisQuery } from "@tago-io/sdk/lib/types";
 import type { IAnalysis } from "@tago-io/tcore-sdk/types";
 import store from "../System/Store.ts";
 
-/**
- * Retrieves a list of analyses.
- */
 async function getAnalysisList(
   page: number,
   amount: number,
@@ -22,8 +19,9 @@ async function getAnalysisList(
     fields: ["name", "active", "last_run", "created_at"],
   };
 
-  const account = new Account({ token: store.token });
-  const result = await account.analysis.list(query as AnalysisQuery);
+  const resources = new Resources({ token: store.token });
+  const result = await resources.analysis.list(query as AnalysisQuery);
+
   return result as unknown as IAnalysis[];
 }
 

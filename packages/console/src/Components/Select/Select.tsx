@@ -2,9 +2,6 @@ import type { SelectHTMLAttributes } from "react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage.tsx";
 import * as Style from "./Select.style";
 
-/**
- * A Single option.
- */
 interface IOption {
   /**
    * Inner value of the option.
@@ -20,9 +17,6 @@ interface IOption {
   disabled?: boolean;
 }
 
-/**
- * Props.
- */
 interface ISelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   /**
    * Each one of these options will become a `<option />` tag inside of the select component.
@@ -37,17 +31,12 @@ interface ISelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
    * Sets the message that will appear below the input if this component has an error.
    */
   errorMessage?: string;
+  placeholder?: string;
 }
 
-/**
- * It's the default HTML combo, but with style.
- */
 function Select(props: ISelectProps) {
   const { options, error, errorMessage } = props;
 
-  /**
-   * Renders a single option.
-   */
   const renderOption = (option: IOption) => {
     return (
       <Style.Option

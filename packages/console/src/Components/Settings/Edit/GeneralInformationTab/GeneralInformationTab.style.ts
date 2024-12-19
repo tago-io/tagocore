@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-/**
- */
 export const DangerZone = styled.div`
   display: flex;
   justify-content: space-between;

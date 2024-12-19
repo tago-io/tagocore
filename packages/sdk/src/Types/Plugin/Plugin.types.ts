@@ -464,7 +464,7 @@ const zPluginStorageItem = z.object({
  * Configuration to set a plugin storage item.
  */
 export const zPluginStorageItemSet = zPluginStorageItem
-  .omit({ created_at: true, type: true })
+  .omit({ type: true })
   .transform((x) => {
     let type = "string";
     if (x.value === null) {

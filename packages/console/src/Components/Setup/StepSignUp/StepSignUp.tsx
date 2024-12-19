@@ -9,9 +9,10 @@ import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalM
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import * as Style from "./StepSignUp.style";
 
-/**
- */
-function StepSignUp(props: any) {
+function StepSignUp(props: {
+  onNext: (param: any) => void;
+  onBack: () => void;
+}) {
   const [data, setData] = useState<any>({});
   const [error, setError] = useState<any>({});
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,7 @@ function StepSignUp(props: any) {
     const headers = { masterPassword: store.masterPassword };
     axios
       .post("/account", data, { headers })
-      .then(() => onNext())
+      .then(() => onNext(data))
       .catch((err) => {
         const errorMessage = err?.response?.data?.message || err?.toString?.();
         setError({ message: errorMessage });

@@ -18,9 +18,6 @@ import { EIcon } from "../Icon/Icon.types";
 import Link from "../Link/Link.tsx";
 import * as Style from "./Navbar.style";
 
-/**
- * Props.
- */
 interface INavbarProps {
   /**
    * This function will be called when the user presses the sidebar button. It should
@@ -41,15 +38,10 @@ interface INavbarProps {
  * This is the main navigation bar located at the top of the page.
  */
 function Navbar(props: INavbarProps) {
-  // const theme = useTheme();
-  // const updateTheme = useContext(ThemeUpdateContext);
   const { logoWidth, onSidebarToggle } = props;
   const navigate = useNavigate();
   const theme = useTheme();
 
-  /**
-   * Removes the account, token, and goes back to the /console/login route.
-   */
   const signOut = useCallback(() => {
     store.account = undefined;
     store.token = "";
@@ -57,9 +49,6 @@ function Navbar(props: INavbarProps) {
     navigate("/console/login");
   }, [navigate]);
 
-  /**
-   * Renders the navbar buttons for a specific plugin.
-   */
   const renderNavbarButtons = (
     plugin: IPluginListItem,
     buttons: IPluginButtonModuleSetupOption[],
@@ -120,12 +109,6 @@ function Navbar(props: INavbarProps) {
 
       <Style.RightSection>
         {store.plugins.map((x) => renderNavbarButtons(x, x.buttons.navbar))}
-
-        <Link href="/console/logs">
-          <Button type={EButton.primary} testId="plugin-logs-button">
-            <Icon size="17px" icon={EIcon.scroll} />
-          </Button>
-        </Link>
 
         <Button onClick={signOut} type={EButton.primary}>
           <Icon size="17px" icon={EIcon["sign-out-alt"]} />

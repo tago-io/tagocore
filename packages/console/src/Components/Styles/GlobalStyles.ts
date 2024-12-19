@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { type DefaultTheme, createGlobalStyle } from "styled-components";
 import { fonts } from "../../theme.ts";
 import * as IconStyle from "../Icon/Icon.style";
 
@@ -6,7 +6,7 @@ import * as IconStyle from "../Icon/Icon.style";
  * Global styles for the application. Everything here will be applied
  * to all the corresponding elements.
  */
-const GlobalStyles = createGlobalStyle`
+const GlobalStyles = createGlobalStyle<{ theme?: DefaultTheme }>`
   html,
   body {
     padding: 0;

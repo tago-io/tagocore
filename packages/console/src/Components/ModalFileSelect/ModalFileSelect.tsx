@@ -292,11 +292,8 @@ function ModalFileSelect(props: IModalFileSelect) {
         refFilesContainer.current.scrollTop = (max as any)?.ref.offsetTop;
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files.length]);
+  }, [files, value]);
 
-  /**
-   */
   useEffect(() => {
     if (files.length > 0) {
       setPath(value);

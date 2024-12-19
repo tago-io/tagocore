@@ -2,9 +2,6 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
 import { type EIcon, Icon } from "../../../../index.ts";
 import * as Style from "./Status.style";
 
-/**
- * Props.
- */
 interface IStatusProps {
   value: string;
   icon?: EIcon;
@@ -15,8 +12,6 @@ interface IStatusProps {
   children?: ReactNode;
 }
 
-/**
- */
 function Status(props: IStatusProps) {
   const { value, title, children, iconSize, icon, iconColor, color } = props;
 
@@ -27,6 +22,7 @@ function Status(props: IStatusProps) {
   const timeout = useRef<any>(null);
   const runAgain = useRef(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: animation state machine
   useEffect(() => {
     if (value !== text) {
       if (runningAnimation) {
@@ -34,9 +30,9 @@ function Status(props: IStatusProps) {
       }
       setRunningAnimation(true);
     }
-    // eslint-disable-next-line
   }, [value]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: animation state machine
   useEffect(() => {
     if (runningAnimation) {
       setAnimation("animated-to");
@@ -53,7 +49,6 @@ function Status(props: IStatusProps) {
       runAgain.current = false;
       setRunningAnimation(true);
     }
-    // eslint-disable-next-line
   }, [runningAnimation]);
 
   return (

@@ -4,9 +4,6 @@ import type { IScheduleData } from "../../../Action.interface";
 import { spreadCronToScheduleData } from "../../Logic/spreadCronToScheduleData.ts";
 import * as Style from "./AdvancedCron.style";
 
-/**
- * Props.
- */
 interface IAdvancedCron {
   /**
    * Error of the fields.

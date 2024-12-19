@@ -16,9 +16,6 @@ import Row from "../../../Row/Row.tsx";
 import Select, { type ISelectOption } from "../../../Select/Select.tsx";
 import * as Style from "./GeneralInformationTab.style";
 
-/**
- * Props.
- */
 interface IGeneralInformationTabProps {
   /**
    * Settings' form data.
@@ -32,8 +29,6 @@ interface IGeneralInformationTabProps {
    * Settings's form errors.
    */
   errors: any;
-  /**
-   */
   metadata?: ISettingsMetadata;
 }
 
@@ -49,9 +44,6 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
   );
   const { data, metadata, errors } = props;
 
-  /**
-   * Gets a list of database options based on the backend list.
-   */
   const getDatabaseOptions = () => {
     const options: ISelectOption[] = [
       { label: "Default (first one loaded)", value: "" },

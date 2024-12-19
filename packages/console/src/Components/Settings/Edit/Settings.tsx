@@ -39,10 +39,6 @@ function Settings() {
     loaded.current = true;
   }, []);
 
-  /**
-   * Validates the form data to make sure the object is not faulty.
-   * This should return a boolean to indicate if the data is correct or not.
-   */
   const validate = useCallback(async () => {
     try {
       await zSettings.parseAsync({ ...data, port: Number(data.port) });
@@ -55,52 +51,33 @@ function Settings() {
     return false;
   }, [data]);
 
-  /**
-   * Saves the device.
-   */
   const save = useCallback(async () => {
     await editSettings(data);
     initialData.current = cloneDeep(data);
     setData({ ...data });
   }, [data]);
 
-  /**
-   * Saves and doesn't reload the application.
-   */
   const saveAndDontReload = useCallback(() => {
     setModalChanges(false);
     return save();
   }, [save]);
 
-  /**
-   * Saves and reloads the application.
-   */
   const saveAndReload = useCallback(async () => {
     setModalChanges(false);
     await save();
   }, [save]);
 
-  /**
-   * Closes the changes modal.
-   */
   const deactivateModalChanges = useCallback(() => {
     setModalChanges(false);
   }, []);
 
-  /**
-   * Called when a field from a tab gets modified.
-   * This will apply the change to the data state.
-   */
   const onChangeData = useCallback(
-    (field: keyof ISettings, value) => {
+    (field: keyof ISettings, value: any) => {
       setData({ ...data, [field]: value });
     },
     [data],
   );
 
-  /**
-   * Renders the `General Information` tab's content.
-   */
   const renderGeneralInformationTab = () => {
     return (
       <GeneralInformationTab
@@ -112,9 +89,6 @@ function Settings() {
     );
   };
 
-  /**
-   * Should return if the initial data is different from the current data.
-   */
   const checkIfDataChanged = useCallback(() => {
     return JSON.stringify(initialData.current) !== JSON.stringify(data);
   }, [data]);

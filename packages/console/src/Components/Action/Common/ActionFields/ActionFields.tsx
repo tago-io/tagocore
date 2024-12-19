@@ -9,9 +9,6 @@ import ActionTypePicker from "../ActionTypePicker/ActionTypePicker.tsx";
 import HttpHeaders from "../HttpHeaders/HttpHeaders.tsx";
 import MultipleAnalysis from "../MultipleAnalysis/MultipleAnalysis.tsx";
 
-/**
- * Props.
- */
 interface IActionFields {
   /**
    * Error of the fields.
@@ -178,10 +175,10 @@ function ActionFields(props: IActionFields) {
   /**
    * Sets the type into the action.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(action): useEffect state machine
   useEffect(() => {
     onChangeAction({ ...action, type: actionType?.id || actionType });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [actionType]);
+  }, [actionType, onChangeAction]);
 
   return (
     <>

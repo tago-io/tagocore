@@ -43,6 +43,7 @@ function Statistics() {
   /**
    * Attaches and detaches the socket to get the statistic updates in realtime.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.socketConnected): mobx observer
   useEffect(() => {
     if (store.socketConnected) {
       getSocket().emit("attach", "statistic");
@@ -50,7 +51,6 @@ function Statistics() {
         getSocket().emit("unattach", "statistic");
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.socketConnected]);
 
   /**
