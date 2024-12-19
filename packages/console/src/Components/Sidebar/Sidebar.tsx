@@ -13,17 +13,11 @@ import Item from "./Item.tsx";
 import PluginButton from "./PluginButton/PluginButton.tsx";
 import * as Style from "./Sidebar.style";
 
-interface ISidebarProps {
-  /**
-   * Indicates if the sidebar is open or closed.
-   */
+interface SidebarProps {
   open: boolean;
 }
 
-/**
- * This component shows a sidebar on the left side of the page.
- */
-function Sidebar(props: ISidebarProps) {
+function Sidebar(props: SidebarProps) {
   const theme = useTheme();
 
   const buttons: Array<IPluginButtonModuleSetupOption | null> = [
@@ -104,9 +98,6 @@ function Sidebar(props: ISidebarProps) {
     }
   }
 
-  /**
-   * Renders a single plugin.
-   */
   const renderPlugin = (item: IPluginListItem) => {
     if (item.hidden) {
       return null;
@@ -114,8 +105,6 @@ function Sidebar(props: ISidebarProps) {
     return <PluginButton key={item.id} item={item} />;
   };
 
-  /**
-   */
   const renderButton = (item: any, index: number) => {
     if (!item) {
       return <div key={index} className="new-line" />;
@@ -133,8 +122,6 @@ function Sidebar(props: ISidebarProps) {
     );
   };
 
-  /**
-   */
   useEffect(() => {
     function onStatus(params: any) {
       if (params.deleted) {

@@ -19,6 +19,7 @@ import normalizeTags from "../../../Helpers/normalizeTags.ts";
 import useApiRequest from "../../../Helpers/useApiRequest.ts";
 import createDeviceToken from "../../../Requests/createDeviceToken.ts";
 import deleteDevice from "../../../Requests/deleteDevice.ts";
+import deleteDeviceData from "../../../Requests/deleteDeviceData.ts";
 import deleteDeviceToken from "../../../Requests/deleteDeviceToken.ts";
 import editDevice from "../../../Requests/editDevice.ts";
 import setDeviceParams from "../../../Requests/setDeviceParams.ts";
@@ -32,14 +33,13 @@ import TagsTab from "../../Tags/TagsTab.tsx";
 import DeviceInputOutput from "../Common/DeviceInputOutput.tsx";
 import type { IInspectorData } from "../Common/LiveInspector/LiveInspector.types";
 import normalizeConfigParameters from "../Helpers/normalizeConfigParameters.ts";
+import { ChunksTab } from "./ChunksTab/ChunksTab.tsx";
 import ConfigParametersTab from "./ConfigParametersTab/ConfigParametersTab.tsx";
+import DataTab from "./DataTab/DataTab.tsx";
 import GeneralInformationTab from "./GeneralInformationTab/GeneralInformationTab.tsx";
 import LiveInspectorTab from "./LiveInspectorTab/LiveInspectorTab.tsx";
 import MoreTab from "./MoreTab/MoreTab.tsx";
 
-/**
- * The device's edit page.
- */
 function DeviceEdit() {
   const match = useMatch("/console/devices/:id");
   const id = match?.params?.id;
@@ -68,6 +68,10 @@ function DeviceEdit() {
   const intervalInspectorAttach = useRef<any>(null);
 
   const loading = !encoderModules || !data.id || !tokens || !params;
+
+  const { data: dataAmount, mutate: mutateDataAmount } = useApiRequest<number>(
+    `/device/${id}/data_amount`,
+  );
 
   /**
    * Called when the record was fetched by the edit page.
@@ -213,6 +217,18 @@ function DeviceEdit() {
     [data],
   );
 
+  const deleteMultipleData = useCallback(
+    async (ids: string[]) => {
+      if (!id) {
+        return;
+      }
+
+      await deleteDeviceData(id, { ids });
+      mutateDataAmount(Math.max(dataAmount - ids.length, 0));
+    },
+    [mutateDataAmount, dataAmount, id],
+  );
+
   /**
    * Renders the `Live Inspector` tab's title.
    */
@@ -302,22 +318,32 @@ function DeviceEdit() {
         <span>Last Input </span>
         <DeviceInputOutput bold value={data.last_input} />
         <span> &nbsp;|&nbsp; </span>
-        <span>Last Output </span>
-        <DeviceInputOutput bold value={data.last_output} />
-        <span> &nbsp;|&nbsp; </span>
-        <span>Bucket </span>
-        <b>{data.name}</b>
 
-        <span> &nbsp;|&nbsp; </span>
         <span>Type </span>
         <b>{getDeviceTypeName(data.type)}</b>
+        <span> &nbsp;|&nbsp; </span>
+
+        <span>Data amount&nbsp;</span>
+        <b>{dataAmount}</b>
       </>
     );
   };
 
-  /**
-   * Renders the `More` tab.
-   */
+  const renderDataTab = useCallback(() => {
+    return (
+      <DataTab
+        data={data}
+        onDeleteData={deleteMultipleData}
+        dataAmount={dataAmount}
+        onReloadDataAmount={() => mutateDataAmount(dataAmount, true)}
+      />
+    );
+  }, [data, deleteMultipleData, dataAmount, mutateDataAmount]);
+
+  const renderChunksTab = useCallback(() => {
+    return <ChunksTab data={data} />;
+  }, [data]);
+
   const renderMoreTab = useCallback(() => {
     return <MoreTab data={data} onDelete={deleteData} />;
   }, [data, deleteData]);
@@ -426,6 +452,15 @@ function DeviceEdit() {
         {
           label: "General Information",
           content: renderGeneralInformationTab(),
+        },
+        {
+          label: "Data",
+          content: renderDataTab(),
+        },
+        {
+          label: "Chunks",
+          content: renderChunksTab(),
+          hidden: !data || data.type !== "immutable",
         },
         {
           label: renderLiveInspectorTitle(),

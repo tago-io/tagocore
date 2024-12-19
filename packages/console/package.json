@@ -20,11 +20,11 @@
     "cronstrue": "2.5.0",
     "lodash.clonedeep": "4.5.0",
     "mobx": "6.13.5",
-    "mobx-react": "9.1.1",
+    "mobx-react": "9.2.0",
     "react-helmet-async": "2.0.5",
     "react-markdown": "9.0.1",
-    "react-router": "6.27.0",
-    "react-router-dom": "6.27.0",
+    "react-router": "6.28.0",
+    "react-router-dom": "6.28.0",
     "swr": "2.2.5"
   },
   "devDependencies": {
