@@ -28,6 +28,9 @@ RUN just install;
 # Build the console
 RUN just build-console;
 
+# Build the integration
+RUN just build-integration;
+
 # Expose the necessary port
 EXPOSE 8888
 

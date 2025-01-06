@@ -22,6 +22,10 @@ build-console:
   @rm -rf build/console
   @cd packages/console && npm run build
 
+build-integration:
+  @rm -rf plugins/tagoio-integration/build
+  @cd plugins/tagoio-integration && npm run build
+
 install:
   @npm ci
 
@@ -29,8 +33,9 @@ install:
 
 # The process.env is not working on Vite Build
 # This is a workaround to make it work
-file_path := "./node_modules/@tago-io/sdk/out/regions.js"
+file_path := "./node_modules/@tago-io/sdk/lib/regions.js"
 _pre-build:
   @sed -i'' -e 's/ process\.env\.TAGOIO_API/ window.process.env.TAGOIO_API/g' "{{file_path}}"
   @sed -i'' -e 's/ process\.env\.TAGOIO_REALTIME/ window.process.env.TAGOIO_REALTIME/g' "{{file_path}}"
+  @sed -i'' -e 's/ process\.env\.TAGOIO_SSE/ window.process.env.TAGOIO_SSE/g' "{{file_path}}"
   @echo "SDK patched"

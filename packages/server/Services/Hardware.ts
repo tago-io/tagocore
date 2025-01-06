@@ -149,14 +149,22 @@ export async function getCPUUsage(): Promise<IComputerUsage> {
 export async function getDiskUsages(): Promise<IComputerUsage[]> {
   const data = await si.fsSize();
 
-  return data.map((x, i) => ({
-    description: `${formatBytes(x.used)} / ${formatBytes(x.size)}`,
-    detail: x.mount,
-    title: `Disk ${i + 1}`,
-    total: x.size,
-    type: "disk",
-    used: x.used,
-  }));
+  return data.map((x, i) => {
+    return {
+      description: `${formatBytes(x.used)} / ${formatBytes(x.size)}`,
+      detail: x.mount,
+      title: `Disk ${i + 1}`,
+      total:
+        x.size === null || x.size === undefined || Number.isNaN(x.size)
+          ? 0
+          : x.size,
+      type: "disk",
+      used:
+        x.used === null || x.used === undefined || Number.isNaN(x.used)
+          ? 0
+          : x.used,
+    };
+  });
 }
 
 /**
