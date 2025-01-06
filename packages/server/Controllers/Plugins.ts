@@ -50,7 +50,7 @@ const zQueryStringType = z.object({
 /**
  * Configuration of a `folder` property in the body param.
  */
-const zBodyFolderParser = z.object({
+export const zBodyFolderParser = z.object({
   folder: z.string(),
 });
 

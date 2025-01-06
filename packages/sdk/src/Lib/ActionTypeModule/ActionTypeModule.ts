@@ -1,4 +1,4 @@
-import type { IActionTypeModuleSetup, TGenericID } from "../../Types.ts";
+import type { IActionTypeModuleSetup, TGenericID } from "../../Types/index.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
 /**

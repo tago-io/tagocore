@@ -38,6 +38,7 @@ import addDeviceData from "./Providers/DeviceData/addDeviceData.ts";
 import applyDeviceDataRetention from "./Providers/DeviceData/applyDeviceDataRetention.ts";
 import deleteDeviceData from "./Providers/DeviceData/deleteDeviceData.ts";
 import editDeviceData from "./Providers/DeviceData/editDeviceData.ts";
+import exportDeviceData from "./Providers/DeviceData/exportDeviceData.ts";
 import getDeviceDataAmount from "./Providers/DeviceData/getDeviceDataAmount.ts";
 import getDeviceDataAvg from "./Providers/DeviceData/getDeviceDataAvg.ts";
 import getDeviceDataCount from "./Providers/DeviceData/getDeviceDataCount.ts";
@@ -53,6 +54,7 @@ import getDeviceDataLastValue from "./Providers/DeviceData/getDeviceDataLastValu
 import getDeviceDataMax from "./Providers/DeviceData/getDeviceDataMax.ts";
 import getDeviceDataMin from "./Providers/DeviceData/getDeviceDataMin.ts";
 import getDeviceDataSum from "./Providers/DeviceData/getDeviceDataSum.ts";
+import importDeviceData from "./Providers/DeviceData/importDeviceData.ts";
 import deletePluginStorageItem from "./Providers/PluginStorage/deletePluginStorageItem.ts";
 import getAllPluginStorageItems from "./Providers/PluginStorage/getAllPluginStorageItem.ts";
 import getPluginStorageItem from "./Providers/PluginStorage/getPluginStorageItem.ts";
@@ -147,6 +149,8 @@ async function startModule() {
   sqlite.getTagKeys = getTagKeys;
   sqlite.setDeviceParams = setDeviceParams;
   sqlite.setPluginStorageItem = setPluginStorageItem;
+  sqlite.exportDeviceData = exportDeviceData;
+  sqlite.importDeviceData = importDeviceData;
 }
 
 startModule();

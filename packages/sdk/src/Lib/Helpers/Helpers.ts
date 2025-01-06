@@ -4,7 +4,7 @@ import {
   generateResourceID,
   validateResourceID,
 } from "../../Shared/ResourceID.ts";
-import type { IComputerUsage } from "../../Types.ts";
+import type { IComputerUsage } from "../../Types/index.ts";
 import APIBridge from "../APIBridge/APIBridge.ts";
 
 /**
