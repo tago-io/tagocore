@@ -76,6 +76,10 @@ async function setupKnex(this: DatabaseModule, config: Config) {
   try {
     this.showMessage("info", "Testing connection");
 
+    if (!config.main_read_host && !config.main_read_port) {
+      return;
+    }
+
     setupConnections(config);
 
     await testDatabaseConnection();

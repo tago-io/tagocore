@@ -90,6 +90,7 @@ async function uplinkService(
     const downlinkString = deviceParams.find(
       (param) => param.key === "downlink_string",
     );
+
     if (!downlinkString) {
       deviceParams.push({
         key: "downlink_string",
@@ -100,8 +101,8 @@ async function uplinkService(
       });
 
       core.setDeviceParams(device.id, deviceParams);
-    } else if (downlinkString.value !== data.downlink_string) {
-      downlinkString.value = data.downlink_string as string;
+    } else if (downlinkString.value !== data.downlink_string || downlinkString.value !== data.downlink_url) {
+      downlinkString.value = (data.downlink_string as string) || (data.downlink_url as string);
       core.setDeviceParams(device.id, deviceParams);
     }
   }
