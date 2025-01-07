@@ -8,8 +8,17 @@ function consumeData(msg: ConsumeMessage | null): void {
     return;
   }
 
-  const data = JSON.parse(msg.content.toString());
-  const deviceID = msg.properties.messageId;
+  let deviceID: string;
+  let data: any;
+
+  try {
+    data = JSON.parse(msg.content.toString());
+    deviceID = msg.properties.messageId;
+  } catch (e) {
+    console.error(`ERROR: ${e.message}`);
+    consumer.reject(msg, false);
+    return;
+  }
 
   core
     .addDeviceData(deviceID, data, { forceDBInsert: true })
