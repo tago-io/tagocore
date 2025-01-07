@@ -68,10 +68,14 @@ const WrappedStoreRoutes = observer(() => {
     skip: !store.token,
   });
   const [readyToRender, setReadyToRender] = useState(false);
-  const [token] = useState(() => getLocalStorage("token", ""));
+  const [stateToken] = useState(() => {
+    return store.token || getLocalStorage("token", "");
+  });
   const navigate = useNavigate();
 
   const validateAuth = async () => {
+    const token = stateToken || getLocalStorage("token", "");
+
     if (token) {
       // has token, but maybe it's expired
       store.token = token;
