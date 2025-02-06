@@ -36,7 +36,7 @@ export async function getDeviceConnection(id: TGenericID, type: TDeviceType) {
     });
   }
 
-  // TODO [>=1.0.0]: remove it
+  //  TODO:(rc) add reminder to remove this in v1
   if (
     type === "mutable" &&
     !(await deviceDB.write.schema.hasColumn(id, "updated_at"))

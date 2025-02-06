@@ -9,9 +9,6 @@ import { EIcon } from "../../../Icon/Icon.types";
 import * as Style from "./EncoderStack.style";
 import ModalAddEncoder from "./ModalAddEncoder.tsx";
 
-/**
- * Props.
- */
 interface IEncoderStackProps {
   /**
    * Stack value.
@@ -40,8 +37,6 @@ function EncoderStack(props: IEncoderStackProps) {
   const [targetIndex, setTargetIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  /**
-   */
   const onItemMouseDown = useCallback((e: React.MouseEvent, item: string) => {
     setSelectedID(item);
     // we do these to prevent selecting the text:
@@ -163,8 +158,7 @@ function EncoderStack(props: IEncoderStackProps) {
       value.splice(fromIndex, 0, value.splice(targetIndex, 1)[0]);
       onChange([...value].filter((x) => x));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedID, targetIndex]);
+  }, [value, selectedID, targetIndex, onChange]);
 
   /**
    * This array will contain all of the `unselected` encoders,

@@ -11,9 +11,6 @@ import type {
 import MinimumScheduleMessage from "./MinimumScheduleMessage.tsx";
 import * as Style from "./TypeScheduleOptions.style";
 
-/**
- * Props.
- */
 interface ITypeScheduleOptions {
   /**
    * Error of the fields.
@@ -34,11 +31,11 @@ function TypeScheduleOptions(props: ITypeScheduleOptions) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { errors, scheduleData, onChangeScheduleData } = props;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect auto-trigger
   useEffect(() => {
     if (inputRef.current && !scheduleData.interval) {
       inputRef.current.focus();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scheduleData.type]);
 
   return (

@@ -168,7 +168,7 @@ class Worker extends EventEmitter {
 
     this.onModuleLoaded();
 
-    // TODO improve
+    //  TODO:(rc) decide what to "improve" here later in the RC
     if (setup.type === "action-trigger") {
       const actions = await getActionList({
         amount: 99899,

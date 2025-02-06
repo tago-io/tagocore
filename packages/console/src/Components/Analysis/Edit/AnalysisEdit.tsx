@@ -37,9 +37,6 @@ function AnalysisEdit() {
   const initialData = useRef<IAnalysis>({} as IAnalysis);
   const loading = !data.id;
 
-  /**
-   * Should return if the initial data is different from the current data.
-   */
   const checkIfDataChanged = useCallback(() => {
     const initialDataNorm = {
       ...initialData.current,
@@ -55,28 +52,21 @@ function AnalysisEdit() {
     return JSON.stringify(initialDataNorm) !== JSON.stringify(currentDataNorm);
   }, [data]);
 
-  /**
-   * Called when the record was fetched by the edit page.
-   * We use this to set the data state to manipulate the object.
-   */
   const onFetch = useCallback((analysis: IAnalysis) => {
     setData(analysis);
     setLogs(analysis.console?.reverse?.() || []);
     initialData.current = cloneDeep(analysis);
   }, []);
 
-  /**
-   * Validates the form data to make sure the object is not faulty.
-   * This should return a boolean to indicate if the data is correct or not.
-   */
   const validate = useCallback(async () => {
     return true;
   }, []);
 
-  /**
-   * Saves the analysis.
-   */
   const save = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     setSaveAndRunDisabled(true);
     try {
       const formatted = {
@@ -98,10 +88,11 @@ function AnalysisEdit() {
     }
   }, [id, data]);
 
-  /**
-   * Runs the analysis.
-   */
   const run = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     setSaveAndRunDisabled(true);
     try {
       await runAnalysis(id);
@@ -110,9 +101,6 @@ function AnalysisEdit() {
     }
   }, [id]);
 
-  /**
-   * Saves and runs the analysis.
-   */
   const saveAndRun = useCallback(async () => {
     const dataChanged = checkIfDataChanged();
     if (dataChanged) {
@@ -123,34 +111,29 @@ function AnalysisEdit() {
     }
   }, [checkIfDataChanged, save, run]);
 
-  /**
-   * Deletes the analysis.
-   */
   const deleteData = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     await deleteAnalysis(id);
   }, [id]);
 
-  /**
-   * Clears the logs.
-   */
   const clearLogs = useCallback(() => {
     setLogs([]);
   }, []);
 
-  /**
-   * Deletes the logs.
-   */
   const deleteLogs = useCallback(() => {
+    if (!id) {
+      return;
+    }
+
     deleteAnalysisLogs(id);
     clearLogs();
   }, [clearLogs, id]);
 
-  /**
-   * Called when a field from a tab gets modified.
-   * This will apply the change to the data state.
-   */
   const onChangeData = useCallback(
-    (field: keyof IAnalysis, value) => {
+    (field: keyof IAnalysis, value: any) => {
       setData({ ...data, [field]: value });
     },
     [data],
@@ -243,17 +226,19 @@ function AnalysisEdit() {
     };
   });
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.socketConnected): mobx observer
   useEffect(() => {
+    if (!id) {
+      return;
+    }
+
     if (store.socketConnected) {
       getSocket().emit("attach", "analysis", id);
       return () => {
         getSocket().emit("unattach", "analysis", id);
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.socketConnected]);
+  }, [id, store.socketConnected]);
 
   return (
     <EditPage<IAnalysis>

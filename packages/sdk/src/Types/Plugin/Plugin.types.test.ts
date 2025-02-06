@@ -210,7 +210,6 @@ describe("zPluginModuleList", () => {
       zPluginModuleList.parse(data);
     } catch (error) {
       const e = (error as ZodError).flatten();
-      console.log(e);
       expect(e.formErrors).toStrictEqual({
         setup: ["Required", "Required", "Required"],
       });

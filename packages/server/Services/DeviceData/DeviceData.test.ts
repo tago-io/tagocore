@@ -185,7 +185,7 @@ describe("addDeviceDataByDevice", () => {
     expect(arg3[0].time).toBeInstanceOf(Date);
   });
 
-  // TODO - Fix this test
+  //  TODO:(rc) re-enable tests later in the RC
   test("applies payload encoder, then parser, then inserts data", async () => {
     const m1 = vi
       .spyOn(DeviceData, "applyPayloadEncoder")
@@ -207,7 +207,7 @@ describe("addDeviceDataByDevice", () => {
     expect(data).toEqual([]);
   });
 
-  // TODO - Fix this test
+  //  TODO:(rc) re-enable tests later in the RC
   // test("triggers actions after inserting data", async () => {
   //   const mock = vi.spyOn(DeviceData, "triggerActions");
   //   await DeviceData.addDeviceDataByDevice(activeDevice, dataCreate);
@@ -233,7 +233,7 @@ describe("addDeviceDataByDevice", () => {
     expect(arg2.last_input).toBeInstanceOf(Date);
   });
 
-  // TODO - Fix this test
+  //  TODO:(rc) re-enable tests later in the RC
   // test("throws if mutable device has too much data", async () => {
   //   vi.spyOn(DeviceData, "getDeviceDataAmount").mockResolvedValue(50000);
   //   const fn = () =>
@@ -241,7 +241,7 @@ describe("addDeviceDataByDevice", () => {
   //   await expect(fn).rejects.toThrow("has reached the limit");
   // });
 
-  // TODO - Fix this test
+  //  TODO:(rc) re-enable tests later in the RC
   // test("doesn't throws if mutable device doesn't have too much data", async () => {
   //   vi.spyOn(DeviceData, "getDeviceDataAmount").mockResolvedValue(1000);
   //   const result = await DeviceData.addDeviceDataByDevice(
@@ -410,7 +410,7 @@ describe("deleteDeviceData", () => {
     expect(arg4).toEqual(mutableDevice.id);
   });
 
-  // TODO - Fix this test
+  //  TODO:(rc) re-enable tests later in the RC
   // test("returns the amount of deleted items", async () => {
   //   const deviceData = [mockData, mockData, mockData, mockData];
   //   vi.spyOn(Device, "getDeviceInfo").mockResolvedValue(mutableDevice);
@@ -419,7 +419,7 @@ describe("deleteDeviceData", () => {
   //   expect(result).toEqual(deviceData.length);
   // });
 
-  // TODO - Fix this test
+  //  TODO:(rc) re-enable tests later in the RC
   // test("throws if getDeviceData result is not an array", async () => {
   //   vi.spyOn(Device, "getDeviceInfo").mockResolvedValue(mutableDevice);
   //   vi.spyOn(DeviceData, "getDeviceData").mockResolvedValue(123);

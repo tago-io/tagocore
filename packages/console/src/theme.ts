@@ -1,7 +1,9 @@
+import type { DefaultTheme } from "styled-components";
+
 /**
- * The fonts of the application.
+ * Font settings for TagoCore Console.
  */
-const fonts = {
+export const fonts = {
   small: ".73rem",
   default: ".88rem",
   medium: "1.1rem",
@@ -15,9 +17,9 @@ const fonts = {
 };
 
 /**
- * This is the light theme of the application.
+ * Light theme for TagoCore Console.
  */
-const lightTheme = {
+export const lightTheme: DefaultTheme = {
   action: "hsl(11, 80%, 50%)",
   actionTriggerByMQTT: "hsl(296, 32%, 43%)",
   actionTriggerByResource: "hsl(208, 56%, 45%)",
@@ -55,6 +57,7 @@ const lightTheme = {
   fieldsetBorder: "rgb(0, 0, 0, 0.1)",
   files: "hsl(34, 84%, 49%)",
   font: "hsl(0, 4%, 29%)",
+  fontFaded: "hsla(0, 4%, 29%, 0.7)",
   font2: "rgba(0, 0, 0, .5)",
   font3: "rgba(0, 0, 0, .4)",
   formControlBackground: "hsl(0, 0%, 99%)",
@@ -79,5 +82,3 @@ const lightTheme = {
   tabTitleHover: "rgba(0, 0, 0, 0.04)",
   tabTitleSelected: "rgb(255, 255, 255)",
 };
-
-export { fonts, lightTheme };

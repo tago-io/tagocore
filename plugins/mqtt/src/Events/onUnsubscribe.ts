@@ -13,7 +13,7 @@ async function onUnsubscribe(
 
   client.suback({ granted: [packet.qos], messageId: packet.messageId });
 
-  // TODO: Log to device inspector
+  //  TODO:(rc) decide what to do about adding live inspector logging support
   // for (const unsubscription of packet.unsubscriptions) {
   //   deviceInspector(client.device.id, client.connID, '[MQTT] Device unsubscribe', `topic: ${unsubscription}`);
   // }

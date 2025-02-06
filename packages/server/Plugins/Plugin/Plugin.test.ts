@@ -22,7 +22,7 @@ test("throws error if package is not found", () => {
   expect(() => new Plugin(folder)).toThrowError(msg);
 });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("calls Validator.validatePackageJSON", async () => {
 //   const fn = vi.spyOn(Validator.prototype, "validatePackageJSON");
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin4");
@@ -67,7 +67,7 @@ test("has correct initial state", () => {
   expect(plugin.state).toEqual("idle");
 });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("starts a simple plugin", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin4");
 //   const plugin = new Plugin(folder);
@@ -86,7 +86,7 @@ test("has correct initial state", () => {
 //   await plugin.stop(true);
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("throws when attempting to start an already started plugin", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin4");
 //   const plugin = new Plugin(folder);
@@ -100,7 +100,7 @@ test("has correct initial state", () => {
 //   }
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("gracefully stops a simple plugin", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin4");
 //   const plugin = new Plugin(folder);
@@ -128,7 +128,7 @@ test("loads a plugin that has just an error", async () => {
   await plugin.stop(true).catch(() => null);
 });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("loads a plugin that has an error after a module definition", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin6");
 //   const plugin = new Plugin(folder);
@@ -147,7 +147,7 @@ test("loads a plugin that has just an error", async () => {
 //   await plugin.stop(true).catch(() => null);
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("loads a plugin that has an error in a module.onLoad call", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin9");
 //   const plugin = new Plugin(folder);
@@ -165,7 +165,7 @@ test("loads a plugin that has just an error", async () => {
 //   await plugin.stop(true);
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("only returns after all modules were loaded", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin10");
 //   const plugin = new Plugin(folder);
@@ -189,7 +189,7 @@ test("loads a plugin that has just an error", async () => {
 //   await plugin.stop(true);
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("stops plugin execution without waiting for onDestroy", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin11");
 //   const plugin = new Plugin(folder);
@@ -209,7 +209,7 @@ test("loads a plugin that has just an error", async () => {
 //   expect(modules[0].state).toEqual("stopped");
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("stops plugin execution waiting for onDestroy", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin11");
 //   const plugin = new Plugin(folder);
@@ -229,7 +229,7 @@ test("loads a plugin that has just an error", async () => {
 //   expect(modules[0].state).toEqual("stopped");
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("sets message property of module correctly", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin12");
 //   const plugin = new Plugin(folder);
@@ -244,7 +244,7 @@ test("loads a plugin that has just an error", async () => {
 //   await plugin.stop(true);
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("shuts down plugin when disabling it", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin12");
 //   const plugin = new Plugin(folder);
@@ -272,7 +272,7 @@ test("removes error when disabling plugin", async () => {
   expect(plugin.error).toBeNull();
 });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("ignores disable if already disabled", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin12");
 //   const plugin = new Plugin(folder);
@@ -285,7 +285,7 @@ test("removes error when disabling plugin", async () => {
 //   expect(plugin.error).toEqual("not_null_because_it_wasn't_reset");
 // });
 
-//TODO FIX
+//  TODO:(rc) re-enable tests later in the RC
 // test("starts plugin when enabling it", async () => {
 //   const folder = path.join(dirname__, "..", "__mocks__", "plugin12");
 //   const plugin = new Plugin(folder);

@@ -266,7 +266,7 @@ const MQTTService = new ServiceModule({
       defaultValue: 1883,
     },
 
-    // TODO: Add CA signed Certificate
+    //  TODO:(rc) decide what to do about adding CA signed certificates
     // { name: "Certificate", field: "cert", type: "file" },
   ],
 });

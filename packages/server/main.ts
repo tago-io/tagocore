@@ -80,11 +80,11 @@ async function setupExpressRoutes() {
 
   app.use("/console", express.static(consolePath, { index: "./index.html" }));
 
-  app.get("/", (req, res) => {
+  app.get("/", (_, res) => {
     res.redirect("/console");
   });
 
-  app.get("/console/*", (req, res) => {
+  app.get("/console/*", (_, res) => {
     res.header("content-type", "text/html");
     res.sendFile(`${consolePath}/index.html`);
   });
@@ -92,7 +92,7 @@ async function setupExpressRoutes() {
   app.get("/images/:plugin/:type/:identifier?", resolvePluginImage);
   app.get("/images2/:plugin/*", resolvePluginImage2);
 
-  app.options("*", (req, res) => {
+  app.options("*", (_, res) => {
     const defaultHeaders = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
@@ -104,7 +104,7 @@ async function setupExpressRoutes() {
     res.set(defaultHeaders);
   });
 
-  app.use((err, req, res, next) => {
+  app.use((err, _, res, next) => {
     if (err.stack.match(/body-parser/)) {
       res.status(400).send({
         status: false,
@@ -133,7 +133,7 @@ async function setupPluginPages() {
     app.use(fullRoute, express.static(assetsPath, { index: "./index.html" }));
   }
 
-  app.use((req, res) => {
+  app.use((_, res) => {
     res.status(404);
     res.send({ status: false, message: "Route Not Found" });
   });

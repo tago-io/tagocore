@@ -64,10 +64,11 @@ function BucketEdit() {
     }
   }, [data]);
 
-  /**
-   * Saves the bucket.
-   */
   const save = useCallback(async () => {
+    if (!id) {
+      return;
+    }
+
     await editDevice(id, { chunk_retention: data.chunk_retention });
     initialData.current = cloneDeep(data);
   }, [id, data]);
@@ -83,9 +84,6 @@ function BucketEdit() {
     [data],
   );
 
-  /**
-   * Empties the bucket.
-   */
   const emptyBucket = useCallback(async () => {
     await axios.post(
       `/device/${id}/empty`,
@@ -103,6 +101,10 @@ function BucketEdit() {
    */
   const deleteData = useCallback(
     async (ids: string[]) => {
+      if (!id) {
+        return;
+      }
+
       await deleteDeviceData(id, { ids });
       mutateDataAmount(Math.max(dataAmount - ids.length, 0));
     },
@@ -177,13 +179,11 @@ function BucketEdit() {
     return JSON.stringify(initialData.current) !== JSON.stringify(data);
   }, [data]);
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(dataAmount): useEffect state machine
   useEffect(() => {
     if (tabIndex === 1) {
       mutateDataAmount(dataAmount, true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mutateDataAmount, tabIndex]);
 
   return (

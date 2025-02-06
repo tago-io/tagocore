@@ -173,7 +173,7 @@ function Logs() {
     navigate(`/console/logs?channel=${selectedChannel}&type=${selectedType}`, {
       replace: true,
     });
-  }, [selectedChannel, selectedType]);
+  }, [navigate, selectedChannel, selectedType]);
 
   return (
     <Style.Container>

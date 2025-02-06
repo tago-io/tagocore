@@ -1,11 +1,15 @@
 import type { IPlugin } from "@tago-io/tcore-sdk/types";
 import { flattenConfigFields } from "@tago-io/tcore-shared";
-import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import { observer } from "mobx-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
 import { promiseDelay } from "../../../Helpers/promiseDelay.ts";
 import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
 import editPluginSettings from "../../../Requests/editPluginSettings.ts";
 import editSettings from "../../../Requests/editSettings.ts";
-import getPluginInfo from "../../../Requests/getPluginInfo.ts";
+import { usePluginInfo } from "../../../Requests/getPluginInfo.ts";
+import store from "../../../System/Store.ts";
 import {
   EButton,
   EIcon,
@@ -15,75 +19,141 @@ import {
 } from "../../../index.ts";
 import PluginConfigFields from "../../Plugins/Common/PluginConfigFields/PluginConfigFields.tsx";
 import Status from "../../Plugins/Common/Status/Status.tsx";
-import SetupForm from "../SetupForm/SetupForm.tsx";
+import SetupForm, { type SetupFormButton } from "../SetupForm/SetupForm.tsx";
 import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
 
-/**
- */
-interface IStepPluginConfigProps {
-  backButton?: any;
-  description?: string;
-  mustBeDatabasePlugin?: boolean;
-  onBack?: () => void;
-  plugin?: IPlugin;
-  pluginID?: string;
+interface StepPluginConfigProps {
+  plugin: IPlugin | null;
   title?: string;
+  description?: string;
+  backButton?: SetupFormButton;
+  isLoading?: boolean;
+  mustBeDatabasePlugin?: boolean;
+  onNext: () => void;
+  onBack: () => void;
 }
 
-/**
- */
-function StepPluginConfig(props: IStepPluginConfigProps) {
+export function StepPluginConfig(props: StepPluginConfigProps) {
   const {
-    mustBeDatabasePlugin,
-    pluginID,
+    plugin,
+    title = "Plugin Configuration",
+    description = "Adjust the settings of your main Database Plugin",
+    isLoading = false,
+    mustBeDatabasePlugin = false,
+    onNext,
     onBack,
-    title,
-    backButton,
-    description,
   } = props;
 
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [plugin, setPlugin] = useState<IPlugin | null>(
-    () => props.plugin || null,
-  );
-  const [errors, setErrors] = useState<any>({});
-  const [values, setValues] = useState<any>({});
 
-  const mod =
-    plugin?.modules?.find?.((x) => x.type === "database") ||
-    plugin?.modules?.[0];
-  const load = loading || !plugin;
+  const [isSaving, setIsSaving] = useState(false);
+  const [formErrors, setFormErrors] = useState<Record<string, boolean>>({});
+  const [formData, setFormData] = useState<Record<string, any>>({});
 
-  /**
-   */
-  const loadPluginManually = async () => {
-    const plug = await getPluginInfo(pluginID as string);
-    setPlugin(plug);
-  };
+  const isLoadingPlugin = !plugin || isLoading || isSaving;
 
-  /**
-   */
-  const renderErrorStatus = useCallback(() => {
-    if (!errorMessage) {
+  const firstDatabaseModule = useMemo(() => {
+    if (!plugin) {
       return null;
     }
 
-    return (
-      <FormGroup>
-        <Status
-          color={"hsla(0, 100%, 44%, 0.1)"}
-          icon={EIcon["exclamation-triangle"]}
-          iconColor="hsl(0, 100%, 40%)"
-          value={errorMessage}
-        />
-      </FormGroup>
-    );
-  }, [errorMessage]);
+    return plugin.modules.find((module) => module.type === "database") || null;
+  }, [plugin]);
 
-  /**
-   */
+  const firstModule = useMemo(() => {
+    if (mustBeDatabasePlugin) {
+      return firstDatabaseModule;
+    }
+
+    return plugin?.modules?.[0] || null;
+  }, [mustBeDatabasePlugin, firstDatabaseModule, plugin?.modules]);
+
+  const isSaveDisabled = useMemo(() => {
+    return (
+      isLoadingPlugin ||
+      (mustBeDatabasePlugin && plugin && !firstDatabaseModule)
+    );
+  }, [isLoadingPlugin, plugin, mustBeDatabasePlugin, firstDatabaseModule]);
+
+  const setDefaultFormData = useCallback(
+    (pluginInfo: IPlugin) => {
+      if (!firstModule) {
+        setErrorMessage(pluginInfo.error || "");
+        setFormData({});
+        return;
+      }
+
+      const flattenedConfigFields = flattenConfigFields(
+        firstModule.configs ?? [],
+      );
+
+      const defaultFormData: Record<string, any> = {};
+      for (const field of flattenedConfigFields) {
+        if ("defaultValue" in field && field.defaultValue) {
+          defaultFormData[field.field] = field.defaultValue;
+        }
+      }
+
+      setErrorMessage(pluginInfo.error || "");
+      setFormData(defaultFormData);
+    },
+    [firstModule],
+  );
+
+  const validate = useCallback(() => {
+    const err = validateConfigFields(firstModule?.configs || [], formData);
+    if (err !== null) {
+      setFormErrors(err);
+      return false;
+    }
+
+    setFormErrors({});
+    return true;
+  }, [formData, firstModule?.configs]);
+
+  const save = useCallback(async () => {
+    if (!validate()) {
+      return;
+    }
+
+    if (!firstModule || !plugin) {
+      return;
+    }
+
+    setIsSaving(true);
+    setErrorMessage("");
+
+    try {
+      const editValues = Object.keys(formData).map((key) => ({
+        moduleID: firstModule.id,
+        field: key,
+        value: formData[key],
+        setupDatabase: true,
+      }));
+
+      await editPluginSettings(plugin?.id || "", editValues);
+
+      // some artificial delay to give a better UX feel
+      await promiseDelay(1000);
+      await editSettings({ database_plugin: `${plugin.id}:${firstModule.id}` });
+
+      await promiseDelay(1000);
+
+      // replicate master password on the selected database
+      await axios.post("/settings/master/password", {
+        password: store.masterPassword,
+      });
+
+      setSuccess(true);
+    } catch (error: any) {
+      const msg = error?.response?.data?.message || error?.toString?.();
+      setErrorMessage(msg);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [plugin, formData, firstModule, validate]);
+
   const renderSuccessMessage = useCallback(() => {
     if (!success) {
       return null;
@@ -93,127 +163,48 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
       <SuccessMessage
         title="Connected"
         description="The database plugin is connected and ready to be used"
-        onClick={() => (window.location.href = "/")}
+        onClick={() => onNext()}
       />
     );
-  }, [success]);
+  }, [success, onNext]);
 
-  /**
-   */
-  const save = useCallback(async () => {
-    if (!validate()) {
-      return;
-    }
-
-    setLoading(true);
-    setErrorMessage("");
-
-    try {
-      const editValues = Object.keys(values).map((key) => ({
-        moduleID: mod?.id,
-        field: key,
-        value: values[key],
-        setupDatabase: true,
-      }));
-
-      await editPluginSettings(plugin?.id || "", editValues);
-      await promiseDelay(1000); // a bit of delay generates more 'trust'
-      await editSettings({ database_plugin: `${plugin?.id}:${mod?.id}` });
-
-      setSuccess(true);
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || err?.toString?.();
-      setErrorMessage(msg);
-    } finally {
-      setLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugin, values]);
-
-  /**
-   */
-  const setDefaultValues = useCallback(() => {
-    const flattened = flattenConfigFields(mod?.configs || []);
-    for (const field of flattened) {
-      if ("defaultValue" in field && field.defaultValue) {
-        values[field.field] = field.defaultValue;
-      }
-    }
-
-    setErrorMessage(mod?.error || "");
-    setValues({ ...values });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugin]);
-
-  /**
-   * Validates the form data to make sure the object is not faulty.
-   * This should return a boolean to indicate if the data is correct or not.
-   */
-  const validate = () => {
-    const err = validateConfigFields(mod?.configs || [], values);
-    if (err !== null) {
-      setErrors(err);
-      return false;
-    }
-
-    setErrors({});
-    return true;
-  };
-
-  /**
-   */
   useEffect(() => {
     if (plugin) {
-      setDefaultValues();
+      setDefaultFormData(plugin);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugin]);
-
-  /**
-   */
-  useEffect(() => {
-    if (pluginID) {
-      loadPluginManually();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pluginID]);
-
-  const hasDatabaseModule = plugin?.modules?.some((x) => x.type === "database");
+  }, [plugin, setDefaultFormData]);
 
   return (
     <SetupForm
-      title={title ?? "Plugin Configuration"}
-      description={
-        description ?? "Adjust the settings of your main Database Plugin"
-      }
-      loading={load}
+      title={title}
+      description={description}
+      loading={isLoadingPlugin}
       onRenderAfterFooter={renderSuccessMessage}
       buttons={[
-        backButton
-          ? { ...backButton, disabled: load }
-          : { label: "Back", disabled: load, onClick: onBack },
+        props.backButton
+          ? { ...props.backButton, disabled: isLoadingPlugin }
+          : { label: "Back", disabled: isLoadingPlugin, onClick: onBack },
         {
           label: "Save",
-          disabled:
-            load || (mustBeDatabasePlugin && plugin && !hasDatabaseModule),
+          disabled: isSaveDisabled,
           onClick: save,
           type: EButton.primary,
         },
       ]}
     >
-      {mustBeDatabasePlugin && plugin && !hasDatabaseModule ? (
+      {mustBeDatabasePlugin && plugin && !firstDatabaseModule ? (
         <EmptyMessage
           icon={EIcon["exclamation-triangle"]}
           message="The selected plugin doesn't contain a database module"
         />
       ) : plugin ? (
         <>
-          {renderErrorStatus()}
+          <ErrorStatus message={errorMessage} />
           <PluginConfigFields
-            data={mod?.configs || []}
-            errors={errors}
-            onChangeValues={setValues}
-            values={values}
+            data={firstModule?.configs || []}
+            errors={formErrors}
+            onChangeValues={setFormData}
+            values={formData}
           />
         </>
       ) : (
@@ -223,4 +214,41 @@ function StepPluginConfig(props: IStepPluginConfigProps) {
   );
 }
 
-export default StepPluginConfig;
+function StepPluginConfigByID(
+  props: Omit<StepPluginConfigProps, "plugin"> & {
+    pluginID: string;
+  },
+) {
+  const { data: plugin, isLoading: isLoadingPlugin } = usePluginInfo(
+    props.pluginID,
+  );
+
+  return (
+    <StepPluginConfig
+      {...props}
+      plugin={plugin ?? null}
+      isLoading={isLoadingPlugin}
+    />
+  );
+}
+
+const StepPluginConfigByIDWithStore = observer(StepPluginConfigByID);
+
+export default StepPluginConfigByIDWithStore;
+
+function ErrorStatus(props: { message: string }) {
+  if (!props.message) {
+    return null;
+  }
+
+  return (
+    <FormGroup>
+      <Status
+        color={"hsla(0, 100%, 44%, 0.1)"}
+        icon={EIcon["exclamation-triangle"]}
+        iconColor="hsl(0, 100%, 40%)"
+        value={props.message}
+      />
+    </FormGroup>
+  );
+}

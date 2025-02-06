@@ -10,9 +10,9 @@ async function onDisconnect(
   connection.delConnection(client.channel as string, client.connID as string);
 
   if (!client.disconnected) {
-    // TODO: Log to Device Inspector
+    //  TODO:(rc) decide what to do about adding live inspector logging support
     // deviceInspector(client.device.id, client.connID, '[MQTT] Device disconnected', `socket event: ${reason}`);
-    // TODO: Trigger Action for MQTT Disconnect
+    //  TODO:(rc) decide what to do about triggering action for MQTT disconnect
     // const actionObj = {
     //   id: client.device.id,
     //   client_id: client.clientId,
@@ -30,7 +30,7 @@ async function onDisconnect(
       JSON.stringify(client.will),
     );
 
-    // TODO: Log to Device Inspector
+    //  TODO:(rc) decide what to do about adding live inspector logging support
     // deviceInspector(client.device.id, client.connID, '[MQTT] Device executed will message', JSON.stringify(client.will));
   }
 

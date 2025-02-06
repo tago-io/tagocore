@@ -4,14 +4,12 @@ import Icon from "../Icon/Icon.tsx";
 import { EIcon } from "../Icon/Icon.types";
 import * as Style from "./RowManipulator.style";
 
-/**
- * Props.
- */
 interface IRowManipulatorProps<T> {
   /**
    * Data to be rendered in this component.
    */
   data: T[];
+  disabled?: boolean;
   /**
    * Called for each item in the data array.
    */
@@ -24,19 +22,11 @@ interface IRowManipulatorProps<T> {
    * Called when the user presses the remove button to remove a specific row.
    */
   onRemoveItem?: (index: number) => void;
-  /**
-   */
-  disabled?: boolean;
 }
 
-/**
- */
 function RowManipulator<T>(props: IRowManipulatorProps<T>) {
   const { data, disabled, onRenderItem, onAddItem, onRemoveItem } = props;
 
-  /**
-   * Renders the buttons at the end of each row.
-   */
   const renderButtons = (rowIndex: number) => {
     const last = rowIndex !== data.length - 1;
     return (
@@ -56,9 +46,6 @@ function RowManipulator<T>(props: IRowManipulatorProps<T>) {
     );
   };
 
-  /**
-   * Renders a single row.
-   */
   const renderRow = (item: T, rowIndex: number) => {
     return (
       <div className="row" key={rowIndex}>
@@ -68,13 +55,11 @@ function RowManipulator<T>(props: IRowManipulatorProps<T>) {
     );
   };
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(onAddItem): useEffect side effect
   useEffect(() => {
     if (!data || data.length === 0) {
       onAddItem?.();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return <Style.Container>{data.map(renderRow)}</Style.Container>;

@@ -13,23 +13,17 @@ import Publisher from "../../../Plugins/Common/Publisher/Publisher.tsx";
 import Tooltip from "../../../Tooltip/Tooltip.tsx";
 import * as Style from "./Banner.style";
 
-/**
- * Props.
- */
 interface IBannerProps {
   installURL: string;
-  onChangeSelectedVersion(version: string): void;
   plugin: any;
   selectedVersion: string;
   systemPlatform?: string;
+  onChangeSelectedVersion(version: string): void;
 }
 
-/**
- * The banner at the top of the plugin details page.
- */
-function Banner(props: IBannerProps) {
+function PluginBanner(props: IBannerProps) {
   const { data: status } = useApiRequest<any>("/status");
-  const { data: installedPlugins } =
+  const { data: installedPlugins, mutate: mutateTest } =
     useApiRequest<Array<string>>("/plugins/installed");
   const { plugin } = props;
   const {
@@ -61,35 +55,24 @@ function Banner(props: IBannerProps) {
     [token, masterPassword],
   );
 
-  /**
-   * Called when the activate button is pressed.
-   */
-  const activate = useCallback(() => {
+  const activatePlugin = useCallback(() => {
     axios.post(`/plugins/activate/${id}`, {}, { headers }).then(() => {
       setIsInstalled(true);
+      mutateTest();
     });
-  }, [id, headers]);
+  }, [id, headers, mutateTest]);
 
-  /**
-   * Edits the configuration of the plugin.
-   */
-  const editConfiguration = useCallback(() => {
+  const editPluginSettings = useCallback(() => {
     navigate(`/console/plugin/${id}`);
   }, [id, navigate]);
 
-  /**
-   * Called when the deactivate button is pressed.
-   */
-  const deactivate = useCallback(() => {
+  const deactivatePlugin = useCallback(() => {
     axios.post(`/plugins/deactivate/${id}`, {}, { headers }).then(() => {
       setIsInstalled(false);
     });
   }, [id, headers]);
 
-  /**
-   * Renders the information part of the banner.
-   */
-  const renderInfo = () => {
+  const renderPluginInfoSection = () => {
     return (
       <Style.Info>
         <div className="title">
@@ -114,24 +97,21 @@ function Banner(props: IBannerProps) {
     );
   };
 
-  /**
-   * Renders the install section.
-   */
-  const renderInstall = () => {
+  const renderPluginInstallSection = () => {
     const disabled = isIncompatible || isInstalled;
     const defaultPlugin = types?.includes("default");
 
     if (isInstalled) {
       return (
         <Style.Install>
-          <Button onClick={editConfiguration} type={EButton.primary}>
-            Edit configuration
+          <Button onClick={editPluginSettings} type={EButton.primary}>
+            Configure plugin
           </Button>
 
           <Button
             style={{ padding: "8px 20px", marginTop: "10px" }}
             addIconMargin
-            onClick={deactivate}
+            onClick={deactivatePlugin}
             type={EButton.danger_outline}
           >
             <Icon icon={EIcon["trash-alt"]} />
@@ -154,7 +134,7 @@ function Banner(props: IBannerProps) {
     return (
       <Tooltip text={isInstalled ? "This version is already installed" : ""}>
         <Style.Install disabled={disabled}>
-          <Button onClick={activate} type={EButton.primary}>
+          <Button onClick={activatePlugin} type={EButton.primary}>
             Activate
           </Button>
 
@@ -173,10 +153,10 @@ function Banner(props: IBannerProps) {
     <Style.Container>
       <PluginImage width={150} src={logo_url} />
 
-      {renderInfo()}
-      {renderInstall()}
+      {renderPluginInfoSection()}
+      {renderPluginInstallSection()}
     </Style.Container>
   );
 }
 
-export default Banner;
+export default PluginBanner;

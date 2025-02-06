@@ -45,7 +45,7 @@ To install Node-RED on your machine, follow this tutorial that Node-RED provided
 
 ## Install Node TagoIO out on Node-RED:
 
-To install TagoIO out node on Node-RED, click in `more options`, `manage pallet`, abd search for `TagoIO out` on the `Install”` tab and click in install. When installing is finished, the TagoIO out node will appear on the “Nodes” tab. 
+To install TagoIO out node on Node-RED, click in `more options`, `manage pallet`, and search for `node-red-tagocore` on the `Install”` tab and click in install. When installing is finished, the TagoIO out node will appear on the “Nodes” tab. 
 
 You can check the full process in the [Node-RED documentation](https://Node-RED.org/docs/user-guide/runtime/adding-nodes).
 

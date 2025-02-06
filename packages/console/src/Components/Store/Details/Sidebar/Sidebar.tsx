@@ -2,7 +2,6 @@ import type { TPluginType } from "@tago-io/tcore-sdk/types";
 import ClassTypes from "../../../Plugins/Common/ClassTypes/ClassTypes.tsx";
 import MainInformation from "../../../Plugins/Common/MainInformation/MainInformation.tsx";
 import Permissions from "../../../Plugins/Common/Permissions/Permissions.tsx";
-import Platforms from "../../../Plugins/Common/Platforms/Platforms.tsx";
 import * as Style from "./Sidebar.style";
 
 interface ISidebarProps {
@@ -11,7 +10,6 @@ interface ISidebarProps {
   version: string;
   categories: string[];
   permissions: string[];
-  platforms: string[];
   /**
    * Date of publish for the plugin.
    */
@@ -63,7 +61,6 @@ function Sidebar(props: ISidebarProps) {
       {categories.length > 0 && (
         <section>
           <h4>Categories</h4>
-          {/* <Categories value={categories} /> */}
         </section>
       )}
     </Style.Container>

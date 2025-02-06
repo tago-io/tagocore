@@ -9,8 +9,8 @@ export const Content = styled.div`
   height: 100%;
 
   svg {
-    height: 50px;
-    width: auto;
+    height: 5rem;
+    width: 100%;
     margin-top: 15px;
   }
 
@@ -18,10 +18,22 @@ export const Content = styled.div`
     text-align: center;
     margin-top: 25px;
 
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
     > div {
       text-align: center;
-      opacity: 0.7;
       font-size: ${() => fonts.medium};
+      color: ${({ theme }) => theme.fontFaded};
+    }
+
+    span.next {
+      display: inline-block;
+      background: ${({ theme }) => theme.buttonPrimary};
+      color: ${({ theme }) => theme.buttonPrimaryFont};
+      padding: 3px 6px;
+      border-radius: 4px;
     }
   }
 

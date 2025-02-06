@@ -1,11 +1,8 @@
-import { Account } from "@tago-io/sdk";
-import type { ActionQuery } from "@tago-io/sdk/out/modules/Account/actions.types";
+import { Resources } from "@tago-io/sdk";
+import type { ActionQuery } from "@tago-io/sdk/lib/types";
 import type { IAction, IActionListQuery } from "@tago-io/tcore-sdk/types";
 import store from "../System/Store.ts";
 
-/**
- * Retrieves a list of actions.
- */
 async function getActionList(
   page: number,
   amount: number,
@@ -30,8 +27,9 @@ async function getActionList(
     ],
   };
 
-  const account = new Account({ token: store.token });
-  const result = await account.actions.list(query as ActionQuery);
+  const resources = new Resources({ token: store.token });
+  const result = await resources.actions.list(query as ActionQuery);
+
   return result as IAction[];
 }
 

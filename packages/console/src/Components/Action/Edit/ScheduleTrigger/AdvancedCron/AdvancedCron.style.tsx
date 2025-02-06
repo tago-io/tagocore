@@ -36,7 +36,7 @@ const CronInputContainer = styled.div`
   padding-top: 1rem;
 `;
 
-const CronInput = styled(InputStyle.Container)`\
+const CronInput = styled(InputStyle.Container)`
   font-size: 2.5rem;
   border-radius: 10px;
   text-align: center;

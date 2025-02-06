@@ -9,9 +9,6 @@ import TooltipText from "../TooltipText/TooltipText.tsx";
 import * as Style from "./PaginatedTable.style";
 import type { IColumn, IFilter } from "./PaginatedTable.types";
 
-/**
- * Props.
- */
 interface IPaginatedTableProps<T> {
   /**
    * The configuration for the columns.
@@ -59,25 +56,13 @@ interface IPaginatedTableProps<T> {
    * Shows page number or not.
    */
   infinitePages?: boolean;
-  /**
-   */
   showConfigButton?: boolean;
-  /**
-   */
   onConfigButtonClick?: () => void;
-  /**
-   */
   refetchID?: number;
-  /**
-   */
   showRefreshButton?: boolean;
-  /**
-   */
   onRefreshButtonClick?: () => void;
 }
 
-/**
- */
 function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [error, setError] = useState("");
@@ -106,17 +91,11 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
   const filterTimeout = useRef<ReturnType<typeof setTimeout>>();
   const firstRender = useRef(true);
 
-  /**
-   * Called when one of the filter changes values.
-   */
   const onChangeFilter = (column: IColumn<T>, text: any) => {
     setFilter({ ...filter, [column.id]: text });
     column.onFilter?.(text, column);
   };
 
-  /**
-   * Renders a header cell.
-   */
   const renderHeaderCell = (column: IColumn<T>) => {
     const flex = column.flex || "1";
     const width = column.width || "auto";
@@ -140,9 +119,6 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     );
   };
 
-  /**
-   * Renders a header cell.
-   */
   const renderFilter = (column: IColumn<T>) => {
     const filterDisabled = column.filterDisabled || column.type === "date";
     return (
@@ -173,9 +149,6 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     );
   };
 
-  /**
-   * Renders a row cell.
-   */
   const renderRowCell = (item: T, column: IColumn<T>, rowIndex: number) => {
     const flex = column.flex || "1";
     const width = column.width || "auto";
@@ -190,9 +163,6 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     );
   };
 
-  /**
-   * Renders a single row.
-   */
   const renderRow = (item: T, rowIndex: number) => {
     const link = onGetRowLink?.(item) as string;
 
@@ -214,9 +184,6 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     );
   };
 
-  /**
-   * Renders the empty message in the center of the table if there are no records in it.
-   */
   const renderEmptyMessage = () => {
     if (!emptyMessage) {
       return null;
@@ -226,9 +193,6 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     );
   };
 
-  /**
-   * Gets the ideal amount of rows to be rendered.
-   */
   const getIdealAmountOfRows = () => {
     const node = rowsNode.current as HTMLDivElement;
     if (node) {
@@ -241,8 +205,7 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     return 0;
   };
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect state machine
   const fetchPageData = useCallback(async () => {
     if (!rowsNode.current) {
       return;
@@ -261,30 +224,24 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
     }
   }, [page, filter, onGetData]);
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect state machine
   useEffect(() => {
     fetchPageData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect state machine
   useEffect(() => {
     if (!firstRender.current) {
       filterTimeout.current = setTimeout(fetchPageData, 300);
-      return () => clearTimeout(filterTimeout.current as unknown as number);
+      return () => clearTimeout(filterTimeout.current);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect state machine
   useEffect(() => {
     if (!firstRender.current && refetchID) {
       fetchPageData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetchID]);
 
   /**
@@ -292,6 +249,7 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
    * of the table. The amount of pages will be set in a state for future use in
    * the footer component.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: useEffect state machine
   useEffect(() => {
     if (!infinitePages) {
       const idealAmount = getIdealAmountOfRows();
@@ -299,7 +257,6 @@ function PaginatedTable<T>(props: IPaginatedTableProps<T>) {
       setPageAmount(total);
       fetchPageData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amountOfRecords]);
 
   /**

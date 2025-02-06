@@ -1,52 +1,86 @@
 import { getSystemName } from "@tago-io/tcore-shared";
 import axios from "axios";
+import { runInAction } from "mobx";
+import { observer } from "mobx-react";
 import { type KeyboardEvent, useCallback, useRef, useState } from "react";
+
+import store from "../../../System/Store.ts";
 import { EButton, EIcon, FormGroup, Icon } from "../../../index.ts";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage.tsx";
 import InputPassword from "../../InputPassword/InputPassword.tsx";
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import * as Style from "./StepMasterPassword.style";
 
-/**
- * Step to set the master password of the application.
- */
-function StepMasterPassword(props: any) {
+interface StepMasterPasswordProps {
+  onBack: () => void;
+  onNext: () => void;
+}
+
+function StepMasterPassword(props: StepMasterPasswordProps) {
   const { onBack, onNext } = props;
+
   const [value, setValue] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [confirmation, setConfirmation] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+
+  const passwordRef = useRef<HTMLInputElement>(null);
   const confirmationRef = useRef<HTMLInputElement>(null);
 
-  /**
-   * Goes to the next step.
-   */
+  const validate = useCallback(
+    (form: { value: string; confirmation: string }) => {
+      if (!form.value || !form.confirmation) {
+        return {
+          message: "Password and confirmation are required",
+          focusElement: !form.value
+            ? passwordRef.current
+            : confirmationRef.current,
+        };
+      }
+
+      if (form.value !== form.confirmation) {
+        return {
+          message: "Passwords do not match",
+          focusElement: confirmationRef.current,
+        };
+      }
+
+      if (form.value.length < 6) {
+        return {
+          message: "Password must have at least 6 characters",
+          focusElement: passwordRef.current,
+        };
+      }
+
+      return null;
+    },
+    [],
+  );
+
   const next = useCallback(async () => {
+    const error = validate({ value, confirmation });
+    if (error) {
+      setErrorMsg(error.message);
+      error.focusElement?.focus();
+      return;
+    }
     setErrorMsg("");
 
-    if (value !== confirmation) {
-      setErrorMsg("Passwords do not match");
-      return;
-    }
-
-    if (value.length < 6) {
-      setErrorMsg("Password must have at least 6 characters");
-      return;
-    }
-
     try {
-      setLoading(true);
+      setIsPending(true);
       await axios.post("/settings/master/password", { password: value });
 
-      onNext(value);
-    } catch {
-      setLoading(false);
-    }
-  }, [onNext, value, confirmation]);
+      runInAction(() => {
+        store.masterPasswordConfigured = true;
+        store.masterPassword = value;
+      });
 
-  /**
-   * Called when the password input receives a keydown event.
-   */
+      onNext();
+    } catch {
+      setIsPending(false);
+    }
+  }, [validate, onNext, value, confirmation]);
+
   const onPasswordKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
@@ -56,9 +90,6 @@ function StepMasterPassword(props: any) {
     [],
   );
 
-  /**
-   * Called when the confirmation input receives a keydown event.
-   */
   const onConfirmationKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
@@ -67,8 +98,6 @@ function StepMasterPassword(props: any) {
     },
     [next],
   );
-
-  const nextDisabled = !value || !confirmation || loading;
 
   return (
     <SetupForm
@@ -79,7 +108,7 @@ function StepMasterPassword(props: any) {
         {
           label: "Next",
           onClick: next,
-          disabled: nextDisabled,
+          disabled: isPending,
           type: EButton.primary,
         },
       ]}
@@ -97,11 +126,12 @@ function StepMasterPassword(props: any) {
           <InputPassword
             autoComplete="new-password"
             autoFocus
+            inputRef={passwordRef}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={onPasswordKeyDown}
             value={value}
             error={!!errorMsg}
-            disabled={loading}
+            disabled={isPending}
           />
         </FormGroup>
 
@@ -113,7 +143,7 @@ function StepMasterPassword(props: any) {
             onKeyDown={onConfirmationKeyDown}
             value={confirmation}
             error={!!errorMsg}
-            disabled={loading}
+            disabled={isPending}
           />
         </FormGroup>
 
@@ -131,4 +161,4 @@ function StepMasterPassword(props: any) {
   );
 }
 
-export default StepMasterPassword;
+export default observer(StepMasterPassword);

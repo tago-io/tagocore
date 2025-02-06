@@ -93,10 +93,10 @@ async function onPublish(
     messageId,
   });
 
-  // TODO: Log to device inspector
+  //  TODO:(rc) decide what to do about adding live inspector logging support
   // deviceInspector(client.device.id, client.connID, '[MQTT] Device publish', JSON.stringify(scope));
 
-  // TODO: Update Device Last Input
+  //  TODO:(rc) decide what to do about adding updating device last input
   // deviceProvider.updateLastTime(client.device.id, 'input');
 }
 
