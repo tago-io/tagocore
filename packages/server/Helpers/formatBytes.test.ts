@@ -53,6 +53,4 @@ describe("Format bytes", () => {
     expect(start).toBe("1 TB");
     expect(end).toBe("1024 TB");
   });
-
-  // TODO: Add more tests
 });

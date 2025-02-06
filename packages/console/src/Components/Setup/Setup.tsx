@@ -1,12 +1,13 @@
 import { observer } from "mobx-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router";
-import setDocumentTitle from "../../Helpers/setDocumentTitle.ts";
-import store from "../../System/Store.ts";
+import { useCallback, useMemo, useState } from "react";
+import { useLoaderData, useNavigate } from "react-router";
+
+import type { TStatusResponse } from "src/App.tsx";
+
 import SetupBackground from "./SetupBackground/SetupBackground.tsx";
 import StepDatabaseWrapper from "./StepDatabaseWrapper/StepDatabaseWrapper.tsx";
 import StepMasterPassword from "./StepMasterPassword/StepMasterPassword.tsx";
-import { StepPluginConfigByID } from "./StepPluginConfig/StepPluginConfig.tsx";
+import StepPluginConfigByID from "./StepPluginConfig/StepPluginConfig.tsx";
 import StepSignUp from "./StepSignUp/StepSignUp.tsx";
 import StepWelcome from "./StepWelcome/StepWelcome.tsx";
 
@@ -17,93 +18,39 @@ type TSetupStep =
   | "plugin-settings"
   | "create-account";
 
-/**
- * Main setup component.
- */
+type SetupLoaderData = { stepList: TSetupStep[] };
+
 function Setup() {
-  const [step, setStep] = useState(0);
-  const [pluginID, setPluginID] = useState<string | null>(null);
-  const [readyToRender, setReadyToRender] = useState(false);
+  const { stepList } = useLoaderData() as SetupLoaderData;
 
   const navigate = useNavigate();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: mobx observers
-  const steps = useMemo(() => {
-    const stepList: TSetupStep[] = ["welcome"];
-
-    if (!store.masterPasswordConfigured) {
-      stepList.push("master-password");
-    }
-
-    if (!store.databaseConfigured) {
-      stepList.push("database-setup");
-    }
-
-    if (pluginID) {
-      stepList.push("plugin-settings");
-    }
-
-    if (!store.accountConfigured) {
-      stepList.push("create-account");
-    }
-
-    return stepList;
-  }, [
-    store.masterPasswordConfigured,
-    store.databaseConfigured,
-    store.accountConfigured,
-    pluginID,
-  ]);
+  const [step, setStep] = useState(0);
+  const [selectedDatabasePluginID, setSelectedDatabasePluginID] = useState<
+    string | null
+  >(null);
 
   const currentStep = useMemo(() => {
-    return steps[step] || null;
-  }, [steps, step]);
-
-  const next = useCallback(
-    (param: any) => {
-      if (currentStep === "master-password") {
-        store.masterPasswordConfigured = true;
-        store.masterPassword = param as string;
-      } else if (currentStep === "database-setup") {
-        setPluginID(param as string);
-        setStep((state) => state + 1);
-      } else if (step === steps.length - 1) {
-        navigate("/console/login");
-      } else {
-        setStep((state) => state + 1);
-      }
-    },
-    [steps, currentStep, step, navigate],
-  );
+    return stepList[step] || null;
+  }, [stepList, step]);
 
   const back = useCallback(() => {
-    setStep(step - 1);
+    if (step > 1) {
+      setStep(step - 1);
+    }
   }, [step]);
 
-  /**
-   * Sets the document title.
-   */
-  useEffect(() => {
-    if (steps.length === 1) {
-      navigate("/console");
-    } else if (steps.length === 2 && steps[1] === "create-account") {
-      setReadyToRender(true);
-      setStep(1);
-    } else {
-      setReadyToRender(true);
-      setDocumentTitle("Setup");
+  const next = useCallback(() => {
+    if (currentStep === "create-account") {
+      navigate("/console/login");
+      return;
     }
-  }, [steps, navigate]);
 
-  useEffect(() => {
-    if (!currentStep) {
-      navigate("/console");
+    const nextStep = stepList[step + 1];
+    if (nextStep) {
+      setStep(step + 1);
     }
-  }, [currentStep, navigate]);
-
-  if (!readyToRender || !currentStep) {
-    return null;
-  }
+  }, [stepList, step, currentStep, navigate]);
 
   if (currentStep === "master-password") {
     return (
@@ -114,11 +61,34 @@ function Setup() {
     );
   }
 
-  if (currentStep === "database-setup") {
+  if (
+    currentStep === "database-setup" ||
+    (currentStep === "plugin-settings" && !selectedDatabasePluginID)
+  ) {
     return (
       <>
         <SetupBackground />
-        <StepDatabaseWrapper onBack={back} onNext={next} />
+        <StepDatabaseWrapper
+          onBack={back}
+          onNext={next}
+          onSelectDatabasePlugin={(pluginID) =>
+            setSelectedDatabasePluginID(pluginID)
+          }
+        />
+      </>
+    );
+  }
+
+  if (currentStep === "plugin-settings" && selectedDatabasePluginID) {
+    return (
+      <>
+        <SetupBackground />
+        <StepPluginConfigByID
+          pluginID={selectedDatabasePluginID}
+          mustBeDatabasePlugin
+          onNext={next}
+          onBack={back}
+        />
       </>
     );
   }
@@ -132,25 +102,30 @@ function Setup() {
     );
   }
 
-  if (currentStep === "plugin-settings" && pluginID) {
-    return (
-      <>
-        <SetupBackground />
-        <StepPluginConfigByID
-          pluginID={pluginID}
-          mustBeDatabasePlugin
-          onBack={back}
-        />
-      </>
-    );
-  }
-
   return (
     <>
       <SetupBackground />
       <StepWelcome onNext={next} />
     </>
   );
+}
+
+export function getSetupSteps(status: TStatusResponse) {
+  const stepList: TSetupStep[] = ["welcome"];
+
+  if (!status.master_password) {
+    stepList.push("master-password");
+  }
+
+  if (!status.database?.configured) {
+    stepList.push("database-setup", "plugin-settings");
+  }
+
+  if (!status.account) {
+    stepList.push("create-account");
+  }
+
+  return stepList;
 }
 
 export default observer(Setup);

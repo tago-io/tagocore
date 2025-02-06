@@ -1,16 +1,22 @@
 import { getSystemName } from "@tago-io/tcore-shared";
 import axios from "axios";
+import { runInAction } from "mobx";
+import { observer } from "mobx-react";
 import { type KeyboardEvent, useCallback, useRef, useState } from "react";
+
+import store from "../../../System/Store.ts";
 import { EButton, EIcon, FormGroup, Icon } from "../../../index.ts";
 import ErrorMessage from "../../ErrorMessage/ErrorMessage.tsx";
 import InputPassword from "../../InputPassword/InputPassword.tsx";
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import * as Style from "./StepMasterPassword.style";
 
-function StepMasterPassword(props: {
+interface StepMasterPasswordProps {
   onBack: () => void;
-  onNext: (password: string) => void;
-}) {
+  onNext: () => void;
+}
+
+function StepMasterPassword(props: StepMasterPasswordProps) {
   const { onBack, onNext } = props;
 
   const [value, setValue] = useState("");
@@ -22,10 +28,7 @@ function StepMasterPassword(props: {
   const confirmationRef = useRef<HTMLInputElement>(null);
 
   const validate = useCallback(
-    (form: {
-      value: string;
-      confirmation: string;
-    }) => {
+    (form: { value: string; confirmation: string }) => {
       if (!form.value || !form.confirmation) {
         return {
           message: "Password and confirmation are required",
@@ -67,7 +70,12 @@ function StepMasterPassword(props: {
       setIsPending(true);
       await axios.post("/settings/master/password", { password: value });
 
-      onNext(value);
+      runInAction(() => {
+        store.masterPasswordConfigured = true;
+        store.masterPassword = value;
+      });
+
+      onNext();
     } catch {
       setIsPending(false);
     }
@@ -153,4 +161,4 @@ function StepMasterPassword(props: {
   );
 }
 
-export default StepMasterPassword;
+export default observer(StepMasterPassword);

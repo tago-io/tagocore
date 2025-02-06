@@ -1,11 +1,15 @@
 import type { IPlugin } from "@tago-io/tcore-sdk/types";
 import { flattenConfigFields } from "@tago-io/tcore-shared";
+import axios from "axios";
+import { observer } from "mobx-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+
 import { promiseDelay } from "../../../Helpers/promiseDelay.ts";
 import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
 import editPluginSettings from "../../../Requests/editPluginSettings.ts";
 import editSettings from "../../../Requests/editSettings.ts";
 import { usePluginInfo } from "../../../Requests/getPluginInfo.ts";
+import store from "../../../System/Store.ts";
 import {
   EButton,
   EIcon,
@@ -18,16 +22,6 @@ import Status from "../../Plugins/Common/Status/Status.tsx";
 import SetupForm, { type SetupFormButton } from "../SetupForm/SetupForm.tsx";
 import SuccessMessage from "../SuccessMessage/SuccessMessage.tsx";
 
-interface IStepPluginConfigProps {
-  backButton?: any;
-  description?: string;
-  mustBeDatabasePlugin?: boolean;
-  plugin?: IPlugin;
-  pluginID?: string;
-  title?: string;
-  onBack?: () => void;
-}
-
 interface StepPluginConfigProps {
   plugin: IPlugin | null;
   title?: string;
@@ -35,7 +29,8 @@ interface StepPluginConfigProps {
   backButton?: SetupFormButton;
   isLoading?: boolean;
   mustBeDatabasePlugin?: boolean;
-  onBack?: () => void;
+  onNext: () => void;
+  onBack: () => void;
 }
 
 export function StepPluginConfig(props: StepPluginConfigProps) {
@@ -45,6 +40,7 @@ export function StepPluginConfig(props: StepPluginConfigProps) {
     description = "Adjust the settings of your main Database Plugin",
     isLoading = false,
     mustBeDatabasePlugin = false,
+    onNext,
     onBack,
   } = props;
 
@@ -142,6 +138,13 @@ export function StepPluginConfig(props: StepPluginConfigProps) {
       await promiseDelay(1000);
       await editSettings({ database_plugin: `${plugin.id}:${firstModule.id}` });
 
+      await promiseDelay(1000);
+
+      // replicate master password on the selected database
+      await axios.post("/settings/master/password", {
+        password: store.masterPassword,
+      });
+
       setSuccess(true);
     } catch (error: any) {
       const msg = error?.response?.data?.message || error?.toString?.();
@@ -160,10 +163,10 @@ export function StepPluginConfig(props: StepPluginConfigProps) {
       <SuccessMessage
         title="Connected"
         description="The database plugin is connected and ready to be used"
-        onClick={() => (window.location.href = "/")}
+        onClick={() => onNext()}
       />
     );
-  }, [success]);
+  }, [success, onNext]);
 
   useEffect(() => {
     if (plugin) {
@@ -211,7 +214,7 @@ export function StepPluginConfig(props: StepPluginConfigProps) {
   );
 }
 
-export function StepPluginConfigByID(
+function StepPluginConfigByID(
   props: Omit<StepPluginConfigProps, "plugin"> & {
     pluginID: string;
   },
@@ -228,6 +231,10 @@ export function StepPluginConfigByID(
     />
   );
 }
+
+const StepPluginConfigByIDWithStore = observer(StepPluginConfigByID);
+
+export default StepPluginConfigByIDWithStore;
 
 function ErrorStatus(props: { message: string }) {
   if (!props.message) {

@@ -51,6 +51,7 @@ class SetMasterPassword extends APIController<
 
   public async main() {
     const settings = await getMainSettings();
+
     if (settings.master_password) {
       throw new Error("Master password is already set");
     }

@@ -51,10 +51,7 @@ function App() {
     }
   }, [port, fetchTCore]);
 
-  /**
-   * TODO:
-   * Tries to fetch tcore once we load the app.
-   */
+  //  TODO:(rc) decide what to do about this later in the RC
   // useEffect(() => {
   //   const portConfig = data?.modules?.find((x) => x.id === "navbar-button")?.configs?.[0];
   //   if (portConfig?.type == "number") {

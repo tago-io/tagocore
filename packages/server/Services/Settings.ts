@@ -44,6 +44,7 @@ export async function checkMasterPassword(
     masterPassword,
     settings.master_password || "",
   );
+
   return matches;
 }
 

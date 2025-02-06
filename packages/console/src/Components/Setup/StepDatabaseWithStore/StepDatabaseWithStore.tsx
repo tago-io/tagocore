@@ -8,24 +8,26 @@ import store from "../../../System/Store.ts";
 import {
   Button,
   EButton,
-  EIcon,
-  Icon,
   Input,
   Loading,
   PluginImage,
   Publisher,
-  Tooltip,
   useApiRequest,
 } from "../../../index.ts";
-import ModalDownloadFromURL from "../../Plugins/Common/ModalDownloadFromURL/ModalDownloadFromURL.tsx";
 import ModalInstallPlugin from "../../Plugins/Common/ModalInstallPlugin/ModalInstallPlugin.tsx";
 import ModalMasterPassword from "../../Plugins/Common/ModalMasterPassword/ModalMasterPassword.tsx";
-import ModalUploadPlugin from "../../Plugins/Common/ModalUploadPlugin/ModalUploadPlugin.tsx";
 import SetupForm from "../SetupForm/SetupForm.tsx";
 import * as Style from "./StepDatabaseWithStore.style";
 
-function StepDatabaseWithStore(props: any) {
-  const { onBack, onNext } = props;
+interface StepDatabaseWithStoreProps {
+  onBack: () => void;
+  onNext: () => void;
+  onSelectDatabasePlugin: (pluginID: string) => void;
+}
+
+function StepDatabaseWithStore(props: StepDatabaseWithStoreProps) {
+  const { onBack, onNext, onSelectDatabasePlugin } = props;
+
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [action, setAction] = useState("");
   const [modalInstall, setModalInstall] = useState(false);
@@ -63,20 +65,6 @@ function StepDatabaseWithStore(props: any) {
   }, []);
 
   /**
-   * Closes the URL download modal.
-   */
-  const deactivateModalURL = () => {
-    setModalURL(false);
-  };
-
-  /**
-   * Closes the file selector modal.
-   */
-  const deactivateModalFile = () => {
-    setModalUpload(false);
-  };
-
-  /**
    * Opens the install modal.
    */
   const activateModalInstall = useCallback((path: string) => {
@@ -92,9 +80,11 @@ function StepDatabaseWithStore(props: any) {
   const deactivateModalInstall = (pluginID: string) => {
     setModalInstall(false);
     if (selectedItem) {
-      onNext(selectedItem?.id);
+      onSelectDatabasePlugin(selectedItem.id);
+      onNext();
     } else if (pluginID) {
-      onNext(pluginID);
+      onSelectDatabasePlugin(pluginID);
+      onNext();
     }
   };
 
@@ -119,7 +109,8 @@ function StepDatabaseWithStore(props: any) {
         setButtonsDisabled(false);
       }
     } else {
-      onNext(selectedItem?.id);
+      onSelectDatabasePlugin(selectedItem.id);
+      onNext();
     }
   }, [
     platform,
@@ -127,10 +118,9 @@ function StepDatabaseWithStore(props: any) {
     selectedItem,
     installedListFiltered,
     activateModalInstall,
+    onSelectDatabasePlugin,
   ]);
 
-  /**
-   */
   const renderItem = (item: any) => {
     const installed = installedListFiltered?.some((x) => x.id === item.id);
     return (

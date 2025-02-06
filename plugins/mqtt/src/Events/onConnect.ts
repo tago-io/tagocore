@@ -112,7 +112,8 @@ async function onConnect(
   connection.addConnection(client.channel, client);
 
   console.debug(`Device connected [${client.device.id}]`);
-  // TODO: ADD Live Inspector support.
+
+  //  TODO:(rc) decide what to do about adding live inspector logging support
   // deviceInspector(client.device.id, client.connID, '[MQTT] Device connected', `Token Ending: ${String(tokenResult.tokenObj.token).slice(-5)} Client-ID: ${packet.clientId} Will-Message: ${!!client.will}`);
 
   client.connack({ returnCode: 0, reasonCode: 0 });

@@ -12,7 +12,6 @@ const buildPath = join(dirname(configFilePath), "./build/front");
 const TAGOIO_API = "https://api.tago.io";
 const TAGOIO_REALTIME = "https://realtime.tago.io";
 
-//  FIXME:(klaus) external dep 'path'? 'eventsource'?
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -23,7 +22,6 @@ export default defineConfig({
     }),
     react(),
   ],
-  //  FIXME::(klaus) test it
   base: "/pages/tagoio-integration",
   esbuild: {
     target: ["chrome58", "safari11"],
@@ -31,15 +29,11 @@ export default defineConfig({
   build: {
     minify: true,
     sourcemap: false,
-    //  FIXME:(klaus) ./build/front/index.js ?
-    //  FIXME:(klaus) ./build/front/index.html ?
     outDir: buildPath,
   },
-  //  FIXME:(klaus) see what tests this has, fix config if needed
   test: {
     environment: "jsdom",
     globals: true,
-    // setupFiles: ["./utils/setup-tests.ts"],
   },
   define: {
     "process.env.TAGOIO_API": `"${TAGOIO_API}"`,
