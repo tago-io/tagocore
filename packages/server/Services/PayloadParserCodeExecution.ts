@@ -48,6 +48,9 @@ export const runPayloadParser = async (
 
     const context = vm.createContext({
       Buffer,
+      JSON,
+      Math,
+      Date,
       payload,
       raw_payload: options?.rawPayload,
       dayjs,
