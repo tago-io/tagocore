@@ -32,7 +32,6 @@ build-integration:
     @cd plugins/tagoio-integration && npm run build
 
 install:
-    @npm install -g node-gyp
     @npm ci
 
 ########################### INFRA
