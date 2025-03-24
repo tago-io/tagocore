@@ -21,7 +21,7 @@ const deviceDB = {} as IDatabaseConnection;
 const migrationConfig: Knex.MigratorConfig = {
   tableName: "migrations",
   directory: path.join(dirname__, "..", "Migrations"),
-  // ! FIX Error: The migration directory is corrupt, the following files are missing:
+  //  TODO:(rc) there was a "FIX Error: migration directory is corrupt" here, decide what to do later in the RC
   disableMigrationsListValidation: true,
 };
 
@@ -53,6 +53,10 @@ function createConnection(
 export async function setupKnex(this: DatabaseModule, config: Config) {
   try {
     this.showMessage("info", "Testing connection");
+
+    if (!config.main_read_host && !config.main_read_port) {
+      return;
+    }
 
     setupConnections(config);
 

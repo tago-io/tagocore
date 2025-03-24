@@ -8,20 +8,24 @@
     "dev": "vite",
     "watch": "vite",
     "build": "vite build",
-    "build-watch": "vite build --watch",
-    "test": "vitest"
+    "build-watch": "vite build --watch --emptyOutDir",
+    "test": "vitest",
+    "check-types": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome format . --write",
+    "lint-fix": "biome check . --write"
   },
   "dependencies": {
     "@antv/g2": "4.1.23",
     "cronstrue": "2.5.0",
     "lodash.clonedeep": "4.5.0",
-    "mobx": "6.13.5",
-    "mobx-react": "9.1.1",
+    "mobx": "6.13.6",
+    "mobx-react": "9.2.0",
     "react-helmet-async": "2.0.5",
-    "react-markdown": "9.0.1",
-    "react-router": "6.27.0",
-    "react-router-dom": "6.27.0",
-    "swr": "2.2.5"
+    "react-markdown": "9.0.3",
+    "react-router": "6.29.0",
+    "react-router-dom": "6.29.0",
+    "swr": "2.3.2"
   },
   "devDependencies": {
     "@types/lodash.clonedeep": "4.5.9"

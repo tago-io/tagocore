@@ -122,6 +122,4 @@ describe("Get platform code", () => {
     // @ts-ignore
     expect(getPlatformCode(platform)).toBe(expected);
   });
-
-  // TODO: add more tests
 });

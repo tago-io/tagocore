@@ -33,10 +33,8 @@ function PluginDetails() {
    */
   useEffect(() => {
     navigate(`/console/pluginstore/detail/${id}`, { replace: true });
-  }, [id]);
+  }, [id, navigate]);
 
-  /**
-   */
   useEffect(() => {
     window.top?.postMessage(
       { type: "set-link", url: `/console/pluginstore/detail/${id}` },

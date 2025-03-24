@@ -42,7 +42,7 @@ async function onSubscribe(client: ITagoIOClient, packet: ISubscribePacket) {
       }
     }
 
-    // TODO: Log to device inspector
+    //  TODO:(rc) decide what to do about adding live inspector logging support
     // deviceInspector(client.device.id, client.connID, '[MQTT] Device subscribe', `topic: ${subscription.topic}`);
   }
 }

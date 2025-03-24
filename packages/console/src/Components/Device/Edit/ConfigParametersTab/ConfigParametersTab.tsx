@@ -7,35 +7,17 @@ import RowManipulatorTable from "../../../RowManipulatorTable/RowManipulatorTabl
 import Switch from "../../../Switch/Switch.tsx";
 import { ESwitchSize } from "../../../Switch/Switch.types";
 
-/**
- * Props.
- */
 interface IConfigParametersTabProps {
-  /**
-   * Array of parameters from the device.
-   */
   params?: IDeviceParameter[];
-  /**
-   * Device's form errors.
-   */
   errors: any;
-  /**
-   * Called when the params change.
-   */
   onChangeParams: (value: IDeviceParameter[]) => void;
 }
 
-/**
- * The device's `Configuration Parameters` tab.
- */
 function ConfigParametersTab(props: IConfigParametersTabProps) {
   const { errors, onChangeParams } = props;
   const params = props.params || [];
   const theme = useTheme();
 
-  /**
-   * Called when a field gets modified.
-   */
   const onChangeField = (
     field: keyof IDeviceParameter,
     value: string | boolean,
@@ -48,14 +30,11 @@ function ConfigParametersTab(props: IConfigParametersTabProps) {
     onChangeParams([...params]);
   };
 
-  /**
-   * Renders the status switch.
-   */
-  const renderStatus = (item: IDeviceParameter, index: number) => {
+  const renderStatusSwitch = (item: IDeviceParameter, index: number) => {
     return (
       <div>
         <Switch
-          value={item.sent || false}
+          value={!!item.sent || false}
           onChange={(e) => onChangeField("sent", e, index)}
           size={ESwitchSize.big}
           selectedText="Read"
@@ -67,10 +46,7 @@ function ConfigParametersTab(props: IConfigParametersTabProps) {
     );
   };
 
-  /**
-   * Renders the key of the parameter.
-   */
-  const renderKey = (item: IDeviceParameter, index: number) => {
+  const renderKeyInput = (item: IDeviceParameter, index: number) => {
     const error = errors?.parameters?.[index]?.key;
     return (
       <Input
@@ -82,10 +58,7 @@ function ConfigParametersTab(props: IConfigParametersTabProps) {
     );
   };
 
-  /**
-   * Renders the value input.
-   */
-  const renderValue = (item: IDeviceParameter, index: number) => {
+  const renderValueInput = (item: IDeviceParameter, index: number) => {
     const error = errors?.parameters?.[index]?.value;
     return (
       <Input
@@ -97,15 +70,11 @@ function ConfigParametersTab(props: IConfigParametersTabProps) {
     );
   };
 
-  /**
-   */
   const addItem = () => {
     params.push({ key: "", value: "", sent: false } as any);
     onChangeParams([...params]);
   };
 
-  /**
-   */
   const removeItem = (index: number) => {
     params.splice(index, 1);
     onChangeParams([...params]);
@@ -128,15 +97,15 @@ function ConfigParametersTab(props: IConfigParametersTabProps) {
             label: "Status",
             flex: "none",
             width: "105px",
-            onRender: renderStatus,
+            onRender: renderStatusSwitch,
           },
           {
             label: "Key",
-            onRender: renderKey,
+            onRender: renderKeyInput,
           },
           {
             label: "Value",
-            onRender: renderValue,
+            onRender: renderValueInput,
           },
         ]}
       />

@@ -2,10 +2,8 @@ import { useCallback } from "react";
 import OptionsPicker from "../OptionsPicker/OptionsPicker.tsx";
 import timezonesJSON from "./timezones.json";
 
-/**
- * Maps all the timezones to a better format.
- */
-const timezones = timezonesJSON.map((tz) => {
+/** Formatted timezones. */
+const TIMEZONES = timezonesJSON.map((tz) => {
   const correctOffset = [tz.offset.slice(0, 3), ":", tz.offset.slice(3)].join(
     "",
   );
@@ -15,60 +13,38 @@ const timezones = timezonesJSON.map((tz) => {
   };
 });
 
-/**
- * Props.
- */
 interface ITimezonePicker {
-  /**
-   * any object.
-   */
   value: any | undefined;
-  /**
-   * Called when a new any gets picked.
-   */
-  onChange: (value: any) => void;
-  /**
-   * Indicates if the this field has an error.
-   */
   error?: boolean;
   /**
-   * Position of the options container. Default is `bottom`.
+   * Position of the options container.
+   *
+   * @default "bottom"
    */
   optionsPosition?: "top" | "bottom";
+  onChange: (value: any) => void;
 }
 
-/**
- */
 function TimezonePicker(props: ITimezonePicker) {
   const { error, optionsPosition } = props;
 
-  /**
-   * Retrieves the options.
-   */
   const onGetOptions = useCallback(async (query: string, page: number) => {
     if (page === 1) {
       const queryTrim = query.toLowerCase().trim();
-      return timezones.filter((x) =>
-        x.name.toLowerCase().trim().includes(queryTrim),
+      return TIMEZONES.filter((tz) =>
+        tz.name.toLowerCase().trim().includes(queryTrim),
       );
     }
     return [];
   }, []);
 
-  /**
-   * Resolves an option by an ID.
-   * This transforms the ID into an object.
-   */
   const resolveOptionByID = useCallback(async (id: string | number) => {
-    const analysis = timezones.find((x) => x.id === id);
+    const analysis = TIMEZONES.find((tz) => tz.id === id);
     return analysis;
   }, []);
 
-  /**
-   * Renders a single option row.
-   */
-  const renderOption = useCallback((i) => {
-    return i.name;
+  const renderOption = useCallback((tz: { name: string }) => {
+    return tz.name;
   }, []);
 
   return (

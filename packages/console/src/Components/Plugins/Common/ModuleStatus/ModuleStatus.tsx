@@ -6,15 +6,9 @@ import Button from "../../../Button/Button.tsx";
 import Capitalize from "../../../Capitalize/Capitalize.tsx";
 import * as Style from "./ModuleStatus.style";
 
-/**
- * Props.
- */
 interface IModuleStatusProps {
-  /**
-   */
   data: IPlugin;
-  /**
-   */
+
   module: IPluginModule;
   /**
    * Called when this module gets started.
@@ -26,39 +20,27 @@ interface IModuleStatusProps {
   onStop: () => Promise<void>;
 }
 
-/**
- */
 function ModuleStatus(props: IModuleStatusProps) {
   const { data, module, onStop, onStart } = props;
   const [state, setState] = useState(() => module.state);
   const { error } = module;
   const theme = useTheme();
 
-  /**
-   * Starts the service.
-   */
-  const start = useCallback(() => {
+  const startService = useCallback(() => {
     setState("starting");
     setTimeout(onStart, 200);
   }, [onStart]);
 
-  /**
-   * Stops the service.
-   */
-  const stop = useCallback(() => {
+  const stopService = useCallback(() => {
     setState("stopping");
     setTimeout(onStop, 200);
   }, [onStop]);
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(state): useEffect state machine
   useEffect(() => {
     if (module.state !== state) {
       setState(module.state);
-      // setState("starting");
-      // timeout.current = setTimeout(() => setState(module.state), 200);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [module.state]);
 
   const pluginRunning = data.state === "started";
@@ -83,13 +65,13 @@ function ModuleStatus(props: IModuleStatusProps) {
           <div className="buttons-container">
             <div className="buttons-inner">
               <Button
-                onClick={start}
+                onClick={startService}
                 disabled={loading || started || !pluginRunning}
               >
                 Start
               </Button>
               <Button
-                onClick={stop}
+                onClick={stopService}
                 disabled={loading || !started || !pluginRunning}
               >
                 Stop

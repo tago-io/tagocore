@@ -627,9 +627,6 @@ export async function getMainQueueModule(): Promise<Module | null> {
   return null;
 }
 
-/**
- * TODO
- */
 export async function getMainFilesystemModule(): Promise<
   Module | null | undefined
 > {

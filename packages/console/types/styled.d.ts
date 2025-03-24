@@ -30,13 +30,13 @@ declare module "styled-components" {
     deviceInputOutput3Days: string;
     deviceInputOutput3Hours: string;
     deviceInputOutput6Hours: string;
-    deviceInputOutputRest: string;
     errorStatus: string;
     errorStatusIcon: string;
     extension: string;
     fieldsetBorder: string;
     files: string;
     font: string;
+    fontFaded: string;
     font2: string;
     font3: string;
     formControlBackground: string;

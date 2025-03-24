@@ -13,9 +13,6 @@ import Tabs from "../Tabs/Tabs.tsx";
 import type { ITab } from "../Tabs/Tabs.types";
 import * as Style from "./EditPage.style";
 
-/**
- * Props.
- */
 interface IEditPageProps<T> {
   /**
    * ID of the resource if the edit page is for a resource.
@@ -133,9 +130,6 @@ function EditPage<T>(props: IEditPageProps<T>) {
     tabIndex,
   } = props;
 
-  /**
-   * Saves the record.
-   */
   const save = async () => {
     const validated = await onValidate?.();
     if (!validated) {
@@ -150,9 +144,6 @@ function EditPage<T>(props: IEditPageProps<T>) {
     }
   };
 
-  /**
-   * Renders the tabs render.
-   */
   const renderTabs = () => {
     return (
       <Tabs
@@ -165,9 +156,6 @@ function EditPage<T>(props: IEditPageProps<T>) {
     );
   };
 
-  /**
-   * Renders the footer with the `Back` and `Save` buttons.
-   */
   const renderFooter = () => {
     let saveDisabled = false;
 
@@ -212,8 +200,7 @@ function EditPage<T>(props: IEditPageProps<T>) {
     );
   };
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(id): useEffect state machine
   useEffect(() => {
     if (loaded.current) {
       setInternalLoading(true);
@@ -225,6 +212,7 @@ function EditPage<T>(props: IEditPageProps<T>) {
   /**
    * Used to fetch the record and assign the initial data.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(id): useEffect state machine
   useEffect(() => {
     if (data && !loaded.current) {
       setInternalLoading(false);
@@ -233,9 +221,6 @@ function EditPage<T>(props: IEditPageProps<T>) {
     }
   }, [onFetch, id, data]);
 
-  /**
-   * Sets the document title.
-   */
   useEffect(() => {
     if (documentTitle) {
       setDocumentTitle(documentTitle);

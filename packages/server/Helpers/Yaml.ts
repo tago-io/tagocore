@@ -13,7 +13,7 @@ export async function saveYml(json: any, filePath: string): Promise<void> {
     await fs.mkdir(folder, { recursive: true });
     await fs.writeFile(filePath, file);
   } catch (ex) {
-    // TODO handle better
+    //  TODO:(rc) improve error handling later in the RC
   }
 }
 

@@ -15,7 +15,7 @@ export async function getPluginConnection(id: string) {
     });
   }
 
-  // TODO [>=1.0.0]: Remove it
+  //  TODO:(rc) add reminder to remove this in v1
   await fixKeyIndex(tableName);
 
   const connection = {

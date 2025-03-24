@@ -41,7 +41,6 @@ async function getDeviceDataCount(
     knexQuery.whereIn("variable", variables);
   }
 
-  console.log(knexQuery.toQuery());
   const data = await knexQuery;
 
   return Number(data?.amount || 0);

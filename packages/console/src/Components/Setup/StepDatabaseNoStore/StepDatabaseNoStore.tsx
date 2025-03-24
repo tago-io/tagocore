@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import selectPluginFile from "../../../Helpers/selectPluginFile.ts";
 import store from "../../../System/Store.ts";
 import { Button, EButton, EIcon, Icon } from "../../../index.ts";
@@ -27,19 +27,19 @@ function StepDatabaseNoStore(props: any) {
   /**
    * Opens the file selector modal.
    */
-  const activateModalUpload = () => {
+  const activateModalUpload = useCallback(() => {
     selectPluginFile((f) => {
       setUploadedFile(f);
       setModalUpload(true);
     });
-  };
+  }, []);
 
   /**
    * Opens the URL download modal.
    */
-  const activateModalURL = () => {
+  const activateModalURL = useCallback(() => {
     setModalURL(true);
-  };
+  }, []);
 
   /**
    * Closes the URL download modal.
@@ -75,30 +75,29 @@ function StepDatabaseNoStore(props: any) {
     }
   };
 
-  /**
-   */
-  const doAction = () => {
-    switch (action) {
-      case "local-file":
-        activateModalUpload();
-        break;
-      case "download-url":
-        activateModalURL();
-        break;
-      default:
-        break;
-    }
-    setAction("");
-  };
+  const doAction = useCallback(
+    (actionToDo: string) => {
+      switch (actionToDo) {
+        case "local-file":
+          activateModalUpload();
+          break;
+        case "download-url":
+          activateModalURL();
+          break;
+        default:
+          break;
+      }
+      setAction("");
+    },
+    [activateModalUpload, activateModalURL],
+  );
 
-  /**
-   */
+  // biome-ignore lint/correctness/useExhaustiveDependencies(store.masterPassword): mobx observer
   useEffect(() => {
     if (action && store.masterPassword) {
-      doAction();
+      doAction(action);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [action, store.masterPassword]);
+  }, [action, store.masterPassword, doAction]);
 
   return (
     <>
