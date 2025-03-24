@@ -46,7 +46,12 @@ async function uplinkService(
   try {
     const data: IEverynetObject = req.body;
     const devEui = data.params.device || data.meta?.device;
-    if (!devEui) return sendResponse(res, { body: { message: "Missing serial number" }, status: 400 });
+    if (!devEui) {
+      return sendResponse(res, {
+        body: { message: "Missing serial number" },
+        status: 400,
+      });
+    }
 
     const authorization =
       req.headers.Authorization ||
