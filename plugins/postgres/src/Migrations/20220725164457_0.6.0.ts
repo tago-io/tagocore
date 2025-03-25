@@ -4,11 +4,19 @@ import type { Knex } from "knex";
  * Bumps up to version 0.6.0.
  */
 export async function up(knex: Knex) {
-  await knex.schema.table("device", (table) => {
-    table.timestamp("last_retention").nullable();
-    table.string("chunk_period").nullable();
-    table.integer("chunk_retention").nullable();
-  });
+  await knex.schema
+    .raw(
+      `SELECT * FROM information_schema.columns WHERE table_name='device' and column_name='last_retention'`,
+    )
+    .then(async (data) => {
+      if (data.rowCount === 0) {
+        await knex.schema.table("device", (table) => {
+          table.timestamp("last_retention").nullable();
+          table.string("chunk_period").nullable();
+          table.integer("chunk_retention").nullable();
+        });
+      }
+    });
 }
 
 /**
