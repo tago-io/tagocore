@@ -146,6 +146,22 @@ async function getInstalledInsidePlugins(
   const insidePlugins = await fs.promises.readdir(
     path.join(dirname___, "../../..", "plugins"),
   );
+
+  if (!settings.migrated) {
+    const oldPlugins = await fs.promises.readdir(
+      path.join(settings.settings_folder as string, "Plugins"),
+    );
+    for (const folder of oldPlugins) {
+      const fullPath = path.join(settings.settings_folder as string, "Plugins", folder);
+      const getPackage = await Plugin.getPackageAsync(fullPath).catch(() => null);
+      if (!getPackage) {
+        continue;
+      }
+      const md5Name = md5(getPackage.name);
+      settings.installed_plugins?.push(md5Name);
+    }
+  }
+
   for (const folder of insidePlugins) {
     const fullPath = path.join(dirname___, "../../..", "plugins", folder);
     const getPackage = await Plugin.getPackageAsync(fullPath).catch(() => null);
@@ -153,11 +169,12 @@ async function getInstalledInsidePlugins(
     if (!getPackage) {
       continue;
     }
+    const md5Name = md5(getPackage.name);
     const isInstalled = settings.installed_plugins?.includes(
-      md5(getPackage.name),
+      md5Name,
     );
     const isInstalledDatabasePlugin =
-      settings.database_plugin?.split(":")[0] === md5(getPackage.name);
+      settings.database_plugin?.split(":")[0] === md5Name;
     const isDatabase = getPackage?.tcore?.types?.includes("database");
     const isDefaultFilesystemPlugin =
       getPackage?.tcore?.types?.includes("filesystem") &&
@@ -173,6 +190,11 @@ async function getInstalledInsidePlugins(
     ) {
       plugins.push(fullPath);
     }
+  }
+
+  if (!settings.migrated) {
+    settings.migrated = true;
+    await setMainSettings(settings);
   }
 }
 
