@@ -152,8 +152,14 @@ async function getInstalledInsidePlugins(
       path.join(settings.settings_folder as string, "Plugins"),
     );
     for (const folder of oldPlugins) {
-      const fullPath = path.join(settings.settings_folder as string, "Plugins", folder);
-      const getPackage = await Plugin.getPackageAsync(fullPath).catch(() => null);
+      const fullPath = path.join(
+        settings.settings_folder as string,
+        "Plugins",
+        folder,
+      );
+      const getPackage = await Plugin.getPackageAsync(fullPath).catch(
+        () => null,
+      );
       if (!getPackage) {
         continue;
       }
@@ -170,9 +176,7 @@ async function getInstalledInsidePlugins(
       continue;
     }
     const md5Name = md5(getPackage.name);
-    const isInstalled = settings.installed_plugins?.includes(
-      md5Name,
-    );
+    const isInstalled = settings.installed_plugins?.includes(md5Name);
     const isInstalledDatabasePlugin =
       settings.database_plugin?.split(":")[0] === md5Name;
     const isDatabase = getPackage?.tcore?.types?.includes("database");
