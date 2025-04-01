@@ -150,7 +150,7 @@ async function getInstalledInsidePlugins(
   if (!settings.migrated) {
     const oldPlugins = await fs.promises.readdir(
       path.join(settings.settings_folder as string, "Plugins"),
-    );
+    ).catch(() => []);
     for (const folder of oldPlugins) {
       const fullPath = path.join(
         settings.settings_folder as string,
@@ -330,6 +330,8 @@ export async function deactivatePlugin(pluginID: string) {
       const stopPlugin = new Plugin(plugin.fullPath);
       await stopPlugin.stop(true, 3000).catch(() => null);
       plugins.delete(pluginID);
+      const fullPath = path.join(settings.settings_folder as string, "PluginFiles", pluginID);
+      fs.rmSync(fullPath, { recursive: true, force: true });
       const socketData = {
         id: pluginID,
         delete: true,
