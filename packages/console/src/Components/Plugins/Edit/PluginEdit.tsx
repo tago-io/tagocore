@@ -18,6 +18,10 @@ import store from "../../../System/Store.ts";
 import EditPage from "../../EditPage/EditPage.tsx";
 import PluginImage from "../../PluginImage/PluginImage.tsx";
 import SettingsTab from "./SettingsTab/SettingsTab.tsx";
+import {
+  useEnabledPlugins,
+  useInstalledPluginIDs,
+} from "../../../Requests/getPluginList.ts";
 
 /**
  * The plugin's edit page.
@@ -26,6 +30,9 @@ function PluginEdit() {
   const match = useMatch("/console/plugin/:id");
   const id = match?.params?.id;
   const navigate = useNavigate();
+
+  const { mutate: mutateInstalledPlugins } = useInstalledPluginIDs();
+  const { mutate: mutateEnabledPlugins } = useEnabledPlugins();
 
   const theme = useTheme();
   const [data, setData] = useState<IPlugin>({} as IPlugin);
@@ -95,29 +102,37 @@ function PluginEdit() {
       return;
     }
 
-    enablePlugin(id);
-  }, [id]);
+    await enablePlugin(id);
+    mutateInstalledPlugins();
+    mutateEnabledPlugins();
+  }, [id, mutateInstalledPlugins, mutateEnabledPlugins]);
 
   const disable = useCallback(async () => {
     if (!id) {
       return;
     }
 
-    disablePlugin(id);
-  }, [id]);
+    await disablePlugin(id);
+    mutateInstalledPlugins();
+    mutateEnabledPlugins();
+  }, [id, mutateInstalledPlugins, mutateEnabledPlugins]);
 
   const stopModule = useCallback(
     async (module: IPluginModule) => {
       stopPluginModule(data.id, module.id);
+      mutateInstalledPlugins();
+      mutateEnabledPlugins();
     },
-    [data],
+    [data, mutateInstalledPlugins, mutateEnabledPlugins],
   );
 
   const startModule = useCallback(
     async (module: IPluginModule) => {
       startPluginModule(data.id, module.id);
+      mutateInstalledPlugins();
+      mutateEnabledPlugins();
     },
-    [data],
+    [data, mutateInstalledPlugins, mutateEnabledPlugins],
   );
 
   const renderSettingsTab = () => {
@@ -170,8 +185,10 @@ function PluginEdit() {
       }
 
       await uninstallPlugin(id, keepData);
+      mutateInstalledPlugins();
+      mutateEnabledPlugins();
     },
-    [id],
+    [id, mutateInstalledPlugins, mutateEnabledPlugins],
   );
 
   /**

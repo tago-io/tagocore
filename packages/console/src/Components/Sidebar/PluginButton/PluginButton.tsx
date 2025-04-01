@@ -10,6 +10,7 @@ import Icon from "../../Icon/Icon.tsx";
 import { EIcon } from "../../Icon/Icon.types";
 import PluginImage from "../../PluginImage/PluginImage.tsx";
 import * as Style from "./PluginButton.style";
+import { useEnabledPlugins } from "../../../Requests/getPluginList.ts";
 
 interface IPluginButtonProps {
   item: IPluginListItem;
@@ -22,6 +23,7 @@ function PluginButton(props: IPluginButtonProps) {
   const [modalUninstall, setModalUninstall] = useState(false);
   const theme = useTheme();
   const loc = useLocation();
+  const { mutate: mutateEnabledPlugins } = useEnabledPlugins();
 
   const currentPath = loc.pathname;
   const selected = currentPath.includes(id);
@@ -32,21 +34,23 @@ function PluginButton(props: IPluginButtonProps) {
   }, []);
 
   const enable = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+    async (e: React.MouseEvent<HTMLDivElement>) => {
       setDropdown(false);
       e.preventDefault();
-      enablePlugin(id);
+      await enablePlugin(id);
+      mutateEnabledPlugins();
     },
-    [id],
+    [id, mutateEnabledPlugins],
   );
 
   const disable = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+    async (e: React.MouseEvent<HTMLDivElement>) => {
       setDropdown(false);
       e.preventDefault();
-      disablePlugin(id);
+      await disablePlugin(id);
+      mutateEnabledPlugins();
     },
-    [id],
+    [id, mutateEnabledPlugins],
   );
 
   useEffect(() => {

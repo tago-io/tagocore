@@ -5,7 +5,7 @@ import * as Style from "./Welcome.style";
 
 const tips = [
   "You can use an Action to trigger an Analysis",
-  "You can use the Plugin Store to download plugins",
+  "You can use the Plugins page to extend functionality",
   "Data from Devices is stored in Buckets",
   "You can view all data in a Bucket by clicking the Variables tab",
 ];

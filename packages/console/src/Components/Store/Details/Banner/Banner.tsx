@@ -12,6 +12,10 @@ import PluginImage from "../../../PluginImage/PluginImage.tsx";
 import Publisher from "../../../Plugins/Common/Publisher/Publisher.tsx";
 import Tooltip from "../../../Tooltip/Tooltip.tsx";
 import * as Style from "./Banner.style";
+import {
+  useInstalledPluginIDs,
+  useEnabledPlugins,
+} from "../../../../Requests/getPluginList.ts";
 
 interface IBannerProps {
   installURL: string;
@@ -23,8 +27,11 @@ interface IBannerProps {
 
 function PluginBanner(props: IBannerProps) {
   const { data: status } = useApiRequest<any>("/status");
-  const { data: installedPlugins, mutate: mutateTest } =
-    useApiRequest<Array<string>>("/plugins/installed");
+
+  const { data: installedPlugins, mutate: mutateInstalledPlugins } =
+    useInstalledPluginIDs();
+  const { mutate: mutateEnabledPlugins } = useEnabledPlugins();
+
   const { plugin } = props;
   const {
     id,
@@ -55,22 +62,26 @@ function PluginBanner(props: IBannerProps) {
     [token, masterPassword],
   );
 
-  const activatePlugin = useCallback(() => {
-    axios.post(`/plugins/activate/${id}`, {}, { headers }).then(() => {
-      setIsInstalled(true);
-      mutateTest();
-    });
-  }, [id, headers, mutateTest]);
+  const activatePlugin = useCallback(async () => {
+    await axios.post(`/plugins/activate/${id}`, {}, { headers });
+    setIsInstalled(true);
+
+    mutateInstalledPlugins();
+    mutateEnabledPlugins();
+  }, [id, headers, mutateInstalledPlugins, mutateEnabledPlugins]);
 
   const editPluginSettings = useCallback(() => {
     navigate(`/console/plugin/${id}`);
   }, [id, navigate]);
 
-  const deactivatePlugin = useCallback(() => {
-    axios.post(`/plugins/deactivate/${id}`, {}, { headers }).then(() => {
-      setIsInstalled(false);
-    });
-  }, [id, headers]);
+  const deactivatePlugin = useCallback(async () => {
+    await axios.post(`/plugins/deactivate/${id}`, {}, { headers });
+
+    setIsInstalled(false);
+
+    mutateInstalledPlugins();
+    mutateEnabledPlugins();
+  }, [id, headers, mutateInstalledPlugins, mutateEnabledPlugins]);
 
   const renderPluginInfoSection = () => {
     return (

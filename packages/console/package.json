@@ -19,13 +19,13 @@
     "@antv/g2": "4.1.23",
     "cronstrue": "2.5.0",
     "lodash.clonedeep": "4.5.0",
-    "mobx": "6.13.6",
+    "mobx": "6.13.7",
     "mobx-react": "9.2.0",
     "react-helmet-async": "2.0.5",
     "react-markdown": "9.0.3",
     "react-router": "6.29.0",
     "react-router-dom": "6.29.0",
-    "swr": "2.3.2"
+    "swr": "2.3.3"
   },
   "devDependencies": {
     "@types/lodash.clonedeep": "4.5.9"

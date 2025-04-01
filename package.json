@@ -1,6 +1,6 @@
 {
   "name": "@tago-io/tagocore",
-  "version": "0.7.0",
+  "version": "1.0.0-9-beta",
   "author": "TagoIO Inc.",
   "description": "TagoCore by TagoIO",
   "license": "Apache-2.0",
@@ -10,8 +10,16 @@
     "node": ">=20.0.0"
   },
   "type": "module",
-  "workspaces": ["packages/*", "plugins/*"],
-  "keywords": ["platform", "iot", "tagoio", "tcore"],
+  "workspaces": [
+    "packages/*",
+    "plugins/*"
+  ],
+  "keywords": [
+    "platform",
+    "iot",
+    "tagoio",
+    "tcore"
+  ],
   "bugs": {
     "url": "https://github.com/tago-io/tcore/issues"
   },

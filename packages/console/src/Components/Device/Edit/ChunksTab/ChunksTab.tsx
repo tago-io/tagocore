@@ -1,24 +1,21 @@
 import type { IDevice } from "@tago-io/tcore-sdk/types";
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import Button from "../../../Button/Button.tsx";
-import { EButton } from "../../../Button/Button.types";
 import Col from "../../../Col/Col.tsx";
 import FormDivision from "../../../FormDivision/FormDivision.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
-import Icon from "../../../Icon/Icon.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import Input from "../../../Input/Input.tsx";
 import RelativeDate from "../../../RelativeDate/RelativeDate.tsx";
 import Row from "../../../Row/Row.tsx";
+import DataRetention from "../../Common/DataRetention/DataRetention.tsx";
 
 interface ChunksTabProps {
   data: IDevice;
+  errors: any;
+  onChange: (field: keyof IDevice, value: IDevice[keyof IDevice]) => void;
 }
 
 export function ChunksTab(props: ChunksTabProps) {
-  const navigate = useNavigate();
-  const { data } = props;
+  const { data, errors, onChange } = props;
 
   return (
     <div>
@@ -39,6 +36,20 @@ export function ChunksTab(props: ChunksTabProps) {
           <FormGroup icon={EIcon.clock} label="Registered at">
             <RelativeDate useInputStyle value={data.created_at} />
           </FormGroup>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col size="12">
+          {data.type === "immutable" && data.chunk_period && (
+            <DataRetention
+              type="edit"
+              disablePeriod
+              data={data}
+              error={errors?.chunk_retention}
+              onChange={onChange}
+            />
+          )}
         </Col>
       </Row>
     </div>
