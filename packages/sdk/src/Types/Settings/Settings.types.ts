@@ -17,6 +17,7 @@ export const zSettings = z.object({
   version: z.string().nullish(),
   installed_plugins: z.array(z.string()).optional(),
   custom_plugins: z.array(z.string()).optional(),
+  migrated: z.boolean().optional(),
 });
 
 /**

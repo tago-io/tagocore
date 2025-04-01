@@ -1,5 +1,7 @@
 FROM node:22-bookworm-slim
 
+ENV TCORE_DIRPATH=/var/lib/tagocore/data
+
 # Set the working directory
 WORKDIR /tagocore
 

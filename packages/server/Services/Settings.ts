@@ -99,6 +99,7 @@ export async function getMainSettings(): Promise<ISettings> {
   const version = data.version || "";
   const installed_plugins = data.installed_plugins || [];
   const custom_plugins = data.custom_plugins || [];
+  const migrated = data.migrated || false;
 
   const settings: ISettings = {
     filesystem_plugin,
@@ -110,6 +111,7 @@ export async function getMainSettings(): Promise<ISettings> {
     version,
     installed_plugins,
     custom_plugins,
+    migrated,
   };
 
   return settings;
