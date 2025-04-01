@@ -544,6 +544,7 @@ export const getDeviceDataByDevice = async (
     }
   }
 
+  removeNullValues(response);
   let items: any = await z.array(zDeviceData).parseAsync(response);
   items = await z.array(zDeviceData).parseAsync(items);
 
@@ -559,7 +560,8 @@ export const getDeviceData = async (
   query?: IDeviceDataQuery,
 ) => {
   const device = await getDeviceInfo(id);
-  return await getDeviceDataByDevice(device, query);
+  const data = await getDeviceDataByDevice(device, query);
+  return data;
 };
 
 /**
@@ -586,6 +588,46 @@ export async function deleteDeviceData(
   await invokeDatabaseFunction("deleteDeviceData", id, device.id, dataIDs);
 
   return data.length;
+}
+
+/**
+ * Export data from a device.
+ * @returns The CSV file path with the data.
+ */
+export async function exportDeviceData(id: TGenericID, folder: string) {
+  const device = await getDeviceInfo(id);
+
+  if (!device) {
+    return Promise.reject("Device not found");
+  }
+
+  const data = await invokeDatabaseFunction(
+    "exportDeviceData",
+    id,
+    device.type,
+    folder,
+  );
+  return data;
+}
+
+/**
+ * Import data from a CSV file to a device.
+ * @returns boolean if imports with success.
+ */
+export async function importDeviceData(id: TGenericID, folder: string) {
+  const device = await getDeviceInfo(id);
+
+  if (!device) {
+    return Promise.reject("Device not found");
+  }
+
+  const data = await invokeDatabaseFunction(
+    "importDeviceData",
+    id,
+    device.type,
+    folder,
+  );
+  return data;
 }
 
 async function validateMonthRange(query: IDeviceDataQuery) {
