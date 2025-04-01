@@ -47,6 +47,10 @@ export const runPayloadParser = async (
     })); // map to remove id
 
     const context = vm.createContext({
+      Buffer,
+      JSON,
+      Math,
+      Date,
       payload,
       raw_payload: options?.rawPayload,
       dayjs,

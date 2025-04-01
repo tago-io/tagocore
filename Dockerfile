@@ -24,6 +24,7 @@ RUN apt update && \
     rm -rf just.tar.gz;
 
 # Install dependencies
+
 RUN just install;
 
 # Build the console
