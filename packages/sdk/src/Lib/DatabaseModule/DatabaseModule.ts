@@ -42,7 +42,7 @@ import type {
   TDeviceType,
   TGenericID,
   TGenericToken,
-} from "../../Types.ts";
+} from "../../Types/index.ts";
 import TCoreModule from "../TCoreModule/TCoreModule.ts";
 
 /**
@@ -621,6 +621,28 @@ class DatabaseModule extends TCoreModule {
    * Retrieves the amount of accounts registered.
    */
   public async getAccountAmount(): Promise<number> {
+    throw new Error("Method not implemented");
+  }
+
+  /**
+   * Export the Device data to a CSV file
+   */
+  public async exportDeviceData(
+    deviceID: TGenericID,
+    type: TDeviceType,
+    folder: string,
+  ): Promise<string> {
+    throw new Error("Method not implemented");
+  }
+
+  /**
+   * Import Device data from a CSV file
+   */
+  public async importDeviceData(
+    deviceID: TGenericID,
+    type: TDeviceType,
+    folder: string,
+  ): Promise<string> {
     throw new Error("Method not implemented");
   }
 }

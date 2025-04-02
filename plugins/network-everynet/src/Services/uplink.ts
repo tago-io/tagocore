@@ -43,41 +43,52 @@ async function uplinkService(
   req: Request,
   res: Response,
 ) {
-  const data: IEverynetObject = req.body;
-  const devEui = data.params.device || data.meta?.device;
-  if (!devEui) return { body: "Missing serial number", status: 400 };
+  try {
+    const data: IEverynetObject = req.body;
+    const devEui = data.params.device || data.meta?.device;
+    if (!devEui) {
+      return sendResponse(res, {
+        body: { message: "Missing serial number" },
+        status: 400,
+      });
+    }
 
-  const authorization =
-    req.headers.Authorization ||
-    req.headers.authorization ||
-    data.meta?.application;
-  if (!authorization || authorization !== config.authorization_code) {
-    console.error(
-      `[Network Server] Request refused, authentication is invalid: ${authorization}`,
-    );
-    return sendResponse(res, {
-      body: "Invalid authorization header",
-      status: 401,
+    const authorization =
+      req.headers.Authorization ||
+      req.headers.authorization ||
+      data.meta?.application;
+    if (!authorization || authorization !== config.authorization_code) {
+      console.error(
+        `[Network Server] Request refused, authentication is invalid: ${authorization}`,
+      );
+      return sendResponse(res, {
+        body: "Invalid authorization header",
+        status: 401,
+      });
+    }
+
+    const device = await getDevice(devEui).catch((e) => {
+      return sendResponse(res, { body: e.message || e, status: 400 });
     });
-  }
 
-  const device = await getDevice(devEui).catch((e) => {
-    return sendResponse(res, { body: e.message || e, status: 400 });
-  });
+    if (!device) {
+      return sendResponse(res, {
+        body: `Device EUI not found ${devEui}`,
+        status: 401,
+      });
+    }
 
-  if (!device) {
-    return sendResponse(res, {
-      body: `Device EUI not found ${devEui}`,
-      status: 401,
+    core.addDeviceData(device.id, data).catch((e) => {
+      console.error(`Error inserting data ${e.message}`);
+      console.error(e);
+      sendResponse(res, { body: { message: e.message }, status: 201 });
     });
+
+    sendResponse(res, { body: { message: "Data accepted" }, status: 201 });
+  } catch (error) {
+    console.error(error);
+    sendResponse(res, { body: error.message || error, status: 500 });
   }
-
-  core.addDeviceData(device.id, data).catch((e) => {
-    console.error(`Error inserting data ${e.message}`);
-    console.error(e);
-  });
-
-  sendResponse(res, { body: { message: "Data accepted" }, status: 201 });
 }
 
 export default uplinkService;

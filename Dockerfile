@@ -1,5 +1,7 @@
 FROM node:22-bookworm-slim
 
+ENV TCORE_DIRPATH=/var/lib/tagocore/data
+
 # Set the working directory
 WORKDIR /tagocore
 
@@ -14,6 +16,7 @@ ENV JUST_VERSION=1.36.0
 # Install distro libs, download and install 'just', and clean up in a single RUN statement
 RUN apt update && \
     apt install -y curl netcat-openbsd && \
+    apt install -y python3 make g++ build-essential && \
     rm -rf /var/lib/apt/lists/* && \
     export JUST_FILENAME=$(node just_bin.mjs ${JUST_VERSION}) && \
     curl -L -o just.tar.gz https://github.com/casey/just/releases/download/${JUST_VERSION}/$JUST_FILENAME && \
@@ -23,6 +26,7 @@ RUN apt update && \
     rm -rf just.tar.gz;
 
 # Install dependencies
+
 RUN just install;
 
 # Build the console
