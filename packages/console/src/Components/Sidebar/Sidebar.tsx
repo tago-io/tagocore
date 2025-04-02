@@ -5,6 +5,7 @@ import type {
 import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { useTheme } from "styled-components";
+import { useEnabledPlugins } from "../../Requests/getPluginList.ts";
 import { getSocket } from "../../System/Socket.ts";
 import store from "../../System/Store.ts";
 import { EIcon } from "../Icon/Icon.types";
@@ -19,6 +20,8 @@ interface SidebarProps {
 
 function Sidebar(props: SidebarProps) {
   const theme = useTheme();
+
+  const { data: plugins } = useEnabledPlugins();
 
   const buttons: Array<IPluginButtonModuleSetupOption | null> = [
     {
@@ -41,8 +44,8 @@ function Sidebar(props: SidebarProps) {
       },
     },
     {
-      text: "Store",
-      icon: EIcon.store,
+      text: "Plugins",
+      icon: EIcon["puzzle-piece"],
       color: theme.settings,
       action: {
         type: "open-url",
@@ -87,7 +90,7 @@ function Sidebar(props: SidebarProps) {
     },
   ];
 
-  for (const plugin of store.plugins) {
+  for (const plugin of plugins || []) {
     for (const button of plugin.buttons.sidebar || []) {
       const item = buttons[button.position];
       if (item === null) {
@@ -162,13 +165,11 @@ function Sidebar(props: SidebarProps) {
 
   return (
     <Style.Container data-testid="sidebar" open={props.open}>
-      {store.plugins && (
+      {plugins && (
         <>
           <div className="stretch">
             <div className="buttons">{buttons.map(renderButton)}</div>
-            <div style={{ marginTop: "6px" }}>
-              {store.plugins?.map(renderPlugin)}
-            </div>
+            <div style={{ marginTop: "6px" }}>{plugins.map(renderPlugin)}</div>
           </div>
 
           <InstallLocalPluginButton />

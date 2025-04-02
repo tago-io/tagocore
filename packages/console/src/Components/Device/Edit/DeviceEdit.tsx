@@ -134,7 +134,7 @@ function DeviceEdit() {
    * Saves the device.
    */
   const save = useCallback(async () => {
-    const formatted = {
+    const formatted: Partial<IDevice> & { encoder_stack: string[] } = {
       active: data.active,
       id: data.id,
       name: data.name,
@@ -145,6 +145,10 @@ function DeviceEdit() {
 
     if (!id) {
       return;
+    }
+
+    if (data.type === "immutable") {
+      (formatted as IDevice).chunk_retention = data.chunk_retention;
     }
 
     await editDevice(id, formatted);
@@ -323,6 +327,14 @@ function DeviceEdit() {
         <b>{getDeviceTypeName(data.type)}</b>
         <span> &nbsp;|&nbsp; </span>
 
+        {data.type === "immutable" && (
+          <>
+            <span>Data retention </span>
+            <b>{formatDataRetention(data) || "Forever"}</b>
+            <span> &nbsp;|&nbsp; </span>
+          </>
+        )}
+
         <span>Data amount&nbsp;</span>
         <b>{dataAmount}</b>
       </>
@@ -341,8 +353,8 @@ function DeviceEdit() {
   }, [data, deleteMultipleData, dataAmount, mutateDataAmount]);
 
   const renderChunksTab = useCallback(() => {
-    return <ChunksTab data={data} />;
-  }, [data]);
+    return <ChunksTab data={data} errors={errors} onChange={onChangeData} />;
+  }, [data, errors, onChangeData]);
 
   const renderMoreTab = useCallback(() => {
     return <MoreTab data={data} onDelete={deleteData} />;
@@ -488,6 +500,22 @@ function DeviceEdit() {
  */
 async function generateToken(data: any) {
   return createDeviceToken(data.device_id, data);
+}
+
+function formatDataRetention(data: IDevice) {
+  if (data.type === "mutable") {
+    return null;
+  }
+
+  const retention = data.chunk_retention ?? null;
+
+  if (!data.chunk_period || retention === null) {
+    return null;
+  }
+
+  return retention < 1 || retention > 1
+    ? `${retention} ${data.chunk_period}s`
+    : `${retention} ${data.chunk_period}`;
 }
 
 export default observer(DeviceEdit);

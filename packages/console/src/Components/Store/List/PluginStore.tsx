@@ -8,18 +8,12 @@ import Loading from "../../Loading/Loading.tsx";
 import Card from "./Card/Card.tsx";
 import * as Style from "./PluginStore.style";
 
-/**
- * The plugin store page.
- */
-function PluginStore() {
+function PluginsPage() {
   const theme = useTheme() as any;
   const { data, error } = useApiRequest<Array<any>>("/plugins/store");
   const plugins = data || [];
   const loading = !data;
 
-  /**
-   * Renders a single plugin card.
-   */
   const renderPlugin = (plugin: any) => {
     return (
       <Card
@@ -35,8 +29,6 @@ function PluginStore() {
     );
   };
 
-  /**
-   */
   useEffect(() => {
     window.top?.postMessage(
       { type: "set-link", url: "/pages/pluginstore" },
@@ -48,9 +40,9 @@ function PluginStore() {
     <Style.Container>
       <InnerNav
         color={theme.extension}
-        description="Search and install plugins from the Plugin store."
-        icon={EIcon.store}
-        title="Plugin Store"
+        description="Browse available plugins to extend TagoCore's functionality."
+        icon={EIcon["puzzle-piece"]}
+        title="Plugins"
       />
 
       <div className="content">
@@ -89,4 +81,4 @@ function PluginStore() {
   );
 }
 
-export default PluginStore;
+export default PluginsPage;

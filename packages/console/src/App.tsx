@@ -29,7 +29,7 @@ import Settings from "./Components/Settings/Edit/Settings.tsx";
 import Setup, { getSetupSteps } from "./Components/Setup/Setup.tsx";
 import StepDatabaseError from "./Components/Setup/StepDatabaseError/StepDatabaseError.tsx";
 import PluginDetails from "./Components/Store/Details/PluginDetails.tsx";
-import PluginStore from "./Components/Store/List/PluginStore.tsx";
+import PluginsPage from "./Components/Store/List/PluginStore.tsx";
 import GlobalStyles from "./Components/Styles/GlobalStyles.ts";
 import { getLocalStorage, setLocalStorage } from "./Helpers/localStorage.ts";
 import getAccountByToken from "./Requests/getAccountByToken.ts";
@@ -243,7 +243,7 @@ const router = createBrowserRouter([
       },
       {
         path: "pluginstore",
-        element: <PluginStore />,
+        element: <PluginsPage />,
       },
       {
         path: "pluginstore/detail/:id",

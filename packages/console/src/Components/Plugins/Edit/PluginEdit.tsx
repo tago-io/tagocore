@@ -10,6 +10,10 @@ import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
 import disablePlugin from "../../../Requests/disablePlugin.ts";
 import editPluginSettings from "../../../Requests/editPluginSettings.ts";
 import enablePlugin from "../../../Requests/enablePlugin.ts";
+import {
+  useEnabledPlugins,
+  useInstalledPluginIDs,
+} from "../../../Requests/getPluginList.ts";
 import startPluginModule from "../../../Requests/startPluginModule.ts";
 import stopPluginModule from "../../../Requests/stopPluginModule.ts";
 import uninstallPlugin from "../../../Requests/uninstallPlugin.ts";
@@ -26,6 +30,9 @@ function PluginEdit() {
   const match = useMatch("/console/plugin/:id");
   const id = match?.params?.id;
   const navigate = useNavigate();
+
+  const { mutate: mutateInstalledPlugins } = useInstalledPluginIDs();
+  const { mutate: mutateEnabledPlugins } = useEnabledPlugins();
 
   const theme = useTheme();
   const [data, setData] = useState<IPlugin>({} as IPlugin);
@@ -95,29 +102,37 @@ function PluginEdit() {
       return;
     }
 
-    enablePlugin(id);
-  }, [id]);
+    await enablePlugin(id);
+    mutateInstalledPlugins();
+    mutateEnabledPlugins();
+  }, [id, mutateInstalledPlugins, mutateEnabledPlugins]);
 
   const disable = useCallback(async () => {
     if (!id) {
       return;
     }
 
-    disablePlugin(id);
-  }, [id]);
+    await disablePlugin(id);
+    mutateInstalledPlugins();
+    mutateEnabledPlugins();
+  }, [id, mutateInstalledPlugins, mutateEnabledPlugins]);
 
   const stopModule = useCallback(
     async (module: IPluginModule) => {
       stopPluginModule(data.id, module.id);
+      mutateInstalledPlugins();
+      mutateEnabledPlugins();
     },
-    [data],
+    [data, mutateInstalledPlugins, mutateEnabledPlugins],
   );
 
   const startModule = useCallback(
     async (module: IPluginModule) => {
       startPluginModule(data.id, module.id);
+      mutateInstalledPlugins();
+      mutateEnabledPlugins();
     },
-    [data],
+    [data, mutateInstalledPlugins, mutateEnabledPlugins],
   );
 
   const renderSettingsTab = () => {
@@ -170,8 +185,10 @@ function PluginEdit() {
       }
 
       await uninstallPlugin(id, keepData);
+      mutateInstalledPlugins();
+      mutateEnabledPlugins();
     },
-    [id],
+    [id, mutateInstalledPlugins, mutateEnabledPlugins],
   );
 
   /**
