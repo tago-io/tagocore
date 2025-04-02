@@ -3,6 +3,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { getLocalStorage } from "../../../../Helpers/localStorage.ts";
 import useApiRequest from "../../../../Helpers/useApiRequest.ts";
+import {
+  useEnabledPlugins,
+  useInstalledPluginIDs,
+} from "../../../../Requests/getPluginList.ts";
 import store from "../../../../System/Store.ts";
 import Button from "../../../Button/Button.tsx";
 import { EButton } from "../../../Button/Button.types";
@@ -11,11 +15,8 @@ import { EIcon } from "../../../Icon/Icon.types";
 import PluginImage from "../../../PluginImage/PluginImage.tsx";
 import Publisher from "../../../Plugins/Common/Publisher/Publisher.tsx";
 import Tooltip from "../../../Tooltip/Tooltip.tsx";
+
 import * as Style from "./Banner.style";
-import {
-  useInstalledPluginIDs,
-  useEnabledPlugins,
-} from "../../../../Requests/getPluginList.ts";
 
 interface IBannerProps {
   installURL: string;

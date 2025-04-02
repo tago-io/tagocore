@@ -5,6 +5,7 @@ import type {
 import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { useTheme } from "styled-components";
+import { useEnabledPlugins } from "../../Requests/getPluginList.ts";
 import { getSocket } from "../../System/Socket.ts";
 import store from "../../System/Store.ts";
 import { EIcon } from "../Icon/Icon.types";
@@ -12,7 +13,6 @@ import InstallLocalPluginButton from "./InstalLocalPluginButton/InstalLocalPlugi
 import Item from "./Item.tsx";
 import PluginButton from "./PluginButton/PluginButton.tsx";
 import * as Style from "./Sidebar.style";
-import { useEnabledPlugins } from "../../Requests/getPluginList.ts";
 
 interface SidebarProps {
   open: boolean;

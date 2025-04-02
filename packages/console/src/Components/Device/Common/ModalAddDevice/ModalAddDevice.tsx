@@ -4,11 +4,11 @@ import { useNavigate } from "react-router";
 import { useTheme } from "styled-components";
 import createDevice from "../../../../Requests/createDevice.ts";
 import buildZodError from "../../../../Validation/buildZodError.ts";
-import DataRetention from "../../../Bucket/Common/DataRetention/DataRetention.tsx";
 import FormGroup from "../../../FormGroup/FormGroup.tsx";
 import { EIcon } from "../../../Icon/Icon.types";
 import Input from "../../../Input/Input.tsx";
 import Modal from "../../../Modal/Modal.tsx";
+import DataRetention from "../../Common/DataRetention/DataRetention.tsx";
 import BucketTypePicker from "../DeviceTypePicker/DeviceTypePicker.tsx";
 
 /**

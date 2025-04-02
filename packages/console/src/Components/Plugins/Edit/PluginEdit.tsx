@@ -10,6 +10,10 @@ import validateConfigFields from "../../../Helpers/validateConfigFields.ts";
 import disablePlugin from "../../../Requests/disablePlugin.ts";
 import editPluginSettings from "../../../Requests/editPluginSettings.ts";
 import enablePlugin from "../../../Requests/enablePlugin.ts";
+import {
+  useEnabledPlugins,
+  useInstalledPluginIDs,
+} from "../../../Requests/getPluginList.ts";
 import startPluginModule from "../../../Requests/startPluginModule.ts";
 import stopPluginModule from "../../../Requests/stopPluginModule.ts";
 import uninstallPlugin from "../../../Requests/uninstallPlugin.ts";
@@ -18,10 +22,6 @@ import store from "../../../System/Store.ts";
 import EditPage from "../../EditPage/EditPage.tsx";
 import PluginImage from "../../PluginImage/PluginImage.tsx";
 import SettingsTab from "./SettingsTab/SettingsTab.tsx";
-import {
-  useEnabledPlugins,
-  useInstalledPluginIDs,
-} from "../../../Requests/getPluginList.ts";
 
 /**
  * The plugin's edit page.

@@ -4,13 +4,13 @@ import { useLocation } from "react-router";
 import { useTheme } from "styled-components";
 import disablePlugin from "../../../Requests/disablePlugin.ts";
 import enablePlugin from "../../../Requests/enablePlugin.ts";
+import { useEnabledPlugins } from "../../../Requests/getPluginList.ts";
 import uninstallPlugin from "../../../Requests/uninstallPlugin.ts";
 import { ModalUninstallPlugin } from "../../../index.ts";
 import Icon from "../../Icon/Icon.tsx";
 import { EIcon } from "../../Icon/Icon.types";
 import PluginImage from "../../PluginImage/PluginImage.tsx";
 import * as Style from "./PluginButton.style";
-import { useEnabledPlugins } from "../../../Requests/getPluginList.ts";
 
 interface IPluginButtonProps {
   item: IPluginListItem;

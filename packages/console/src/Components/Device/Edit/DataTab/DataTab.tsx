@@ -30,6 +30,10 @@ function DataTab(props: DataTabProps) {
     setRefetchID(Date.now());
   }, [onDeleteData, selectedVariables]);
 
+  const refreshData = useCallback(() => {
+    setRefetchID(Date.now());
+  }, []);
+
   return (
     <>
       <Row>
@@ -56,7 +60,7 @@ function DataTab(props: DataTabProps) {
               </Button>
             )}
 
-            <DataOptionsButton />
+            <DataOptionsButton device={data} onRefreshData={refreshData} />
           </Style.Buttons>
         </Col>
       </Row>

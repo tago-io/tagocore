@@ -83,21 +83,6 @@ function GeneralInformationTab(props: IGeneralInformationTabProps) {
 
             <Col size="12">
               <FormGroup
-                tooltip="The bucket associated to this device"
-                icon={EIcon.bucket}
-                label="Bucket"
-              >
-                <ResourceLinkField
-                  type="bucket"
-                  icon={EIcon.bucket}
-                  name={data.name}
-                  link={`/console/buckets/${data.id}`}
-                />
-              </FormGroup>
-            </Col>
-
-            <Col size="12">
-              <FormGroup
                 tooltip="Depending on the connector used, devices may require serial numbers or other types of fields"
                 label="Token & Serial Number"
                 icon={EIcon.list}
