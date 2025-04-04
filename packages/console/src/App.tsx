@@ -26,7 +26,10 @@ import MainScreen from "./Components/MainScreen/MainScreen.tsx";
 import PageIFrame from "./Components/PageIframe/PageIFrame.tsx";
 import PluginEdit from "./Components/Plugins/Edit/PluginEdit.tsx";
 import Settings from "./Components/Settings/Edit/Settings.tsx";
-import Setup, { getSetupSteps } from "./Components/Setup/Setup.tsx";
+import Setup, {
+  getSetupSteps,
+  hasFinishedSetup,
+} from "./Components/Setup/Setup.tsx";
 import StepDatabaseError from "./Components/Setup/StepDatabaseError/StepDatabaseError.tsx";
 import PluginDetails from "./Components/Store/Details/PluginDetails.tsx";
 import PluginsPage from "./Components/Store/List/PluginStore.tsx";
@@ -281,6 +284,9 @@ const router = createBrowserRouter([
       }
 
       const stepList = getSetupSteps(status);
+      if (hasFinishedSetup(stepList)) {
+        return redirect("/console");
+      }
 
       return { stepList };
     },

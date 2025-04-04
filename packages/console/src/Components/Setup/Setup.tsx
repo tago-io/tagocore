@@ -21,7 +21,9 @@ type TSetupStep =
 type SetupLoaderData = { stepList: TSetupStep[] };
 
 function Setup() {
-  const { stepList } = useLoaderData() as SetupLoaderData;
+  const { stepList: initialStepList } = useLoaderData() as SetupLoaderData;
+
+  const [stepList, setStepList] = useState(initialStepList);
 
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ function Setup() {
   }, [stepList, step]);
 
   const back = useCallback(() => {
-    if (step > 1) {
+    if (step > 0) {
       setStep(step - 1);
     }
   }, [step]);
@@ -46,9 +48,25 @@ function Setup() {
       return;
     }
 
-    const nextStep = stepList[step + 1];
-    if (nextStep) {
-      setStep(step + 1);
+    let currentStepList = stepList;
+    let nextStep = step + 1;
+
+    if (currentStep === "master-password") {
+      currentStepList = stepList.filter((s) => s !== "master-password");
+      nextStep = nextStep - 1;
+      setStepList(currentStepList);
+    }
+
+    if (currentStep === "plugin-settings") {
+      currentStepList = stepList.filter(
+        (s) => s !== "plugin-settings" && s !== "database-setup",
+      );
+      nextStep = nextStep - 2;
+      setStepList(currentStepList);
+    }
+
+    if (nextStep >= 0 && currentStepList[nextStep]) {
+      setStep(nextStep);
     }
   }, [stepList, step, currentStep, navigate]);
 
@@ -126,6 +144,13 @@ export function getSetupSteps(status: TStatusResponse) {
   }
 
   return stepList;
+}
+
+export function hasFinishedSetup(stepList: TSetupStep[]) {
+  return (
+    stepList.length === 0 ||
+    (stepList.length === 1 && stepList[0] === "welcome")
+  );
 }
 
 export default observer(Setup);
