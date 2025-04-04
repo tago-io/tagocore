@@ -67,9 +67,7 @@ async function uplinkService(
       });
     }
 
-    const device = await getDevice(devEui).catch((e) => {
-      return sendResponse(res, { body: e.message || e, status: 400 });
-    });
+    const device = await getDevice(devEui).catch(() => null);
 
     if (!device) {
       return sendResponse(res, {
@@ -81,13 +79,16 @@ async function uplinkService(
     core.addDeviceData(device.id, data).catch((e) => {
       console.error(`Error inserting data ${e.message}`);
       console.error(e);
-      sendResponse(res, { body: { message: e.message }, status: 201 });
+      return sendResponse(res, { body: { message: e.message }, status: 201 });
     });
 
-    sendResponse(res, { body: { message: "Data accepted" }, status: 201 });
+    return sendResponse(res, {
+      body: { message: "Data accepted" },
+      status: 201,
+    });
   } catch (error) {
     console.error(error);
-    sendResponse(res, { body: error.message || error, status: 500 });
+    return sendResponse(res, { body: error.message || error, status: 500 });
   }
 }
 
