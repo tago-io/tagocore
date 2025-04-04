@@ -82,7 +82,10 @@ async function uplinkService(
       return sendResponse(res, { body: { message: e.message }, status: 201 });
     });
 
-    return sendResponse(res, { body: { message: "Data accepted" }, status: 201 });
+    return sendResponse(res, {
+      body: { message: "Data accepted" },
+      status: 201,
+    });
   } catch (error) {
     console.error(error);
     return sendResponse(res, { body: error.message || error, status: 500 });
