@@ -128,10 +128,7 @@ function StepDatabaseWithStore(props: StepDatabaseWithStoreProps) {
         <PluginImage src={item.logoURL} width={60} />
 
         <div className="info">
-          <div className="title">
-            {item.name}
-            {installed && <span className="installed">✓ Installed </span>}
-          </div>
+          <div className="title">{item.name}</div>
           <div className="desc">
             <Publisher
               clickable
