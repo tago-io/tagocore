@@ -25,6 +25,10 @@ class EditSettings extends APIController<ISettings, void, void> {
   };
 
   public async main() {
+    if (!this.bodyParams.filesystem_plugin) {
+      this.bodyParams.master_password = undefined;
+    }
+
     const settings = await getMainSettings();
     const data = { ...settings, ...this.bodyParams };
     await setMainSettings(data);
