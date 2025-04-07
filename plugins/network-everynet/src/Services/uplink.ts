@@ -76,11 +76,7 @@ async function uplinkService(
       });
     }
 
-    core.addDeviceData(device.id, data).catch((e) => {
-      console.error(`Error inserting data ${e.message}`);
-      console.error(e);
-      return sendResponse(res, { body: { message: e.message }, status: 201 });
-    });
+    await core.addDeviceData(device.id, data);
 
     return sendResponse(res, {
       body: { message: "Data accepted" },
@@ -88,7 +84,10 @@ async function uplinkService(
     });
   } catch (error) {
     console.error(error);
-    return sendResponse(res, { body: error.message || error, status: 500 });
+    return sendResponse(res, {
+      body: `Error inserting data ${error.message || error}`,
+      status: 500,
+    });
   }
 }
 
