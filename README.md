@@ -39,6 +39,10 @@ There are many ways to participate in this project, including:
 * Upvote [popular feature requests](https://github.com/tago-io/tcore/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
 * [File an issue](https://github.com/tago-io/tcore/issues)
 
+## Known issues
+
+* Installing the TagoIO Integration plugin requires restarting the server
+
 ## License
 
 This repository is licensed under the [Apache License 2.0](LICENSE).
