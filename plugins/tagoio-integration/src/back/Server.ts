@@ -83,6 +83,8 @@ async function routeStartTCore(req: Request, res: Response) {
   const tcoreStartTime = new Date(Date.now() - process.uptime() * 1000);
   const osInfo = await helpers.getOSInfo();
   const profileToken = "p-".concat(req.headers.token as string);
+  const region = req.headers.region as string;
+  await pluginStorage.set("region", region);
   const item = await pluginStorage.get("tcore").catch(() => null);
 
   if (item?.token) {

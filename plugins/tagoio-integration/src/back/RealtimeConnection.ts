@@ -16,14 +16,15 @@ const pingInterval = 240000;
 
 /**
  */
-function startRealtimeCommunication(token: string) {
+async function startRealtimeCommunication(token: string) {
   if (!token || events) {
     return;
   }
 
   const channel = "commands";
   const params = new URLSearchParams({ token, channel });
-  const url = `${getConnectionURI.default.default("usa-1").sse}?${params.toString()}`;
+  const region = await pluginStorage.get("region") || "us-e1";
+  const url = `${getConnectionURI.default.default(region).sse}?${params.toString()}`;
 
   const connect = () => {
     events = new EventSource(url);
