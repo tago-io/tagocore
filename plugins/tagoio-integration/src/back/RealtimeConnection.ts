@@ -23,7 +23,7 @@ async function startRealtimeCommunication(token: string) {
 
   const channel = "commands";
   const params = new URLSearchParams({ token, channel });
-  const region = await pluginStorage.get("region") || "us-e1";
+  const region = (await pluginStorage.get("region")) || "us-e1";
   const url = `${getConnectionURI.default.default(region).sse}?${params.toString()}`;
 
   const connect = () => {

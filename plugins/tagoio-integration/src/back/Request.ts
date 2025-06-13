@@ -7,7 +7,7 @@ import axios from "axios";
  */
 async function createTCore(token: string, data: any) {
   try {
-    const region = await pluginStorage.get("region") || "us-e1";
+    const region = (await pluginStorage.get("region")) || "us-e1";
     const response = await axios({
       url: `${getConnectionURI.default.default(region).api}/tcore/instance`,
       method: "POST",
@@ -30,7 +30,7 @@ async function sendDataToTagoio(
   operation: string,
 ) {
   try {
-    const region = await pluginStorage.get("region") || "us-e1";
+    const region = (await pluginStorage.get("region")) || "us-e1";
     const response = await axios({
       url: `${getConnectionURI.default.default(region).api}/tcore/sse/${connId}`,
       method: "POST",
