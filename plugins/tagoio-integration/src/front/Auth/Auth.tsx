@@ -15,12 +15,12 @@ import Profiles from "./Profiles/Profiles.tsx";
 const REGIONS = {
   "us-e1": {
     label: "United States East 1",
-    apiUrl: "https://api.tago.io"
+    apiUrl: "https://api.tago.io",
   },
   "eu-w1": {
     label: "Europe West 1",
-    apiUrl: "https://api.eu-w1.tago.io"
-  }
+    apiUrl: "https://api.eu-w1.tago.io",
+  },
 };
 
 /**
@@ -57,7 +57,8 @@ function Auth(props: IAuthProps) {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
   const [profiles, setProfiles] = useState<any[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState<keyof typeof REGIONS>("us-e1");
+  const [selectedRegion, setSelectedRegion] =
+    useState<keyof typeof REGIONS>("us-e1");
 
   const { onSignIn, port } = props;
 
@@ -129,7 +130,7 @@ function Auth(props: IAuthProps) {
         method: "POST",
         headers: {
           token,
-          region: selectedRegion
+          region: selectedRegion,
         },
         data: { name },
       });
