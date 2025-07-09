@@ -72,6 +72,8 @@ async function routeGetTCore(req: Request, res: Response) {
  */
 async function routeSignOut(req: Request, res: Response) {
   await pluginStorage.delete("token");
+  await pluginStorage.delete("tcore");
+  await pluginStorage.delete("region");
   closeRealtimeConnection();
   res.sendStatus(200);
 }

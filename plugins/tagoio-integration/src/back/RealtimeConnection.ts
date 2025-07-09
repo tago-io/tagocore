@@ -114,7 +114,7 @@ async function emitStartData(token: string, connID: string) {
     os: osInfo,
     system_start_time: systemStartTime,
     tcore_start_time: tcoreStartTime,
-    tcore_version: "0.7.0",
+    tcore_version: "1.0.0",
     summary: data[0],
     computer_usage: computerUsage,
     last_ping: Date.now(),

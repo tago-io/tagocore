@@ -11,7 +11,17 @@ import Otp from "./Otp/Otp.tsx";
 import OtpPicker from "./OtpPicker/OtpPicker.tsx";
 import Profiles from "./Profiles/Profiles.tsx";
 
-const API_URL = process.env.TAGOIO_API;
+// Region configuration
+const REGIONS = {
+  "us-e1": {
+    label: "United States East 1",
+    apiUrl: "https://api.tago.io"
+  },
+  "eu-w1": {
+    label: "Europe West 1",
+    apiUrl: "https://api.eu-w1.tago.io"
+  }
+};
 
 /**
  * Props.
@@ -47,8 +57,12 @@ function Auth(props: IAuthProps) {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
   const [profiles, setProfiles] = useState<any[]>([]);
+  const [selectedRegion, setSelectedRegion] = useState<keyof typeof REGIONS>("us-e1");
 
   const { onSignIn, port } = props;
+
+  // Get the API URL based on selected region
+  const API_URL = REGIONS[selectedRegion].apiUrl;
 
   /**
    * Logs in.
@@ -99,7 +113,7 @@ function Auth(props: IAuthProps) {
         setLoading(false);
       }
     },
-    [email, password, loading, otpType],
+    [email, password, loading, otpType, API_URL],
   );
 
   /**
@@ -113,7 +127,10 @@ function Auth(props: IAuthProps) {
       const response = await axios({
         url: `${location.protocol}//${location.hostname}:${port}/start`,
         method: "POST",
-        headers: { token },
+        headers: {
+          token,
+          region: selectedRegion
+        },
         data: { name },
       });
 
@@ -152,7 +169,7 @@ function Auth(props: IAuthProps) {
         setLoading(false);
       }
     },
-    [email, otpType, lastPinCode, password],
+    [email, otpType, lastPinCode, password, API_URL],
   );
 
   /**
@@ -194,7 +211,7 @@ function Auth(props: IAuthProps) {
         });
       }
     },
-    [email, password],
+    [email, password, API_URL],
   );
 
   /**
@@ -226,6 +243,9 @@ function Auth(props: IAuthProps) {
               onChangePassword={setPassword}
               onLogin={login}
               password={password}
+              selectedRegion={selectedRegion}
+              onChangeRegion={setSelectedRegion}
+              regions={REGIONS}
             />
           ) : content === "profiles" ? (
             // profile selection

@@ -5,8 +5,24 @@ import SVGTagoIO from "../../../../assets/tagoio-logo.svg";
 import * as Style from "./Credentials.style";
 
 /**
+ * Props interface
  */
-function Credentials(props: any) {
+interface ICredentialsProps {
+  loading: boolean;
+  email: string;
+  invalidCredentials: boolean;
+  password: string;
+  onChangeEmail: (email: string) => void;
+  onChangePassword: (password: string) => void;
+  onLogin: () => void;
+  selectedRegion: string;
+  onChangeRegion: (region: "us-e1" | "eu-w1") => void;
+  regions: Record<string, { label: string; apiUrl: string }>;
+}
+
+/**
+ */
+function Credentials(props: ICredentialsProps) {
   const {
     loading,
     email,
@@ -15,6 +31,9 @@ function Credentials(props: any) {
     onChangeEmail,
     onChangePassword,
     onLogin,
+    selectedRegion,
+    onChangeRegion,
+    regions,
   } = props;
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -98,6 +117,28 @@ function Credentials(props: any) {
           type="password"
           value={password}
         />
+      </FormGroup>
+
+      <FormGroup label="Region">
+        <select
+          value={selectedRegion}
+          onChange={(e) => onChangeRegion(e.target.value as "us-e1" | "eu-w1")}
+          style={{
+            width: "100%",
+            padding: "8px 12px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            fontSize: "14px",
+            backgroundColor: "white",
+            outline: "none",
+          }}
+        >
+          {Object.entries(regions).map(([value, config]) => (
+            <option key={value} value={value}>
+              {config.label}
+            </option>
+          ))}
+        </select>
       </FormGroup>
 
       <FormGroup>

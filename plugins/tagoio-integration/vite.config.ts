@@ -9,7 +9,6 @@ import svgr from "vite-plugin-svgr";
 const configFilePath = fileURLToPath(import.meta.url);
 const buildPath = join(dirname(configFilePath), "./build/front");
 
-const TAGOIO_API = "https://api.tago.io";
 const TAGOIO_REALTIME = "https://realtime.tago.io";
 
 // https://vite.dev/config/
@@ -36,8 +35,6 @@ export default defineConfig({
     globals: true,
   },
   define: {
-    "process.env.TAGOIO_API": `"${TAGOIO_API}"`,
-    "process.env.TAGO_API": `"${TAGOIO_API}"`,
     "process.env.TAGOIO_REALTIME": `"${TAGOIO_REALTIME}"`,
     "process.env.TAGO_REALTIME": `"${TAGOIO_REALTIME}"`,
   },
