@@ -2,8 +2,8 @@ import { Button, EButton, FormGroup, Input } from "@tago-io/tcore-console";
 import { type KeyboardEvent, useCallback, useRef, useState } from "react";
 // @ts-ignore
 import SVGTagoIO from "../../../../assets/tagoio-logo.svg";
-import * as Style from "./Credentials.style";
 import { REGIONS } from "../regions.ts";
+import * as Style from "./Credentials.style";
 
 /**
  * Props interface

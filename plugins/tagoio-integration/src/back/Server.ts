@@ -1,5 +1,6 @@
 import http from "node:http";
 import os from "node:os";
+import { regionsDefinition } from "@tago-io/sdk/lib/regions.js";
 import { helpers, pluginStorage } from "@tago-io/tcore-sdk";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -13,7 +14,6 @@ import {
   startRealtimeCommunication,
 } from "./RealtimeConnection.ts";
 import { createTCore, sendDataToTagoio } from "./Request.ts";
-import { regionsDefinition } from "@tago-io/sdk/lib/regions.js";
 
 let server: http.Server | null = null;
 
