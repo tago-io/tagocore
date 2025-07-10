@@ -3,6 +3,7 @@ import { type KeyboardEvent, useCallback, useRef, useState } from "react";
 // @ts-ignore
 import SVGTagoIO from "../../../../assets/tagoio-logo.svg";
 import * as Style from "./Credentials.style";
+import { REGIONS } from "../regions.ts";
 
 /**
  * Props interface
@@ -17,7 +18,6 @@ interface ICredentialsProps {
   onLogin: () => void;
   selectedRegion: string;
   onChangeRegion: (region: "us-e1" | "eu-w1") => void;
-  regions: Record<string, { label: string; apiUrl: string }>;
 }
 
 /**
@@ -33,7 +33,6 @@ function Credentials(props: ICredentialsProps) {
     onLogin,
     selectedRegion,
     onChangeRegion,
-    regions,
   } = props;
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -133,9 +132,9 @@ function Credentials(props: ICredentialsProps) {
             outline: "none",
           }}
         >
-          {Object.entries(regions).map(([value, config]) => (
-            <option key={value} value={value}>
-              {config.label}
+          {Object.entries(REGIONS).map(([regionKey, region]) => (
+            <option key={regionKey} value={regionKey}>
+              {region.label}
             </option>
           ))}
         </select>

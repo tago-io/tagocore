@@ -10,18 +10,7 @@ import InstanceName from "./InstanceName/InstanceName.tsx";
 import Otp from "./Otp/Otp.tsx";
 import OtpPicker from "./OtpPicker/OtpPicker.tsx";
 import Profiles from "./Profiles/Profiles.tsx";
-
-// Region configuration
-const REGIONS = {
-  "us-e1": {
-    label: "United States East 1",
-    apiUrl: "https://api.tago.io",
-  },
-  "eu-w1": {
-    label: "Europe West 1",
-    apiUrl: "https://api.eu-w1.tago.io",
-  },
-};
+import { REGIONS } from "./regions.ts";
 
 /**
  * Props.
@@ -63,7 +52,7 @@ function Auth(props: IAuthProps) {
   const { onSignIn, port } = props;
 
   // Get the API URL based on selected region
-  const API_URL = REGIONS[selectedRegion].apiUrl;
+  const apiUrl = REGIONS[selectedRegion].apiUrl;
 
   /**
    * Logs in.
@@ -82,7 +71,7 @@ function Auth(props: IAuthProps) {
 
         // logs in and gets the account
         const result = await axios.post(
-          `${API_URL}/account/login`,
+          `${apiUrl}/account/login`,
           {
             email,
             password,
@@ -114,7 +103,7 @@ function Auth(props: IAuthProps) {
         setLoading(false);
       }
     },
-    [email, password, loading, otpType, API_URL],
+    [email, password, loading, otpType, apiUrl],
   );
 
   /**
@@ -151,7 +140,7 @@ function Auth(props: IAuthProps) {
 
         // uses the account to get a profile token
         // logs in and gets the account
-        const tokenData = await axios.post(`${API_URL}/account/profile/token`, {
+        const tokenData = await axios.post(`${apiUrl}/account/profile/token`, {
           email,
           password,
           otp_type: lastPinCode ? otpType : undefined,
@@ -170,7 +159,7 @@ function Auth(props: IAuthProps) {
         setLoading(false);
       }
     },
-    [email, otpType, lastPinCode, password, API_URL],
+    [email, otpType, lastPinCode, password, apiUrl],
   );
 
   /**
@@ -205,14 +194,14 @@ function Auth(props: IAuthProps) {
       setContent("otp");
 
       if (newType !== "authenticator") {
-        await axios.post(`${API_URL}/account/login/otp`, {
+        await axios.post(`${apiUrl}/account/login/otp`, {
           email,
           password,
           otp_type: newType,
         });
       }
     },
-    [email, password, API_URL],
+    [email, password, apiUrl],
   );
 
   /**
@@ -246,7 +235,6 @@ function Auth(props: IAuthProps) {
               password={password}
               selectedRegion={selectedRegion}
               onChangeRegion={setSelectedRegion}
-              regions={REGIONS}
             />
           ) : content === "profiles" ? (
             // profile selection

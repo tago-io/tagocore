@@ -9,6 +9,7 @@ async function createTCore(token: string, data: any) {
   try {
     const region = (await pluginStorage.get("region")) || "us-e1";
     const response = await axios({
+      //TODO: fix this import and check if works
       url: `${getConnectionURI.default.default(region).api}/tcore/instance`,
       method: "POST",
       headers: { token },
@@ -32,6 +33,7 @@ async function sendDataToTagoio(
   try {
     const region = (await pluginStorage.get("region")) || "us-e1";
     const response = await axios({
+      //TODO: fix this import and check if works
       url: `${getConnectionURI.default.default(region).api}/tcore/sse/${connId}`,
       method: "POST",
       headers: { token },

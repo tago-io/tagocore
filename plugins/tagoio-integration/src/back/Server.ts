@@ -13,6 +13,7 @@ import {
   startRealtimeCommunication,
 } from "./RealtimeConnection.ts";
 import { createTCore, sendDataToTagoio } from "./Request.ts";
+import { regionsDefinition } from "@tago-io/sdk/lib/regions.js";
 
 let server: http.Server | null = null;
 
@@ -86,6 +87,11 @@ async function routeStartTCore(req: Request, res: Response) {
   const osInfo = await helpers.getOSInfo();
   const profileToken = "p-".concat(req.headers.token as string);
   const region = req.headers.region as string;
+  if (!regionsDefinition[region as keyof typeof regionsDefinition]) {
+    res.sendStatus(400);
+    return;
+  }
+
   await pluginStorage.set("region", region);
   const item = await pluginStorage.get("tcore").catch(() => null);
 
