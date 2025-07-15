@@ -2,11 +2,27 @@ import { Button, EButton, FormGroup, Input } from "@tago-io/tcore-console";
 import { type KeyboardEvent, useCallback, useRef, useState } from "react";
 // @ts-ignore
 import SVGTagoIO from "../../../../assets/tagoio-logo.svg";
+import { REGIONS } from "../regions.ts";
 import * as Style from "./Credentials.style";
 
 /**
+ * Props interface
  */
-function Credentials(props: any) {
+interface ICredentialsProps {
+  loading: boolean;
+  email: string;
+  invalidCredentials: boolean;
+  password: string;
+  onChangeEmail: (email: string) => void;
+  onChangePassword: (password: string) => void;
+  onLogin: () => void;
+  selectedRegion: string;
+  onChangeRegion: (region: "us-e1" | "eu-w1") => void;
+}
+
+/**
+ */
+function Credentials(props: ICredentialsProps) {
   const {
     loading,
     email,
@@ -15,6 +31,8 @@ function Credentials(props: any) {
     onChangeEmail,
     onChangePassword,
     onLogin,
+    selectedRegion,
+    onChangeRegion,
   } = props;
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -98,6 +116,19 @@ function Credentials(props: any) {
           type="password"
           value={password}
         />
+      </FormGroup>
+
+      <FormGroup label="Region">
+        <Style.Select
+          value={selectedRegion}
+          onChange={(e) => onChangeRegion(e.target.value as "us-e1" | "eu-w1")}
+        >
+          {Object.entries(REGIONS).map(([regionKey, region]) => (
+            <Style.SelectOption key={regionKey} value={regionKey}>
+              {region.label}
+            </Style.SelectOption>
+          ))}
+        </Style.Select>
       </FormGroup>
 
       <FormGroup>

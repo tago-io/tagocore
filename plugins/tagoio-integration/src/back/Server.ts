@@ -1,5 +1,6 @@
 import http from "node:http";
 import os from "node:os";
+import { regionsDefinition } from "@tago-io/sdk/lib/regions.js";
 import { helpers, pluginStorage } from "@tago-io/tcore-sdk";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -72,6 +73,8 @@ async function routeGetTCore(req: Request, res: Response) {
  */
 async function routeSignOut(req: Request, res: Response) {
   await pluginStorage.delete("token");
+  await pluginStorage.delete("tcore");
+  await pluginStorage.delete("region");
   closeRealtimeConnection();
   res.sendStatus(200);
 }
@@ -83,6 +86,13 @@ async function routeStartTCore(req: Request, res: Response) {
   const tcoreStartTime = new Date(Date.now() - process.uptime() * 1000);
   const osInfo = await helpers.getOSInfo();
   const profileToken = "p-".concat(req.headers.token as string);
+  const region = req.headers.region as string;
+  if (!regionsDefinition[region as keyof typeof regionsDefinition]) {
+    res.sendStatus(400);
+    return;
+  }
+
+  await pluginStorage.set("region", region);
   const item = await pluginStorage.get("tcore").catch(() => null);
 
   if (item?.token) {

@@ -10,8 +10,7 @@ import InstanceName from "./InstanceName/InstanceName.tsx";
 import Otp from "./Otp/Otp.tsx";
 import OtpPicker from "./OtpPicker/OtpPicker.tsx";
 import Profiles from "./Profiles/Profiles.tsx";
-
-const API_URL = process.env.TAGOIO_API;
+import { REGIONS } from "./regions.ts";
 
 /**
  * Props.
@@ -47,8 +46,13 @@ function Auth(props: IAuthProps) {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
   const [profiles, setProfiles] = useState<any[]>([]);
+  const [selectedRegion, setSelectedRegion] =
+    useState<keyof typeof REGIONS>("us-e1");
 
   const { onSignIn, port } = props;
+
+  // Get the API URL based on selected region
+  const apiUrl = REGIONS[selectedRegion].apiUrl;
 
   /**
    * Logs in.
@@ -67,7 +71,7 @@ function Auth(props: IAuthProps) {
 
         // logs in and gets the account
         const result = await axios.post(
-          `${API_URL}/account/login`,
+          `${apiUrl}/account/login`,
           {
             email,
             password,
@@ -99,7 +103,7 @@ function Auth(props: IAuthProps) {
         setLoading(false);
       }
     },
-    [email, password, loading, otpType],
+    [email, password, loading, otpType, apiUrl],
   );
 
   /**
@@ -113,7 +117,10 @@ function Auth(props: IAuthProps) {
       const response = await axios({
         url: `${location.protocol}//${location.hostname}:${port}/start`,
         method: "POST",
-        headers: { token },
+        headers: {
+          token,
+          region: selectedRegion,
+        },
         data: { name },
       });
 
@@ -133,7 +140,7 @@ function Auth(props: IAuthProps) {
 
         // uses the account to get a profile token
         // logs in and gets the account
-        const tokenData = await axios.post(`${API_URL}/account/profile/token`, {
+        const tokenData = await axios.post(`${apiUrl}/account/profile/token`, {
           email,
           password,
           otp_type: lastPinCode ? otpType : undefined,
@@ -152,7 +159,7 @@ function Auth(props: IAuthProps) {
         setLoading(false);
       }
     },
-    [email, otpType, lastPinCode, password],
+    [email, otpType, lastPinCode, password, apiUrl],
   );
 
   /**
@@ -187,14 +194,14 @@ function Auth(props: IAuthProps) {
       setContent("otp");
 
       if (newType !== "authenticator") {
-        await axios.post(`${API_URL}/account/login/otp`, {
+        await axios.post(`${apiUrl}/account/login/otp`, {
           email,
           password,
           otp_type: newType,
         });
       }
     },
-    [email, password],
+    [email, password, apiUrl],
   );
 
   /**
@@ -226,6 +233,8 @@ function Auth(props: IAuthProps) {
               onChangePassword={setPassword}
               onLogin={login}
               password={password}
+              selectedRegion={selectedRegion}
+              onChangeRegion={setSelectedRegion}
             />
           ) : content === "profiles" ? (
             // profile selection
