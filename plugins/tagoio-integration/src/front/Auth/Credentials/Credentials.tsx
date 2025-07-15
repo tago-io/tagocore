@@ -119,25 +119,16 @@ function Credentials(props: ICredentialsProps) {
       </FormGroup>
 
       <FormGroup label="Region">
-        <select
+        <Style.Select
           value={selectedRegion}
           onChange={(e) => onChangeRegion(e.target.value as "us-e1" | "eu-w1")}
-          style={{
-            width: "100%",
-            padding: "8px 12px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            fontSize: "14px",
-            backgroundColor: "white",
-            outline: "none",
-          }}
         >
           {Object.entries(REGIONS).map(([regionKey, region]) => (
-            <option key={regionKey} value={regionKey}>
+            <Style.SelectOption key={regionKey} value={regionKey}>
               {region.label}
-            </option>
+            </Style.SelectOption>
           ))}
-        </select>
+        </Style.Select>
       </FormGroup>
 
       <FormGroup>
