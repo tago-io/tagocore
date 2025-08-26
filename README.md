@@ -9,7 +9,7 @@
 
 ## The Repository
 
-This repository is where we (TagoIO Inc.) develop the [TagoCore](https://tagocore.com) product together with the community. Here, we work on code, address issues, and develop features collaboratively. The source code is available to everyone under the [Apache License 2.0](https://github.com/tago-io/tcore/blob/main/LICENSE).
+This repository is where we (TagoIO Inc.) develop the [TagoCore](https://tagocore.com) product together with the community. Here, we work on code, address issues, and develop features collaboratively. The source code is available to everyone under the [Apache License 2.0](https://github.com/tago-io/tagocore/blob/main/LICENSE.md).
 
 ## TagoCore
 
@@ -30,14 +30,14 @@ TagoCore is distributed as a Docker image, which you can access on [Docker Hub](
 
 There are many ways to participate in this project, including:
 
-* [Submit bugs and feature requests](https://github.com/tago-io/tcore/issues) and help us verify as they are checked in
-* Review [source code changes](https://github.com/tago-io/tcore/pulls)
+* [Submit bugs and feature requests](https://github.com/tago-io/tagocore/issues) and help us verify as they are checked in
+* Review [source code changes](https://github.com/tago-io/tagocore/pulls)
 
 ## Feedback
 
 * Ask a question on [Our Community](https://help.tago.io/portal/en/community/tagoio/tagocore)
-* Upvote [popular feature requests](https://github.com/tago-io/tcore/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
-* [File an issue](https://github.com/tago-io/tcore/issues)
+* Upvote [popular feature requests](https://github.com/tago-io/tagocore/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
+* [File an issue](https://github.com/tago-io/tagocore/issues)
 
 ## Known issues
 
