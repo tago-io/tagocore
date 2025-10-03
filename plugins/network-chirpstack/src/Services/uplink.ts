@@ -8,7 +8,7 @@ interface IChirpstackPayload {
   applicationName: string;
   deviceName: string;
   devEUI: string;
-  deviceInfo: any;
+  deviceInfo?: any;
   devAddr: string;
   rxInfo: any[];
   txInfo: any;

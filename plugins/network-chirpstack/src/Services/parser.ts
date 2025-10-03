@@ -135,7 +135,6 @@ interface ITxInfo {
 function parseTxInfo(data: ITxInfo, serie: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const result: IDeviceDataLatLng[] = [];
-
   // frequency (integer)
   if (data.frequency)
     result.push({ variable: "frequency", value: data.frequency, serie });
@@ -224,22 +223,26 @@ export default async function parser(payload: any) {
     payload.device_eui = payload.devEU;
     payload.devEUI = undefined;
   }
-  if (payload.deviceInfo.applicationID) {
-    payload.application_id = payload.deviceInfo.applicationID;
-    payload.deviceInfo.applicationID = undefined;
+
+  if (payload.deviceInfo) {
+    if (payload.deviceInfo.applicationID) {
+      payload.application_id = payload.deviceInfo.applicationID;
+      payload.deviceInfo.applicationID = undefined;
+    }
+    if (payload.deviceInfo.applicationName) {
+      payload.application_name = payload.deviceInfo.applicationName;
+      payload.deviceInfo.applicationName = undefined;
+    }
+    if (payload.deviceInfo.deviceName) {
+      payload.device_name = payload.deviceInfo.deviceName;
+      payload.deviceInfo.adeviceName = undefined;
+    }
+    if (payload.deviceInfo.devEui) {
+      payload.device_eui = payload.deviceInfo.devEui;
+      payload.deviceInfo.devEui = undefined;
+    }
   }
-  if (payload.deviceInfo.applicationName) {
-    payload.application_name = payload.deviceInfo.applicationName;
-    payload.deviceInfo.applicationName = undefined;
-  }
-  if (payload.deviceInfo.deviceName) {
-    payload.device_name = payload.deviceInfo.deviceName;
-    payload.deviceInfo.adeviceName = undefined;
-  }
-  if (payload.deviceInfo.devEui) {
-    payload.device_eui = payload.deviceInfo.devEui;
-    payload.deviceInfo.devEui = undefined;
-  }
+
   if (payload.externalPowerSource) {
     payload.external_power_source = payload.externalPowerSource;
     payload.externalPowerSource = undefined;
@@ -280,7 +283,6 @@ export default async function parser(payload: any) {
   }
 
   toTago = toTago.concat(toTagoFormat(payload, serie));
-  console.log(toTago);
   toTago = toTago.filter(
     (x) => !x.location || (x.location.lat !== 0 && x.location.lng !== 0),
   );
