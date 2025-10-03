@@ -220,7 +220,7 @@ export default async function parser(payload: any) {
     payload.adeviceName = undefined;
   }
   if (payload.devEUI) {
-    payload.device_eui = payload.devEU;
+    payload.device_eui = payload.devEUI;
     payload.devEUI = undefined;
   }
 
