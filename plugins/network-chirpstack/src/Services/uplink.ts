@@ -8,6 +8,7 @@ interface IChirpstackPayload {
   applicationName: string;
   deviceName: string;
   devEUI: string;
+  deviceInfo?: any;
   devAddr: string;
   rxInfo: any[];
   txInfo: any;
@@ -76,12 +77,13 @@ async function uplinkService(
   }
 
   const data: IChirpstackPayload = req.body;
-  if (!data.devEUI) {
+  const deviceEUI = data.devEUI || data.deviceInfo.devEui;
+  if (!deviceEUI) {
     console.error("[Network Server] Request refused, body is invalid");
     return sendResponse(res, { body: "Invalid body received", status: 401 });
   }
 
-  const { devEUI: hSerial } = data;
+  const hSerial = deviceEUI;
   let hardwareSerial = Buffer.from(hSerial, "base64").toString("hex");
   if (hardwareSerial.length !== 16) {
     hardwareSerial = hSerial;
