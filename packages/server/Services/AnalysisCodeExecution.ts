@@ -32,11 +32,6 @@ export async function runAnalysis(id: string, data: any): Promise<void> {
   const settings = await getMainSettings();
 
   try {
-    const filePath = await invokeFilesystemFunction(
-      "resolveFile",
-      analysis.file_path,
-    );
-
     if (!analysis.active) {
       const message = `The analysis is deactivated and can't run. To run the analysis activate it.`;
       throw new Error(message);
@@ -45,16 +40,26 @@ export async function runAnalysis(id: string, data: any): Promise<void> {
       const message = "Binary executable path is missing";
       throw new Error(message);
     }
-    if (!analysis.file_path || !fs.existsSync(filePath)) {
-      const message = `File path is missing or doesn't exist`;
-      throw new Error(message);
+
+    let filePath: string | null = null;
+    if (analysis.file_path) {
+      const resolvedPath = await invokeFilesystemFunction(
+        "resolveFile",
+        analysis.file_path,
+      );
+      if (!fs.existsSync(resolvedPath)) {
+        const message = `File path doesn't exist: ${resolvedPath}`;
+        throw new Error(message);
+      }
+      filePath = resolvedPath;
     }
 
     addLog(false, id, `Starting analysis ${id}`);
 
     const localAddress = `http://localhost:${settings.port}`;
 
-    const child = spawn(`${analysis.binary_path}`, [filePath], {
+    const args = filePath ? [filePath] : [];
+    const child = spawn(`${analysis.binary_path}`, args, {
       env: {
         T_ANALYSIS_CONTEXT: "tago-io",
         T_ANALYSIS_ENV: stringifySafe(analysis.variables || []),
