@@ -24,3 +24,6 @@ newrelic_agent.log
 *.tcore
 __build__*
 build*/
+
+# Temporary test files
+temp/
