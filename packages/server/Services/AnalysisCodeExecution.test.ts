@@ -23,8 +23,15 @@ vi.mock("./Settings.ts", () => ({
   getMainSettings: async () => ({ port: 8888 }),
 }));
 
+vi.mock("../Helpers/log.ts", () => ({
+  logError: vi.fn(),
+}));
+
 vi.mock("../Plugins/invokeDatabaseFunction.ts", () => ({
   invokeDatabaseFunction: vi.fn(async (method: string) => {
+    if (method === failingMethod) {
+      throw new Error("Database connection is not active");
+    }
     switch (method) {
       case "getAnalysisInfo":
         return storedAnalysis;
@@ -36,6 +43,7 @@ vi.mock("../Plugins/invokeDatabaseFunction.ts", () => ({
   }),
 }));
 
+import { logError } from "../Helpers/log.ts";
 import { invokeDatabaseFunction } from "../Plugins/invokeDatabaseFunction.ts";
 import { runAnalysis } from "./AnalysisCodeExecution.ts";
 
@@ -55,18 +63,31 @@ const analysisRow = {
 };
 
 let storedAnalysis: typeof analysisRow | null = analysisRow;
+let failingMethod: string | null = null;
+let unhandledRejections: unknown[] = [];
 
 const calledMethods = () =>
   vi.mocked(invokeDatabaseFunction).mock.calls.map(([method]) => method);
 
+const onUnhandledRejection = (reason: unknown) => {
+  unhandledRejections.push(reason);
+};
+
+// runAnalysis does not await its log writes or the last_run update.
+const settleBackgroundWrites = () =>
+  new Promise((resolve) => setImmediate(resolve));
+
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
   storedAnalysis = analysisRow;
+  failingMethod = null;
+  unhandledRejections = [];
+  process.on("unhandledRejection", onUnhandledRejection);
 });
 
 afterEach(async () => {
-  // runAnalysis does not await its log writes or the last_run update.
-  await new Promise((resolve) => setImmediate(resolve));
+  await settleBackgroundWrites();
+  process.off("unhandledRejection", onUnhandledRejection);
   vi.clearAllTimers();
   vi.useRealTimers();
   vi.clearAllMocks();
@@ -106,5 +127,31 @@ describe("runAnalysis", () => {
       "Invalid Analysis ID",
     );
     expect(spawn).not.toHaveBeenCalled();
+  });
+
+  test("logs a rejected log write without an unhandled rejection", async () => {
+    failingMethod = "addAnalysisLog";
+
+    await runAnalysis(ANALYSIS_ID, {});
+    await settleBackgroundWrites();
+
+    expect(logError).toHaveBeenCalledWith(
+      "api",
+      `Analysis ${ANALYSIS_ID}: could not save a log: Database connection is not active`,
+    );
+    expect(unhandledRejections).toEqual([]);
+  });
+
+  test("logs a rejected last_run update without an unhandled rejection", async () => {
+    failingMethod = "editAnalysis";
+
+    await runAnalysis(ANALYSIS_ID, {});
+    await settleBackgroundWrites();
+
+    expect(logError).toHaveBeenCalledWith(
+      "api",
+      `Analysis ${ANALYSIS_ID}: could not update last_run: Database connection is not active`,
+    );
+    expect(unhandledRejections).toEqual([]);
   });
 });

@@ -19,13 +19,21 @@ import { z } from "zod";
 import { invokeDatabaseFunction } from "../Plugins/invokeDatabaseFunction.ts";
 
 /**
- * Validates an analysis ID, throws an error if it doesn't exist.
+ * Retrieves the stored analysis, throws an error if it doesn't exist.
  */
-export async function validateAnalysisID(id: TGenericID): Promise<void> {
+async function findAnalysis(id: TGenericID): Promise<IAnalysis> {
   const analysis = await invokeDatabaseFunction("getAnalysisInfo", id);
   if (!analysis) {
     throw new Error("Invalid Analysis ID");
   }
+  return analysis;
+}
+
+/**
+ * Validates an analysis ID, throws an error if it doesn't exist.
+ */
+export async function validateAnalysisID(id: TGenericID): Promise<void> {
+  await findAnalysis(id);
 }
 
 /**
@@ -76,11 +84,7 @@ export type IAnalysisRunInfo = z.infer<typeof zAnalysisRunInfo>;
 export async function getAnalysisRunInfo(
   id: TGenericID,
 ): Promise<IAnalysisRunInfo> {
-  const analysis = await invokeDatabaseFunction("getAnalysisInfo", id);
-  if (!analysis) {
-    throw new Error("Invalid Analysis ID");
-  }
-
+  const analysis = await findAnalysis(id);
   const parsed = await zAnalysisRunInfo.parseAsync(analysis);
   return parsed;
 }
@@ -89,17 +93,9 @@ export async function getAnalysisRunInfo(
  * Retrieves all the information of a single analysis.
  */
 export async function getAnalysisInfo(id: TGenericID): Promise<IAnalysis> {
-  const analysis = (await invokeDatabaseFunction(
-    "getAnalysisInfo",
-    id,
-  )) as IAnalysis;
-  if (!analysis) {
-    throw new Error("Invalid Analysis ID");
-  }
-
-  analysis.console = await getAnalysisLogs(id);
-
-  const parsed = await zAnalysis.parseAsync(analysis);
+  const analysis = await findAnalysis(id);
+  const logs = await getAnalysisLogs(id);
+  const parsed = await zAnalysis.parseAsync({ ...analysis, console: logs });
   return parsed;
 }
 

@@ -4,7 +4,7 @@ vi.mock("../Plugins/invokeDatabaseFunction.ts", () => ({
   invokeDatabaseFunction: vi.fn(async (method: string) => {
     switch (method) {
       case "getAnalysisInfo":
-        return { ...analysisRow };
+        return storedAnalysis && { ...storedAnalysis };
       case "getAnalysisLogs":
         return storedLogs;
       default:
@@ -13,7 +13,11 @@ vi.mock("../Plugins/invokeDatabaseFunction.ts", () => ({
   }),
 }));
 
-import { getAnalysisInfo } from "./Analysis.ts";
+import {
+  getAnalysisInfo,
+  getAnalysisRunInfo,
+  validateAnalysisID,
+} from "./Analysis.ts";
 
 const ANALYSIS_ID = "6372d4a0f1c2b3a4d5e6f708";
 
@@ -35,7 +39,10 @@ const storedLogs = [
   { timestamp: new Date(), message: "Script failed", error: true },
 ];
 
+let storedAnalysis: typeof analysisRow | null = analysisRow;
+
 afterEach(() => {
+  storedAnalysis = analysisRow;
   vi.clearAllMocks();
 });
 
@@ -45,5 +52,17 @@ describe("getAnalysisInfo", () => {
 
     expect(analysis.id).toBe(ANALYSIS_ID);
     expect(analysis.console).toEqual(storedLogs);
+  });
+});
+
+describe("unknown analysis ID", () => {
+  test.each([
+    ["getAnalysisInfo", getAnalysisInfo],
+    ["getAnalysisRunInfo", getAnalysisRunInfo],
+    ["validateAnalysisID", validateAnalysisID],
+  ])("%s throws Invalid Analysis ID", async (_, lookup) => {
+    storedAnalysis = null;
+
+    await expect(lookup(ANALYSIS_ID)).rejects.toThrow("Invalid Analysis ID");
   });
 });
