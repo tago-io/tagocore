@@ -62,7 +62,10 @@ export async function setupKnex(this: DatabaseModule, config: Config) {
 
     await testDatabaseConnection();
 
-    this.showMessage("info", "Configuring database");
+    this.showMessage(
+      "info",
+      "Updating the database. This can take several minutes.",
+    );
 
     await mainDB.write.migrate.latest(migrationConfig);
 

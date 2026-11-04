@@ -85,7 +85,17 @@ async function startModule() {
     ],
   });
 
-  sqlite.onLoad = setupKnex;
+  sqlite.onLoad = async (config) => {
+    await sqlite.showMessage(
+      "info",
+      "Updating the database. This can take several minutes.",
+    );
+    try {
+      await setupKnex(config);
+    } finally {
+      await sqlite.hideMessage();
+    }
+  };
   sqlite.onDestroy = destroyKnex;
 
   sqlite.addAnalysisLog = addAnalysisLog;
