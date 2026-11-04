@@ -3,7 +3,11 @@ import fs from "node:fs";
 import type { ILog, TGenericID } from "@tago-io/tcore-sdk/types";
 import { invokeFilesystemFunction } from "../Plugins/invokeFilesystemFunction.ts";
 import { io } from "../Socket/SocketServer.ts";
-import { addAnalysisLog, editAnalysis, getAnalysisInfo } from "./Analysis.ts";
+import {
+  addAnalysisLog,
+  editAnalysis,
+  getAnalysisRunInfo,
+} from "./Analysis.ts";
 import { getMainSettings } from "./Settings.ts";
 
 /**
@@ -28,7 +32,7 @@ function addLog(error: boolean, id: TGenericID, message: string): void {
  * @param {any} data The data to be passed to the analysis' script.
  */
 export async function runAnalysis(id: string, data: any): Promise<void> {
-  const analysis = await getAnalysisInfo(id);
+  const analysis = await getAnalysisRunInfo(id);
   const settings = await getMainSettings();
 
   try {

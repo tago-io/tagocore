@@ -58,6 +58,34 @@ export async function getAnalysisList(
 }
 
 /**
+ * Fields of an analysis needed to run its script.
+ */
+const zAnalysisRunInfo = zAnalysis.pick({
+  active: true,
+  binary_path: true,
+  file_path: true,
+  id: true,
+  variables: true,
+});
+
+export type IAnalysisRunInfo = z.infer<typeof zAnalysisRunInfo>;
+
+/**
+ * Retrieves the fields needed to run an analysis, without loading its logs.
+ */
+export async function getAnalysisRunInfo(
+  id: TGenericID,
+): Promise<IAnalysisRunInfo> {
+  const analysis = await invokeDatabaseFunction("getAnalysisInfo", id);
+  if (!analysis) {
+    throw new Error("Invalid Analysis ID");
+  }
+
+  const parsed = await zAnalysisRunInfo.parseAsync(analysis);
+  return parsed;
+}
+
+/**
  * Retrieves all the information of a single analysis.
  */
 export async function getAnalysisInfo(id: TGenericID): Promise<IAnalysis> {
