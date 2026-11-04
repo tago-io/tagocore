@@ -13,6 +13,7 @@ import editAction from "./Providers/Action/editAction.ts";
 import getActionInfo from "./Providers/Action/getActionInfo.ts";
 import getActionList from "./Providers/Action/getActionList.ts";
 import addAnalysisLog from "./Providers/Analysis/addAnalysisLog.ts";
+import applyAnalysisLogRetention from "./Providers/Analysis/applyAnalysisLogRetention.ts";
 import createAnalysis from "./Providers/Analysis/createAnalysis.ts";
 import deleteAnalysis from "./Providers/Analysis/deleteAnalysis.ts";
 import deleteAnalysisLogs from "./Providers/Analysis/deleteAnalysisLogs.ts";
@@ -90,6 +91,7 @@ async function startModule() {
   sqlite.addAnalysisLog = addAnalysisLog;
   sqlite.addDeviceData = addDeviceData;
   sqlite.addStatistic = addStatistic;
+  sqlite.applyAnalysisLogRetention = applyAnalysisLogRetention;
   sqlite.applyDeviceDataRetention = applyDeviceDataRetention;
   sqlite.createAccount = createAccount;
   sqlite.createAccountToken = createAccountToken;

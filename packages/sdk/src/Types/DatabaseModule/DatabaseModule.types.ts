@@ -62,6 +62,16 @@ export type IDatabaseSetPluginStorageData = z.output<
 export type IDatabaseAddAnalysisLogData = ILog;
 
 /**
+ * Query parameter of the `applyAnalysisLogRetention` function.
+ */
+export type IDatabaseApplyAnalysisLogRetentionQuery = {
+  /**
+   * Amount of the newest logs to keep. A positive integer.
+   */
+  max_lines: number;
+};
+
+/**
  * Data parameter of the `createAnalysis` function.
  */
 export type IDatabaseCreateAnalysisData = z.infer<typeof zAnalysisCreate>;

@@ -12,6 +12,7 @@ import type {
   IDatabaseAddAnalysisLogData,
   IDatabaseAddStatisticData,
   IDatabaseAnalysisListQuery,
+  IDatabaseApplyAnalysisLogRetentionQuery,
   IDatabaseCreateAccountData,
   IDatabaseCreateActionData,
   IDatabaseCreateAnalysisData,
@@ -488,6 +489,17 @@ class DatabaseModule extends TCoreModule {
    * Retrieves all the logs of an analysis.
    */
   public async getAnalysisLogs(analysisID: TGenericID): Promise<ILog[]> {
+    throw new Error("Method not implemented");
+  }
+
+  /**
+   * Applies log retention for an analysis by deleting all but its newest `max_lines` logs.
+   * Logs without a timestamp count as the oldest, and logs that share the cutoff timestamp are all kept.
+   */
+  public async applyAnalysisLogRetention(
+    analysisID: TGenericID,
+    query: IDatabaseApplyAnalysisLogRetentionQuery,
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 
