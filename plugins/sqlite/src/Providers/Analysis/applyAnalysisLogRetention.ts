@@ -23,11 +23,14 @@ async function deleteLogsInChunks(
 
   while (deleted < limit) {
     const size = Math.min(DELETE_CHUNK_SIZE, limit - deleted);
+    // SQLite sorts NULL first in ascending order, so logs without a timestamp, the oldest, go first. The index
+    // already holds this order, so it costs no sort.
     const chunk = knexClient
       .select("rowid")
       .from("analysis_log")
       .where("analysis_id", analysisID)
       .where(filter)
+      .orderBy("timestamp", "asc")
       .limit(size);
 
     const chunkDeleted = await knexClient

@@ -146,6 +146,26 @@ describe("applyAnalysisLogRetention", () => {
     );
   });
 
+  test("a capped call removes logs without a timestamp before older logs that have one", async () => {
+    const timestamps = range(0, ANALYSIS_LOG_RETENTION_CALL_LIMIT + 5500).map(
+      secondsAgo,
+    );
+    const nulls = Array.from({ length: 300 }, () => null);
+    await seedAnalysis("analysis-capped-mixed", [...timestamps, ...nulls]);
+
+    expect(
+      await applyAnalysisLogRetention("analysis-capped-mixed", {
+        max_lines: 1000,
+      }),
+    ).toBe(ANALYSIS_LOG_RETENTION_CALL_LIMIT);
+
+    const kept = await keptTimestamps("analysis-capped-mixed");
+    expect(kept).toHaveLength(
+      timestamps.length + nulls.length - ANALYSIS_LOG_RETENTION_CALL_LIMIT,
+    );
+    expect(kept).not.toContain(null);
+  });
+
   test("removes at most the call limit of logs without a timestamp per call", async () => {
     const timestamps = range(0, 5).map(secondsAgo);
     const nulls = Array.from(
