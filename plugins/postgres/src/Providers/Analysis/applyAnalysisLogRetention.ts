@@ -49,6 +49,13 @@ async function deleteLogsInChunks(
 }
 
 /**
+ * Matches the logs without a timestamp.
+ */
+const withoutTimestamp = (builder: Knex.QueryBuilder) => {
+  builder.whereNull("timestamp");
+};
+
+/**
  * Applies log retention for an analysis by deleting all but its newest `max_lines` logs, at most
  * `ANALYSIS_LOG_RETENTION_CALL_LIMIT` per call, and returns how many it deleted.
  * Logs without a timestamp count as the oldest, and logs that share the cutoff timestamp are all kept.
@@ -66,16 +73,21 @@ async function applyAnalysisLogRetention(
     .offset(query.max_lines - 1);
 
   if (cutoff) {
-    const olderThanCutoff = (builder: Knex.QueryBuilder) => {
-      builder
-        .where("timestamp", "<", cutoff.timestamp)
-        .orWhereNull("timestamp");
-    };
-    return await deleteLogsInChunks(
+    // The index sorts NULL timestamps last, so the logs without one, the oldest, go in their own pass first.
+    const deletedWithoutTimestamp = await deleteLogsInChunks(
       analysisID,
-      olderThanCutoff,
+      withoutTimestamp,
       ANALYSIS_LOG_RETENTION_CALL_LIMIT,
     );
+    const olderThanCutoff = (builder: Knex.QueryBuilder) => {
+      builder.where("timestamp", "<", cutoff.timestamp);
+    };
+    const deletedOlder = await deleteLogsInChunks(
+      analysisID,
+      olderThanCutoff,
+      ANALYSIS_LOG_RETENTION_CALL_LIMIT - deletedWithoutTimestamp,
+    );
+    return deletedWithoutTimestamp + deletedOlder;
   }
 
   // Fewer than `max_lines` logs carry a timestamp: they all stay, and logs without one fill the remaining room.
@@ -90,9 +102,6 @@ async function applyAnalysisLogRetention(
     return 0;
   }
 
-  const withoutTimestamp = (builder: Knex.QueryBuilder) => {
-    builder.whereNull("timestamp");
-  };
   return await deleteLogsInChunks(
     analysisID,
     withoutTimestamp,
