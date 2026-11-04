@@ -67,6 +67,12 @@ import getTagKeys from "./Providers/Tag/getTagKeys.ts";
 import { destroyKnex, setupKnex } from "./knex.ts";
 
 /**
+ * Shown while migrations run, which can take minutes on a large database.
+ */
+const MIGRATION_MESSAGE =
+  "Updating the database. This can take several minutes.";
+
+/**
  * Starts the database module.
  */
 async function startModule() {
@@ -86,10 +92,10 @@ async function startModule() {
   });
 
   sqlite.onLoad = async (config) => {
-    await sqlite.showMessage(
-      "info",
-      "Updating the database. This can take several minutes.",
-    );
+    // the server opens its port only after this load, so at boot the terminal
+    // is the only place an operator can see that a migration is running
+    console.info(MIGRATION_MESSAGE);
+    await sqlite.showMessage("info", MIGRATION_MESSAGE);
     try {
       await setupKnex(config);
     } finally {
