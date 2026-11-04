@@ -1,3 +1,4 @@
+import { ANALYSIS_LOG_RETENTION_CALL_LIMIT } from "@tago-io/tcore-sdk/types";
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { destroyKnex, knexClient, setupKnex } from "../../knex.ts";
 import applyAnalysisLogRetention from "./applyAnalysisLogRetention.ts";
@@ -58,8 +59,12 @@ describe("applyAnalysisLogRetention", () => {
     await seedAnalysis("analysis-a", range(0, 1200).map(secondsAgo));
     await seedAnalysis("analysis-b", range(0, 50).map(secondsAgo));
 
-    await applyAnalysisLogRetention("analysis-a", { max_lines: 1000 });
-    await applyAnalysisLogRetention("analysis-b", { max_lines: 1000 });
+    expect(
+      await applyAnalysisLogRetention("analysis-a", { max_lines: 1000 }),
+    ).toBe(200);
+    expect(
+      await applyAnalysisLogRetention("analysis-b", { max_lines: 1000 }),
+    ).toBe(0);
 
     expect(await keptTimestamps("analysis-a")).toEqual(
       range(0, 1000).map(secondsAgo),
@@ -114,10 +119,52 @@ describe("applyAnalysisLogRetention", () => {
   test("trims more rows than one delete chunk", async () => {
     await seedAnalysis("analysis-large", range(0, 12000).map(secondsAgo));
 
-    await applyAnalysisLogRetention("analysis-large", { max_lines: 1000 });
+    expect(
+      await applyAnalysisLogRetention("analysis-large", { max_lines: 1000 }),
+    ).toBe(11000);
 
     expect(await keptTimestamps("analysis-large")).toEqual(
       range(0, 1000).map(secondsAgo),
     );
+  });
+
+  test("removes at most the call limit per call, and repeated calls end at max_lines", async () => {
+    const total = ANALYSIS_LOG_RETENTION_CALL_LIMIT + 4500 + 1000;
+    await seedAnalysis("analysis-capped", range(0, total).map(secondsAgo));
+    const trim = () =>
+      applyAnalysisLogRetention("analysis-capped", { max_lines: 1000 });
+
+    expect(await trim()).toBe(ANALYSIS_LOG_RETENTION_CALL_LIMIT);
+    expect(await keptTimestamps("analysis-capped")).toHaveLength(
+      total - ANALYSIS_LOG_RETENTION_CALL_LIMIT,
+    );
+
+    expect(await trim()).toBe(4500);
+    expect(await trim()).toBe(0);
+    expect(await keptTimestamps("analysis-capped")).toEqual(
+      range(0, 1000).map(secondsAgo),
+    );
+  });
+
+  test("removes at most the call limit of logs without a timestamp per call", async () => {
+    const timestamps = range(0, 5).map(secondsAgo);
+    const nulls = Array.from(
+      { length: ANALYSIS_LOG_RETENTION_CALL_LIMIT + 100 },
+      () => null,
+    );
+    await seedAnalysis("analysis-capped-nulls", [...timestamps, ...nulls]);
+    const trim = () =>
+      applyAnalysisLogRetention("analysis-capped-nulls", { max_lines: 10 });
+
+    expect(await trim()).toBe(ANALYSIS_LOG_RETENTION_CALL_LIMIT);
+    expect(await trim()).toBe(95);
+    expect(await keptTimestamps("analysis-capped-nulls")).toEqual([
+      ...timestamps,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ]);
   });
 });

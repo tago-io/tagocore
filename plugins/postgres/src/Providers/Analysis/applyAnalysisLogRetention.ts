@@ -1,6 +1,7 @@
-import type {
-  IDatabaseApplyAnalysisLogRetentionQuery,
-  TGenericID,
+import {
+  ANALYSIS_LOG_RETENTION_CALL_LIMIT,
+  type IDatabaseApplyAnalysisLogRetentionQuery,
+  type TGenericID,
 } from "@tago-io/tcore-sdk/types";
 import type { Knex } from "knex";
 import { mainDB } from "../../Database/index.ts";
@@ -11,44 +12,51 @@ import { mainDB } from "../../Database/index.ts";
 const DELETE_CHUNK_SIZE = 5000;
 
 /**
- * Deletes, in chunks, up to `limit` logs of an analysis that match `filter`.
+ * Deletes, in chunks, up to `limit` logs of an analysis that match `filter`, and returns how many it deleted.
  */
 async function deleteLogsInChunks(
   analysisID: TGenericID,
   filter: (builder: Knex.QueryBuilder) => void,
   limit: number,
-): Promise<void> {
-  let remaining = limit;
+): Promise<number> {
+  let deleted = 0;
 
-  while (remaining > 0) {
-    const size = Math.min(DELETE_CHUNK_SIZE, remaining);
+  while (deleted < limit) {
+    const size = Math.min(DELETE_CHUNK_SIZE, limit - deleted);
+    // Without the index order, the LIMIT makes a Seq Scan look cheap to the planner even when the analysis's
+    // rows sit at the end of the table.
     const chunk = mainDB.write
       .select("ctid")
       .from("analysis_log")
       .where("analysis_id", analysisID)
       .where(filter)
+      .orderBy("timestamp", "asc")
       .limit(size);
 
-    const deleted = await mainDB.write
+    // `ctid IN (subquery)` can plan as a join that scans the whole table; an array of ctids is a TID scan.
+    const chunkDeleted = await mainDB.write
       .delete()
       .from("analysis_log")
-      .whereIn("ctid", chunk);
+      .whereRaw("ctid = ANY(ARRAY(?))", [chunk]);
 
-    remaining -= deleted;
-    if (deleted < size) {
-      return;
+    deleted += chunkDeleted;
+    if (chunkDeleted < size) {
+      break;
     }
   }
+
+  return deleted;
 }
 
 /**
- * Applies log retention for an analysis by deleting all but its newest `max_lines` logs.
+ * Applies log retention for an analysis by deleting all but its newest `max_lines` logs, at most
+ * `ANALYSIS_LOG_RETENTION_CALL_LIMIT` per call, and returns how many it deleted.
  * Logs without a timestamp count as the oldest, and logs that share the cutoff timestamp are all kept.
  */
 async function applyAnalysisLogRetention(
   analysisID: TGenericID,
   query: IDatabaseApplyAnalysisLogRetentionQuery,
-): Promise<void> {
+): Promise<number> {
   const cutoff = await mainDB.write
     .first("timestamp")
     .from("analysis_log")
@@ -63,12 +71,11 @@ async function applyAnalysisLogRetention(
         .where("timestamp", "<", cutoff.timestamp)
         .orWhereNull("timestamp");
     };
-    await deleteLogsInChunks(
+    return await deleteLogsInChunks(
       analysisID,
       olderThanCutoff,
-      Number.POSITIVE_INFINITY,
+      ANALYSIS_LOG_RETENTION_CALL_LIMIT,
     );
-    return;
   }
 
   // Fewer than `max_lines` logs carry a timestamp: they all stay, and logs without one fill the remaining room.
@@ -79,12 +86,18 @@ async function applyAnalysisLogRetention(
     .first();
 
   const excess = Number(total?.amount ?? 0) - query.max_lines;
-  if (excess > 0) {
-    const withoutTimestamp = (builder: Knex.QueryBuilder) => {
-      builder.whereNull("timestamp");
-    };
-    await deleteLogsInChunks(analysisID, withoutTimestamp, excess);
+  if (excess <= 0) {
+    return 0;
   }
+
+  const withoutTimestamp = (builder: Knex.QueryBuilder) => {
+    builder.whereNull("timestamp");
+  };
+  return await deleteLogsInChunks(
+    analysisID,
+    withoutTimestamp,
+    Math.min(excess, ANALYSIS_LOG_RETENTION_CALL_LIMIT),
+  );
 }
 
 export default applyAnalysisLogRetention;

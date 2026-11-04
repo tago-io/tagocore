@@ -1,8 +1,8 @@
-import type {
-  IDatabaseApplyAnalysisLogRetentionQuery,
-  TGenericID,
+import {
+  ANALYSIS_LOG_RETENTION_CALL_LIMIT,
+  type IDatabaseApplyAnalysisLogRetentionQuery,
+  type TGenericID,
 } from "@tago-io/tcore-sdk/types";
-import type { Knex } from "knex";
 import { mainDB } from "../../Database/index.ts";
 
 /**
@@ -11,66 +11,44 @@ import { mainDB } from "../../Database/index.ts";
 const DELETE_CHUNK_SIZE = 5000;
 
 /**
- * SQL condition on `analysis_log` rows, with its bindings.
+ * Deletes, in chunks, up to `limit` of the oldest logs of an analysis, and returns how many it deleted.
  */
-type LogFilter = { sql: string; bindings: readonly Knex.Value[] };
-
-/**
- * Deletes, in chunks, up to `limit` logs of an analysis that match `filter`.
- */
-async function deleteLogsInChunks(
+async function deleteOldestLogsInChunks(
   analysisID: TGenericID,
-  filter: LogFilter,
   limit: number,
-): Promise<void> {
-  let remaining = limit;
+): Promise<number> {
+  let deleted = 0;
 
-  while (remaining > 0) {
-    const size = Math.min(DELETE_CHUNK_SIZE, remaining);
-    // Knex cannot compile a LIMIT on a MySQL delete.
+  while (deleted < limit) {
+    const size = Math.min(DELETE_CHUNK_SIZE, limit - deleted);
+    // Knex cannot compile a LIMIT on a MySQL delete. Ascending order puts NULL timestamps first.
     const [result] = await mainDB.write.raw(
-      `DELETE FROM analysis_log WHERE analysis_id = ? AND (${filter.sql}) LIMIT ?`,
-      [analysisID, ...filter.bindings, size],
+      "DELETE FROM analysis_log WHERE analysis_id = ? ORDER BY `timestamp` ASC LIMIT ?",
+      [analysisID, size],
     );
 
-    const deleted: number = result.affectedRows;
-    remaining -= deleted;
-    if (deleted < size) {
-      return;
+    const chunkDeleted: number = result.affectedRows;
+    deleted += chunkDeleted;
+    if (chunkDeleted < size) {
+      break;
     }
   }
+
+  return deleted;
 }
 
 /**
- * Applies log retention for an analysis by deleting all but its newest `max_lines` logs.
- * Logs without a timestamp count as the oldest, and logs that share the cutoff timestamp are all kept.
+ * Applies log retention for an analysis by deleting all but its newest `max_lines` logs, at most
+ * `ANALYSIS_LOG_RETENTION_CALL_LIMIT` per call, and returns how many it deleted.
+ * Logs without a timestamp count as the oldest.
+ *
+ * Trims by count rather than by a cutoff timestamp: the `TIMESTAMP` column has second precision, so a cutoff
+ * would keep every log of its second, however many there are.
  */
 async function applyAnalysisLogRetention(
   analysisID: TGenericID,
   query: IDatabaseApplyAnalysisLogRetentionQuery,
-): Promise<void> {
-  const cutoff = await mainDB.write
-    .first("timestamp")
-    .from("analysis_log")
-    .where("analysis_id", analysisID)
-    .whereNotNull("timestamp")
-    .orderBy("timestamp", "desc")
-    .offset(query.max_lines - 1);
-
-  if (cutoff) {
-    const olderThanCutoff: LogFilter = {
-      sql: "`timestamp` < ? OR `timestamp` IS NULL",
-      bindings: [cutoff.timestamp],
-    };
-    await deleteLogsInChunks(
-      analysisID,
-      olderThanCutoff,
-      Number.POSITIVE_INFINITY,
-    );
-    return;
-  }
-
-  // Fewer than `max_lines` logs carry a timestamp: they all stay, and logs without one fill the remaining room.
+): Promise<number> {
   const total = await mainDB.write
     .count({ amount: "*" })
     .from("analysis_log")
@@ -78,13 +56,14 @@ async function applyAnalysisLogRetention(
     .first();
 
   const excess = Number(total?.amount ?? 0) - query.max_lines;
-  if (excess > 0) {
-    const withoutTimestamp: LogFilter = {
-      sql: "`timestamp` IS NULL",
-      bindings: [],
-    };
-    await deleteLogsInChunks(analysisID, withoutTimestamp, excess);
+  if (excess <= 0) {
+    return 0;
   }
+
+  return await deleteOldestLogsInChunks(
+    analysisID,
+    Math.min(excess, ANALYSIS_LOG_RETENTION_CALL_LIMIT),
+  );
 }
 
 export default applyAnalysisLogRetention;

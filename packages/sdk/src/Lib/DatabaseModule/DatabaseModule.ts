@@ -493,13 +493,17 @@ class DatabaseModule extends TCoreModule {
   }
 
   /**
-   * Applies log retention for an analysis by deleting all but its newest `max_lines` logs.
-   * Logs without a timestamp count as the oldest, and logs that share the cutoff timestamp are all kept.
+   * Applies log retention for an analysis by deleting its oldest logs beyond the newest `max_lines`.
+   * Logs without a timestamp count as the oldest. A database may keep every log that shares the oldest kept
+   * timestamp, even past `max_lines`.
+   *
+   * Removes at most `ANALYSIS_LOG_RETENTION_CALL_LIMIT` logs and resolves to the number it removed; a call that
+   * removes the full limit may leave more for the next call.
    */
   public async applyAnalysisLogRetention(
     analysisID: TGenericID,
     query: IDatabaseApplyAnalysisLogRetentionQuery,
-  ): Promise<void> {
+  ): Promise<number> {
     throw new Error("Method not implemented");
   }
 
