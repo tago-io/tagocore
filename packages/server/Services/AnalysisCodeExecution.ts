@@ -1,9 +1,14 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import type { ILog, TGenericID } from "@tago-io/tcore-sdk/types";
+import { logError } from "../Helpers/log.ts";
 import { invokeFilesystemFunction } from "../Plugins/invokeFilesystemFunction.ts";
 import { io } from "../Socket/SocketServer.ts";
-import { addAnalysisLog, editAnalysis, getAnalysisInfo } from "./Analysis.ts";
+import {
+  addAnalysisLog,
+  editAnalysis,
+  getAnalysisRunInfo,
+} from "./Analysis.ts";
 import { getMainSettings } from "./Settings.ts";
 
 /**
@@ -19,7 +24,12 @@ function addLog(error: boolean, id: TGenericID, message: string): void {
 
   io.to(`analysis#${id}`).emit("analysis::console", data);
 
-  addAnalysisLog(id, data);
+  addAnalysisLog(id, data).catch((ex) => {
+    logError(
+      "api",
+      `Analysis ${id}: could not save a log: ${ex?.message || ex}`,
+    );
+  });
 }
 
 /**
@@ -28,7 +38,7 @@ function addLog(error: boolean, id: TGenericID, message: string): void {
  * @param {any} data The data to be passed to the analysis' script.
  */
 export async function runAnalysis(id: string, data: any): Promise<void> {
-  const analysis = await getAnalysisInfo(id);
+  const analysis = await getAnalysisRunInfo(id);
   const settings = await getMainSettings();
 
   try {
@@ -95,7 +105,12 @@ export async function runAnalysis(id: string, data: any): Promise<void> {
       child.kill();
     }, 60 * 1000);
 
-    editAnalysis(id, { last_run: new Date() });
+    editAnalysis(id, { last_run: new Date() }).catch((ex) => {
+      logError(
+        "api",
+        `Analysis ${id}: could not update last_run: ${ex?.message || ex}`,
+      );
+    });
   } catch (ex: any) {
     addLog(true, id, `${ex?.message || ex}`);
   }

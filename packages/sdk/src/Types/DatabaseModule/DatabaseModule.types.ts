@@ -62,6 +62,22 @@ export type IDatabaseSetPluginStorageData = z.output<
 export type IDatabaseAddAnalysisLogData = ILog;
 
 /**
+ * Query parameter of the `applyAnalysisLogRetention` function.
+ */
+export type IDatabaseApplyAnalysisLogRetentionQuery = {
+  /**
+   * Amount of the newest logs to keep. A positive integer.
+   */
+  max_lines: number;
+};
+
+/**
+ * Most logs a single `applyAnalysisLogRetention` call removes, so each call stays well under the plugin call
+ * timeout. A call that removes this many may leave more to remove.
+ */
+export const ANALYSIS_LOG_RETENTION_CALL_LIMIT = 20000;
+
+/**
  * Data parameter of the `createAnalysis` function.
  */
 export type IDatabaseCreateAnalysisData = z.infer<typeof zAnalysisCreate>;

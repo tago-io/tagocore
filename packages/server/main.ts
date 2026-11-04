@@ -30,6 +30,10 @@ import { shutdown } from "./Helpers/shutdown.ts";
 import { startAllPlugins } from "./Plugins/Host.ts";
 import { startCallbackInterval } from "./Plugins/Worker/Worker.ts";
 import { startActionScheduleTimer } from "./Services/ActionScheduler.ts";
+import {
+  getAnalysisLogMaxLines,
+  startAnalysisLogRetentionTimer,
+} from "./Services/AnalysisLogRetention.ts";
 import { startDataRetentionTimer } from "./Services/DeviceDataRetention.ts";
 import { getModuleList } from "./Services/Plugins.ts";
 import { getMainSettings } from "./Services/Settings.ts";
@@ -171,6 +175,9 @@ async function listenOnApplicationPort() {
  * Starts the application.
  */
 export async function startServer() {
+  // read before anything starts, so an invalid value stops the server right away
+  const analysisLogMaxLines = getAnalysisLogMaxLines();
+
   oraLog("api", `Started ${getSystemName()}`);
 
   startCallbackInterval();
@@ -185,6 +192,7 @@ export async function startServer() {
   await listenOnApplicationPort();
   startActionScheduleTimer();
   startDataRetentionTimer();
+  startAnalysisLogRetentionTimer(analysisLogMaxLines);
 
   process.on("SIGTERM", () => shutdown(httpServer));
   process.on("SIGINT", () => shutdown(httpServer));

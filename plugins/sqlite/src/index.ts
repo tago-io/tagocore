@@ -13,6 +13,7 @@ import editAction from "./Providers/Action/editAction.ts";
 import getActionInfo from "./Providers/Action/getActionInfo.ts";
 import getActionList from "./Providers/Action/getActionList.ts";
 import addAnalysisLog from "./Providers/Analysis/addAnalysisLog.ts";
+import applyAnalysisLogRetention from "./Providers/Analysis/applyAnalysisLogRetention.ts";
 import createAnalysis from "./Providers/Analysis/createAnalysis.ts";
 import deleteAnalysis from "./Providers/Analysis/deleteAnalysis.ts";
 import deleteAnalysisLogs from "./Providers/Analysis/deleteAnalysisLogs.ts";
@@ -66,6 +67,12 @@ import getTagKeys from "./Providers/Tag/getTagKeys.ts";
 import { destroyKnex, setupKnex } from "./knex.ts";
 
 /**
+ * Shown while migrations run, which can take minutes on a large database.
+ */
+const MIGRATION_MESSAGE =
+  "Updating the database. This can take several minutes.";
+
+/**
  * Starts the database module.
  */
 async function startModule() {
@@ -84,12 +91,23 @@ async function startModule() {
     ],
   });
 
-  sqlite.onLoad = setupKnex;
+  sqlite.onLoad = async (config) => {
+    // the server opens its port only after this load, so at boot the terminal
+    // is the only place an operator can see that a migration is running
+    console.info(MIGRATION_MESSAGE);
+    await sqlite.showMessage("info", MIGRATION_MESSAGE);
+    try {
+      await setupKnex(config);
+    } finally {
+      await sqlite.hideMessage();
+    }
+  };
   sqlite.onDestroy = destroyKnex;
 
   sqlite.addAnalysisLog = addAnalysisLog;
   sqlite.addDeviceData = addDeviceData;
   sqlite.addStatistic = addStatistic;
+  sqlite.applyAnalysisLogRetention = applyAnalysisLogRetention;
   sqlite.applyDeviceDataRetention = applyDeviceDataRetention;
   sqlite.createAccount = createAccount;
   sqlite.createAccountToken = createAccountToken;

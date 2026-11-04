@@ -22,6 +22,43 @@ import executePluginRequest from "../executePluginRequest.ts";
 const callbacks = new Map<string, any>();
 
 /**
+ * How long a plugin method call may wait for its response.
+ */
+const CALL_TIMEOUT = 60 * 1000;
+
+/**
+ * How long a plugin may take to load.
+ */
+const LOAD_TIMEOUT = 30 * 1000;
+
+/**
+ * Database plugins run their migrations while loading, and an index build on a
+ * large table can take minutes.
+ */
+const DATABASE_LOAD_TIMEOUT = 10 * 60 * 1000;
+
+/**
+ * Returns how long the plugin may take to load.
+ */
+function getLoadTimeout(plugin: Plugin): number {
+  return plugin.types.includes("database")
+    ? DATABASE_LOAD_TIMEOUT
+    : LOAD_TIMEOUT;
+}
+
+/**
+ * Returns how long a call to `method` may wait for its response. The "start"
+ * call runs the module's onLoad, so a database plugin's start call gets the
+ * same limit as its load.
+ */
+function getCallTimeout(plugin: Plugin, method: string): number {
+  if (method === "start" && plugin.types.includes("database")) {
+    return DATABASE_LOAD_TIMEOUT;
+  }
+  return CALL_TIMEOUT;
+}
+
+/**
  * Controls the communication between the plugin, modules, and the API.
  * The whole lifecycle of the plugin is in here.
  */
@@ -59,9 +96,10 @@ class Worker extends EventEmitter {
     this.worker.stdout.on("data", this.onWorkerStdout.bind(this));
     this.worker.stderr.on("data", this.onWorkerStderr.bind(this));
 
+    const loadTimeout = getLoadTimeout(this.plugin);
     this.startRejectTimeout = setTimeout(() => {
-      this.onError(new Error("Took too long to load (30s)"));
-    }, 30 * 1000);
+      this.onError(new Error(`Took too long to load (${loadTimeout / 1000}s)`));
+    }, loadTimeout);
   }
 
   /**
@@ -96,6 +134,7 @@ class Worker extends EventEmitter {
         plugin: this.plugin,
         method,
         time: Date.now(),
+        timeout: getCallTimeout(this.plugin, method),
       });
 
       this.worker?.postMessage({
@@ -257,13 +296,12 @@ class Worker extends EventEmitter {
  * Starts the interval to erase old callbacks that were unanswered.
  */
 export function startCallbackInterval() {
-  const maximumTime = 60 * 1000; // 1 min without response
   const checkTime = 10 * 1000; // check every 10 seconds
 
   callbackInterval = setInterval(() => {
     for (const [key, value] of callbacks.entries()) {
-      if (Date.now() - value.time >= maximumTime) {
-        const message = `Response timed out (60s) for method "${value.method}"`;
+      if (Date.now() - value.time >= value.timeout) {
+        const message = `Response timed out (${value.timeout / 1000}s) for method "${value.method}"`;
         callbacks.get(key)?.reject(message);
         callbacks.delete(key);
         logError("api", `Plugin "${value.plugin.tcoreName}" - ${message}.`);
