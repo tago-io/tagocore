@@ -95,3 +95,7 @@ Decide alone: naming (migration files, index, types), chunk size, error wording,
 | 2026-11-04 | 4 | Executor decided | No trim at startup; the first one runs 10 minutes after boot. |
 | 2026-11-04 | 4 | Executor decided | Errors go to `logError("api", ...)`. |
 | 2026-11-04 | 4 | Executor decided | The timer returns silently when the analysis list fails and is not stopped in `shutdown.ts`, as the device timer. |
+| 2026-11-04 | 1 | Completed | PR tago-io/tagocore#105, branch renamed to fix/1170-analysis-log-retention |
+| 2026-11-04 | 2 | Completed | PR tago-io/tagocore#105 |
+| 2026-11-04 | 3 | Completed | PR tago-io/tagocore#105 |
+| 2026-11-04 | 4 | Completed | PR tago-io/tagocore#105 |
