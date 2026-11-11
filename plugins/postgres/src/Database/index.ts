@@ -67,6 +67,12 @@ function createConnection(
 }
 
 /**
+ * Shown while migrations run, which can take minutes on a large database.
+ */
+const MIGRATION_MESSAGE =
+  "Updating the database. This can take several minutes.";
+
+/**
  * Sets up the knex connection.
  */
 async function setupKnex(this: DatabaseModule, config: Config) {
@@ -84,7 +90,10 @@ async function setupKnex(this: DatabaseModule, config: Config) {
 
     await testDatabaseConnection();
 
-    this.showMessage("info", "Configuring database");
+    // the server opens its port only after this load, so at boot the terminal
+    // is the only place an operator can see that a migration is running
+    console.info(MIGRATION_MESSAGE);
+    this.showMessage("info", MIGRATION_MESSAGE);
 
     await mainDB.write.schema.createSchemaIfNotExists(config.main_schema);
     await deviceDB.write.schema.createSchemaIfNotExists(config.device_schema);
